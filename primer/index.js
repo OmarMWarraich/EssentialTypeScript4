@@ -10,8 +10,11 @@ greeting = "Hello";
 
 myObject.writeMessage("It is sunny today");
 
-// When the function is invoked via the object, the statement that invokes the function 
-// is akin to using the call method with the object as the first argument.
+let myFunction = myObject.writeMessage;
+myFunction("It is sunny today");
 
-// Care is required because this is set differently if the function is accessed out of
-// its object, which can happen if the function is assigned to a variable.
+// Functions can be used like any other value, including assigning them to variables
+// outside of the object in which they were defined. If the function is invoked through
+// the variable, then this will be set to the global subject. This often causes problems when 
+// functions are used as arguments to other methods or as callbacks  to handle events, 
+// and the effect is that same function will behave differently based on how it is invoked.
