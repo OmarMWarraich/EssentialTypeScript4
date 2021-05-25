@@ -4,6 +4,7 @@ import { TodoItem } from './todoItem';
 export class TodoCollection {
     private nextId: number = 1;
 //Adding Features to the collection class
+//Using a Map
     private itemMap = new Map<number, TodoItem>();
     
     constructor(public userName: string, todoItems: TodoItem[] =[]){
@@ -20,6 +21,12 @@ export class TodoCollection {
 
     getTodoById(id: number): TodoItem {
         return this.itemMap.get(id);
+    }
+
+    // Providing access to Todo items
+    getTodoItems(includeComplete: boolean): TodoItem[] {
+        return [...this.itemMap.values()]
+            .filter(item => includeComplete || !item.complete);
     }
 
     markComplete(id: number, complete: boolean) {
