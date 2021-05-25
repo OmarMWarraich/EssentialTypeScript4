@@ -1,32 +1,36 @@
-//Arrow functions dont work in the same way as regular function w.r.t this. Arrow functions
-// dont have their own this value and inherit the closest value of this they can find when
-// thay are executed.
+let hat = {
+    name: "Hat",
+    _price: 100,
+    priceIncTax: 100 * 1.2,
 
-let myObject = {
-    greeting: "Hi, there",
+    set price(newPrice) {
+        this._price = newPrice;
+        this.priceIncTax = this._price * 1.2;
+    },
 
-    getWriter() {
-        return (message) => 
-            console.log(`${this.greeting}, ${message}`);
-    }    
+    get price() {
+        return this._price;
+    },
+
+    writeDetails() {
+        console.log(`${this.name}: ${this.price}, ${this.priceIncTax}`)
+    }
+};
+
+let boots = {
+    name: "Boots",
+    price: "100",
+
+    get priceIncTax() {
+        return Number(this.price) * 1.2;
+    }
 }
 
-greeting = "Hello";
+hat.writeDetails = hat.writeDetails.bind(hat);
+hat.writeDetails();
+hat.price = 120;
+hat.writeDetails();
 
-let writer = myObject.getWriter();
-writer("It is raining today.");
-
-
-let standAlone = myObject.getWriter;
-let standAloneWriter = standAlone();
-standAloneWriter("It is sunny today");
-
-// The getWriter method is invoked through myObject and means that the value of this will
-// be set to myObject. When the arrow function is invoked, it finds a value of this from 
-// getWriter function. The result is that when the getWriter method is invoked through myObject,
-// the value of this in the arrow function will be myObject, and the this.greeting expression
-// in the template string will be Hi, there.
-
-// The statements in the second set treat getWriter as a stand-alone function,, so this 
-// will be set to the global object. When the arrow function is invoked, the this.greeting
-// expression will be Hello.
+console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`);
+boots.price = "120";
+console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`)
