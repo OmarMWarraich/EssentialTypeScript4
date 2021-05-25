@@ -6,6 +6,8 @@ let myObject = {
     }
 };
 
+myObject.writeMessage = myObject.writeMessage.bind(myObject);
+
 greeting = "Hello";
 
 myObject.writeMessage("It is sunny today");
@@ -13,8 +15,9 @@ myObject.writeMessage("It is sunny today");
 let myFunction = myObject.writeMessage;
 myFunction("It is sunny today");
 
-// Functions can be used like any other value, including assigning them to variables
-// outside of the object in which they were defined. If the function is invoked through
-// the variable, then this will be set to the global subject. This often causes problems when 
-// functions are used as arguments to other methods or as callbacks  to handle events, 
-// and the effect is that same function will behave differently based on how it is invoked.
+// The bind method returns a new function that will have a persistent value for this when
+// it is invoked. The function returned by the bind method is used to replace the original
+// method, wnsuring consistency when the writeMessage is invoked. Using bind is awkward
+// because the reference to the object isn't available until after it has been created,
+// which leads to a two-step process of creating the object and then calling bind to 
+// replace each of the methods for which a consitent this value is required.
