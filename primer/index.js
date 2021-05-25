@@ -1,37 +1,12 @@
-let hat = {
-    name: "Hat",
-    _price: 100,
-    priceIncTax: 100 * 1.2,
-
-    set price(newPrice) {
-        this._price = newPrice;
-        this.priceIncTax = this._price * 1.2;
-    },
-
-    get price() {
-        return this._price;
-    },
-// A method is a property whose value is a function, which means that all the features
-// and behaviours that functions provide, such as default and rest parameters can be used
-// for methods. Using Concise Methods Syntax.
-    writeDetails: () =>
-        console.log(`${this.name}: ${this.price}, ${this.priceIncTax}`)
-    
-};
-
-let boots = {
-    name: "Boots",
-    price: "100",
-
-    get priceIncTax() {
-        return Number(this.price) * 1.2;
-    }
+function writeMessage(message) {
+    console.log(`${this.greeting}, ${message}`);
 }
 
-hat.writeDetails();
-hat.price = 120;
-hat.writeDetails();
+greeting = "Hello";
 
-console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`);
-boots.price = 120;
-console.log(`Boots ${boots.price}, ${boots.priceIncTax}`);
+writeMessage("It is sunny today");
+
+// The writeMessage fn reads a prop named greeting from this.
+//Value assigned names  without using the let, const, or var keyword are assigned to
+// the global object. The statement that assigns the string value Hello creates a variable
+// in the global scope. call fn, this is assigned the global object.
