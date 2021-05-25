@@ -34,3 +34,6 @@ hat.writeDetails();
 console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`);
 boots.price = "120";
 console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`)
+
+//With these changes, the value of this for the writeDetails method will be its 
+// enclosing object regardless of how it is invoked.
