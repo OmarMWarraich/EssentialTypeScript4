@@ -8,15 +8,5 @@ let boots = {
     price: "100"
 }
 
-let gloves = {
-    productName: "Gloves",
-    price: "40"
-}
-
-gloves.name = gloves.productName;
-delete gloves.productName;
-gloves.price = 20;
-
-let propertyCheck = hat.price ?? 0;
-let objectAndPropertyCheck = hat ?.price ?? 0;
-console.log(`Checks: ${propertyCheck}, ${objectAndProperyCheck}`)
+let otherHat = { ...hat };
+console.log(`Spread: ${otherHat.name}, ${otherHat.price}`);
