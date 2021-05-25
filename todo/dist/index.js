@@ -10,8 +10,10 @@ let todos = [
 let collection = new todoCollection_1.TodoCollection("Adam", todos);
 console.clear();
 console.log(`${collection.userName}'s Todo List`);
-let newId = collection.addTodo("Go for run");
-let todoItem = collection.getTodoById(newId);
-// console.log(JSON.stringify(todoItem));
-todoItem.printDetails();
+// let newId: number = collection.addTodo("Go for run");
+// let todoItem: TodoItem = collection.getTodoById(newId);
+// // console.log(JSON.stringify(todoItem));
+// todoItem.printDetails();
 //collection.addTodo(todoItem);
+//Getting the Collection Items.
+collection.getTodoItems(true).forEach(item => item.printDetails());
