@@ -1,23 +1,32 @@
+//Arrow functions dont work in the same way as regular function w.r.t this. Arrow functions
+// dont have their own this value and inherit the closest value of this they can find when
+// thay are executed.
+
 let myObject = {
     greeting: "Hi, there",
 
-    writeMessage(message) {
-        console.log(`${this.greeting}, ${message}`)
-    }
-};
-
-myObject.writeMessage = myObject.writeMessage.bind(myObject);
+    getWriter() {
+        return (message) => 
+            console.log(`${this.greeting}, ${message}`);
+    }    
+}
 
 greeting = "Hello";
 
-myObject.writeMessage("It is sunny today");
+let writer = myObject.getWriter();
+writer("It is raining today.");
 
-let myFunction = myObject.writeMessage;
-myFunction("It is sunny today");
 
-// The bind method returns a new function that will have a persistent value for this when
-// it is invoked. The function returned by the bind method is used to replace the original
-// method, wnsuring consistency when the writeMessage is invoked. Using bind is awkward
-// because the reference to the object isn't available until after it has been created,
-// which leads to a two-step process of creating the object and then calling bind to 
-// replace each of the methods for which a consitent this value is required.
+let standAlone = myObject.getWriter;
+let standAloneWriter = standAlone();
+standAloneWriter("It is sunny today");
+
+// The getWriter method is invoked through myObject and means that the value of this will
+// be set to myObject. When the arrow function is invoked, it finds a value of this from 
+// getWriter function. The result is that when the getWriter method is invoked through myObject,
+// the value of this in the arrow function will be myObject, and the this.greeting expression
+// in the template string will be Hi, there.
+
+// The statements in the second set treat getWriter as a stand-alone function,, so this 
+// will be set to the global object. When the arrow function is invoked, the this.greeting
+// expression will be Hello.
