@@ -11,7 +11,9 @@ let hat = {
     get price() {
         return this._price;
     },
-
+// A method is a property whose value is a function, which means that all the features
+// and behaviours that functions provide, such as default and rest parameters can be used
+// for methods. Her emethod is defined using the function keyword.
     writeDetails: function() {
         console.log(`${this.name}: ${this.price}, ${this.priceIncTax}`);
     }
