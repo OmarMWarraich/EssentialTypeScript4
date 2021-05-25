@@ -1,18 +1,31 @@
 let hat = {
     name: "Hat",
-    price: 100
+    _price: 100,
+    priceIncTax: 100 * 1.2,
+
+    set price(newPrice) {
+        this._price = newPrice;
+        this.priceIncTax = this._price * 1.2;
+    },
+
+    get price() {
+        return this._price;
+    }
 };
 
 let boots = {
     name: "Boots",
-    price: "100"
+    price: "100",
+
+    get priceIncTax() {
+        return Number(this.price) * 1.2;
+    }
 }
 
-let additionalProperties = { ...hat, discounted: true };
-console.log(`Additional: ${JSON.stringify(additionalProperties)}`)
+console.log(`Hat: ${hat.price}, ${hat.priceIncTax}`);
+hat.price = 120;
+console.log(`Hat ${hat.price}, ${hat.priceIncTax}`);
 
-let replacedProperties = { ...hat, price: 10};
-console.log(`Replaced: ${JSON.stringify(replacedProperties)}`)
-
-let { price , ...someProperties } = hat;
-console.log(`Selected: ${JSON.stringify(someProperties)}`)
+console.log(`Boots: ${boots.price}, ${boots.priceIncTax}`);
+boots.price = 120;
+console.log(`Boots ${boots.price}, ${boots.priceIncTax}`);
