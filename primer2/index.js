@@ -1,6 +1,7 @@
-// Using inheritance in Classes
-// Classes can inherit features using the extends keyword and invoke the superclass
-// constructor and mwthods using the super keyword.
+// Define Static Methods
+
+// The static keyword is applied to create static methods that are accessed through the
+// class, rather than the object it creates.
 
 class Product {
     constructor(name, price) {
@@ -28,34 +29,14 @@ class TaxedProduct extends Product {
         let chainResult = super.toString();
         return `${chainResult}, Tax: ${this.getPriceIncTax()}`;
     }
+
+    static process(...products) {
+        products.forEach(p => console.log(p.toString()));
+    }
 }
 
-let hat = new TaxedProduct("Hat", 100);
-let boots = new TaxedProduct("Boots", 100, 1.3)
+TaxedProduct.process(new TaxedProduct("Hat", 100, 1.2),
+    new TaxedProduct("Boots", 100));
 
-
-console.log(hat.toString());
-console.log(boots.toString());
-
-// A class declares its superclass using the extends keyword. TaxedProduct class uses the
-// extend keyword to inherit from the Product class. The super keyword is used in the 
-// constructor to invoke the superclass constructor, which is equivalent to chaining
-// constructor functions.
-
-// constructor(name, price, taxRate = 1.2) {
-//     super(name, price);
-//     this.taxRate= taxRate;
-// }
-
-// The super keyword must be used before the this keyword and is generally used in the
-// first statement in the constructor. The super keyword can also be used to access 
-// superclass properties and methods like this.
-
-//toString() {
-//    let chainResult = super.toString();
-//    return `${chainResult}, Tax: ${this.getPriceIncTax()}`;
-//}
-
-// The toString method defined by the TaxedProduct class invoked the superclass's toString
-// method, which is equivalent to overriding prototype methods.
-
+// The static keyword is used on the process method defined by the TaxedProduct class
+// and is accessed as TaxedProduct.process.
