@@ -1,4 +1,4 @@
-import calcTax from './tax';
+import {calculateTax} from './tax';
 
 class Product {
     constructor(name, price) {
@@ -9,7 +9,7 @@ class Product {
 }
 
 let product = new Product("Hat", 100);
-let taxedPrice = calcTax(product.price);
+let taxedPrice = calculateTax(product.price);
 console.log(`Name: ${ product.name }, Taxed Price: ${taxedPrice}`);
 
 
