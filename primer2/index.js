@@ -1,7 +1,4 @@
-// Define Iterable Objects
-// Standalone functions for iterators and generators can be useful, but the most common
-// requirement is for an object to provide a sequence as part of some broader functionality.
-// Define an Object with a Sequence by grouping related data items.
+// Define a Default iterator Method
 
 class Product {
     constructor(name, price) {
@@ -27,7 +24,7 @@ class GiftPack {
             .reduce((total, p) => total + p.price, 0);
     }
 
-    *getGenerator() {
+    *[Symbol.iterator]() {
         yield this.prod1;
         yield this.prod2;
         yield this.prod3;
@@ -39,14 +36,8 @@ let winter = new GiftPack("winter", new Product("Hat", 100),
 
 console.log(`Total price: ${ winter.getTotalPrice() }`);
 
-[...winter.getGenerator()].forEach(p => console.log(`Product: ${ p }`));
+[...winter].forEach(p => console.log(`Product: ${ p }`));
 
-// The GiftPack class keeps track of a set of related products. One of the methods 
-// defined by GiftPack is named getGenerator and is a generator that yields the products.
-
-// This approach works but the syntax for using the iterator is a little awkward 
-// because the getGenerator method has to be explicitly called.
-
-// A more elegant approach is to use the special method name for the generator, which
-// tells the JS runtime that the method provides the default iteration support for an 
-// object.
+// The Symbol.iterator property is used to denote the default iterator for an object.
+// Using the Symbol.iterator value as the name for a generator allows the object to
+// be iterated directly.
