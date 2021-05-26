@@ -1,4 +1,4 @@
-// Using Implicitly Defined Static Types
+// Changing the Result Type
 
 function calculateTax(amount: number) {
     return (amount * 1.2).toFixed(2);
@@ -8,6 +8,6 @@ let price = 100;
 let taxAmount = calculateTax(price);
 let halfShare = taxAmount / 2;
 
-
+console.log(`Price: ${price}`);
 console.log(`Full Amount in tax: ${taxAmount}`);
 console.log(`Half Share: ${halfShare}`);
