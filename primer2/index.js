@@ -1,13 +1,9 @@
-// Using JavaScript Collections
+// Storing Data by Key Using a Map
 
-// Traditionally, collections of data in JS have been managed using objects and arrays,
-// where objects are used to store data by key, and arrays are used to store data by 
-// index. JS also provides dedicated collection objects that provide more structure.
+// Objects are easy to use as basic collections, but there are some limitations, such as 
+// being able to use only string values as keys. JS also provides Map, which is purpose-
+// built for storing data using keys of any type.
 
-// Storing Data by Key Using an Object
-
-// Objects can be used as collections, where each property is a key/value pair, with the
-// property name being the key.
 
 class Product {
     constructor(name, price) {
@@ -20,20 +16,23 @@ class Product {
     }
 }
 
-let data = {
-    hat: new Product("Hat", 100)
-}
+let data = new Map();
+data.set("hat", new Product("Hat", 100));
+data.set("boots", new Product("Boots",100));
 
+[...data.keys()].forEach(key => console.log(data.get(key).toString()));
 
-//An object named data is used to collect Product objects. New vals can be added to the 
-//collection by defining new properties like this.
-data.boots = new Product("Boots", 100);
+// The API provided by Map allows items to be stored and retrieved, and iterators 
+// are available for the keys and values.
 
+// Useful Map methods 
 
-//The Object.keys method is used to get an array containing the property names defined
-//by the data object and uses the array forEach method to get the corresponding value.
-//When a property name is assigned to a variable, the corresponding value can be
-//obtained using square brackets.
+//     Name                         Description
 
-Object.keys(data).forEach(key => console.log(data[key].toString()));
-
+// set(key, value)     This method stores a value with the specified key.
+// get(key)            This method retrieves the value stored with the specified key.
+// keys()              This method returns an iterator for the keys in the Map.
+// values()            This method returns an iterator for the values in the Map.
+// entries()           This method returns an iterator for the key/value pairs in the Map,
+//                     each of which is presented as an array containing the key and value.
+//                     This is the default iterator for Map objects.                       
