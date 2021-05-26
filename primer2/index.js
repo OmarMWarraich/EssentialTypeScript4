@@ -1,9 +1,7 @@
-// Using Symbols for Map Keys
+// Storing Data by Index
 
-// The main advantage of using Map is that any value can be used as a key, including 
-// Symbol values. Each Symbol value is unique and immutable and ideally suited as an
-// identifier for objects.
-
+// JS also provides Set, which stores data by index but has performance optimizations 
+// and --most usefully--stores only unique values.
 
 class Product {
     constructor(name, price) {
@@ -14,29 +12,22 @@ class Product {
 
 }
 
-class Supplier {
-    constructor(name, productids) {
-        this.name = name;
-        this.productids = productids;
-    }
+let product = new Product("Hat", 100);
+
+let productArray = [];
+let productSet = new Set();
+
+for (let i = 0; i < 5; i++) {
+    productArray.push(product);
+    productSet.add(product);
 }
 
-let acmeProducts = [new Product("Hat", 100), new Product("Boots", 100)];
-let zoomProducts = [new Product("Hat", 100), new Product("Boots", 100)];
+console.log(`Array length: ${productArray.length}`);
+console.log(`Set size: ${productSet.size}`);
 
-let products = new Map();
-[...acmeProducts, ...zoomProducts].forEach(p => products.set(p.id, p));
-let suppliers = new Map();
-suppliers.set("acme", new Supplier("Acme Co", acmeProducts.map(p => p.id)));
-suppliers.set("zoom", new Supplier("Zoom Shoes", zoomProducts.map(p => p.id)));
+// adds the same product object five times to an array and a Set and then prints how
+// many items each contains.
 
-suppliers.get("acme").productids.forEach(id => 
-        console.log(`Name: ${products.get(id).name}`));
-
-
-// The benefit of using Symbol values as keys is that there is no possibility of two keys
-// colliding, which can happen if keys are derived from the value's characterstics. 
-// Here, each Product object has an id property that is assigned a Symbol value in the 
-// constructor and that is used to store the object in the Map.
-// Using a Symbol allows to store objects that have identical name and price properties
-// retrievable without any difficulty.
+// For many projects, the need to allow or prevent duplicate values is the reason to 
+// choose between an array and a Set. The API provided by Set provides comparable
+// features to working with an array.
