@@ -1,9 +1,9 @@
-// Using Constructor Functions
+// Chaining Constructor Functions
 
-// A constructor function is used to create a new object, configure its properties, 
-// and assign its prototype, all of which is done in a single step with the new keyword.
-// Constructor functions can be used to ensure that objects are created consistently
-// and that the correct prototype is applied.
+// Using the setPrototypeOf method to create a chain of custom prototypes is easy, but
+// doing the same thing with constructor functions requires a little more work to ensure
+// that objects are configured correctly by the functions and get the right prototypes
+// in the chain.
 
 let Product = function(name, price) {
     this.name = name;
@@ -11,24 +11,42 @@ let Product = function(name, price) {
 }
 
 Product.prototype.toString = function() {
-    return `toString: Name: ${this.name}, Price: $[this.price]`;
+    return `toString: Name: ${this.name}, Price: ${this.price}`;
 }
 
-let hat = new Product("Hat", 100);
+let TaxedProduct = function(name, price, taxRate) {
+    Product.call(this, name, price);
+    this.taxRate = taxRate;
+}
+
+Object.setPrototypeOf(TaxedProduct.prototype, Product.prototype);
+
+TaxedProduct.prototype.getPriceIncTax = function() {
+    return Number(this.price) * this.taxRate;
+}
+
+TaxedProduct.prototype.toTaxString = function() {
+    return `${this.toString()}, Tax: ${this.getPriceIncTax()}`;
+}
+
+let hat = new TaxedProduct("Hat", 100, 1.2);
 let boots = new Product("Boots", 100);
 
-console.log(hat.toString());
+console.log(hat.toTaxString());
 console.log(boots.toString());
 
-// Constructor functions are invoked with the new keyword, followed by the function 
-// or its variable name and the arguments that will be used to configure the object.
+// 2 steps must be taken to arrange the constructors and their prototypes in a chain.
+// the first step is to use the call method to invoke the next constructor so that new
+// objects are created correctly. 
 
-// JS runtime creates a new object and uses it as the this value to invoke the constructor
-// function, providing the argument values as parameters. The constructor function can 
-// configure the object's own properties using this, which is set to the new Object.
+//Product.call(this, name, price);
 
-// The prototype for the new object is set to the object returned by the prototype property
-// of the constructor function. This leads to constructors being defined in two parts-the
-// function itself is used to configure the object's own properties, while the object
-// returned by the protoype property is used for the properties and methods that should
-// be shared by all the objects the constructor creates.
+// The call method allows the new object to be passed to the next constructor through
+// the this value. The second step is to link the prototypes together.
+
+// Object.setPrototypeOf(TaxedProduct.prototype, Product.prototype);
+
+// The args to the setPrototypeOf method are the objects returned by the constructor
+// function's prototype properties and not the functions themselves. Linking the prototypes
+// ensures that the JS runtime will follow the chain when it looks for properties that 
+// are not an object's own.
