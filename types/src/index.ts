@@ -1,18 +1,6 @@
-// Using Nullable Types
+// Expanding a Type Union
 
-// There is a hole in the TS static type sys: the JS null & undefined types.
-// The null type can only be assigned the null value and is used to
-// represent sth that doesnt exist or is invalid. The undefined value
-// can only be assigned the undefined value and is used when a 
-// variable has been defined but not yet assigned a value.
-
-// The problem is that, by default, TS treats null and undefined as
-// legal values for all types. The reason for this is convenience
-// because a lot of JS code that may be required for integration
-// into an application uses these values as part of its normal operation
-// but it does lead to inconsitencies in type checking.
-
-function calculateTax(amount: number, format: boolean): string | number {
+function calculateTax(amount: number, format: boolean): string | number | null {
     if (amount === 0) {
         return null;
     }
@@ -20,7 +8,7 @@ function calculateTax(amount: number, format: boolean): string | number {
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
 
-let taxValue: string | number = calculateTax(0, false);
+let taxValue: string | number | null = calculateTax(0, false);
 
 switch (typeof taxValue) {
     case "number":
@@ -30,13 +18,18 @@ switch (typeof taxValue) {
         console.log(`String Value: ${taxValue.charAt(0)}`);
         break;
     default: 
-        let value: never = taxValue;
-        console.log(`Unexpected type for value: ${value}`);
+        if (taxValue === null) {
+            console.log("Value is null");
+        } else {
+            console.log(typeof taxValue);
+            let value: never = taxValue;
+            console.log(`Unexpected type for value: ${value}`);
+        }        
 }
 
-let newResult: unknown = calculateTax(200, false);
-let myNumber: number = newResult as number;
-console.log(`Number value: ${myNumber.toFixed(2)}`);
-
-// Unlike the previous commit, the unknown value is really a number 
-// so the code doesnt generate a runtime error.
+// Expanding the type Union makes it obvious that null values may be
+// returned by the function, ensuring that code that uses the function
+// knows that string, number, or null values have to be dealt with. 
+// Using typeof on null values returns object, so guarding against 
+// null values is done using an explicit value check, which the 
+// TS compiler understands as a type guard.
