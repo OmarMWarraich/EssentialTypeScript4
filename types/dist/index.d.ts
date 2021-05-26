@@ -1,4 +1,4 @@
-declare function calculateTax(amount: number): string;
+declare function calculateTax(amount: any): any;
 declare let price: number;
-declare let taxAmount: string;
+declare let taxAmount: any;
 declare let halfShare: number;

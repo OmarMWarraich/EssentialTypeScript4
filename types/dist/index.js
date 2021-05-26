@@ -1,4 +1,4 @@
-// Changing the Result Type
+// Using the any Type
 function calculateTax(amount) {
     return (amount * 1.2).toFixed(2);
 }
