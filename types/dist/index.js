@@ -1,21 +1,23 @@
-// Using Implicitly Defined Any Types
-// The TS compiler will use any when it is assigning types
-// implicitly and cannot identify a more specific type to
-// use. This makes it easier to selectively apply TypeScript
-// in an existing JS project and can simplify working with 
-// 3rd party JS pkgs.
-function calculateTax(amount) {
-    return `$${(amount * 1.2).toFixed(2)}`;
+// Using Type Unions
+// At one end of the type safety spectrum is the any feature,
+// which allows complete freedom. At the other end of the 
+// spectrum are type annotations for single types, which narrows
+// the range of allowable values. Between these two extremes,
+// TS provides type unions, which specify a set of types.
+function calculateTax(amount, format) {
+    const calcAmount = amount * 1.2;
+    return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
-let price = 100;
-let taxAmount = calculateTax(price);
-let halfShare = taxAmount / 2;
-let personVal = calculateTax("Bob");
-console.log(`Price: ${price}`);
-console.log(`Full Amount in tax: ${taxAmount}`);
-console.log(`Half Share: ${halfShare}`);
-console.log(`Name: ${personVal}`);
-// The compiler will use an implicit any for the function 
-// parameter because it isnt able to determine a better type
-// to use, which is why no compiler error will be reported
-// when the function is invoked with a string argument.
+let taxNumber = calculateTax(100, false);
+let taxString = calculateTax(100, true);
+// The type returned by the calculateTax function is the
+// union of the string and number types which is defined using
+// the bar character between type names. The union can combine
+// as many types as needed.
+//Defining a Type Union
+// It is important to understand that a type union is handled 
+// as a type in its own right, whose features are the intersection
+// of the individual types. This means that the type of the 
+// taxNumber variable is string | number and not number even
+// though the calculateTax function returns a number when
+// the boolean argument is false. 
