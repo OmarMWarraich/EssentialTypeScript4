@@ -11,13 +11,19 @@ function calculateTax(amount: number, format: boolean): string | number {
 
 let taxNumber = calculateTax(100, false) as number;
 let taxString = calculateTax(100, true) as string;
-let taxBoolean = calculateTax(100, false) as boolean;
+let taxBoolean = calculateTax(100, false) as any as boolean;
 
 console.log(`Number Value: ${taxNumber.toFixed(2)}`);
 console.log(`String Value: ${taxString.charAt(0)}`);
 console.log(`Boolean Value: ${taxBoolean}`);
 
-// The type assertion tells the compiler to treat a string |
-// number value as a boolean. The compiler knows that boolean
-// is not one of the types in the union and produces the 
-// following error when the code is compiled.
+// The assertion can be forced and compiler's warning be 
+// overridden by first asserting to any and then the required
+// type. The compiler error refers to previous commit.
+
+// The additional step prevents the compiler from warning about
+// the change and treats the result from the function as a 
+// boolean value. However, as noted earlier, assertions only
+// affect the type checking process and do not perform type 
+// coercion, which can be seen in the results produced when the
+// code is compiled.
