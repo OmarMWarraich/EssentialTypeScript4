@@ -1,36 +1,34 @@
-// Creating Custom Prototypes
+// Using Constructor Functions
 
-// Create a prototype specifically for those objects that are known to have name and price properties, which
-// can be done using the Object.setPrototypeOf method.
+// A constructor function is used to create a new object, configure its properties, 
+// and assign its prototype, all of which is done in a single step with the new keyword.
+// Constructor functions can be used to ensure that objects are created consistently
+// and that the correct prototype is applied.
 
-let ProductProto = {
-    toString: function() {
-        return `toString: Name: ${this.name}, Price: ${this.price}`;
-    }
+let Product = function(name, price) {
+    this.name = name;
+    this.price = price;
 }
 
-let hat = {
-    name: "Hat",
-    price: 100,
-    getPriceIncTax() {
-        return Number(this.price) * 1.2;
-    }
-};
-
-let boots = {
-    name: "Boots",
-    price: 100,
-    getPriceIncTax() {
-        return Number(this.price) * 1.2;
-    }
+Product.prototype.toString = function() {
+    return `toString: Name: ${this.name}, Price: $[this.price]`;
 }
 
-Object.setPrototypeOf(hat, ProductProto);
-Object.setPrototypeOf(boots, ProductProto);
+let hat = new Product("Hat", 100);
+let boots = new Product("Boots", 100);
 
 console.log(hat.toString());
 console.log(boots.toString());
 
-// Prototypes can be defined just like any other object. In the listing, an object named Product Proto that 
-// defines a toString method is used as the prototype for the hat and boots objects. The ProductProto object
-// is just like any other object, and it means it also has a prototype which is Object.
+// Constructor functions are invoked with the new keyword, followed by the function 
+// or its variable name and the arguments that will be used to configure the object.
+
+// JS runtime creates a new object and uses it as the this value to invoke the constructor
+// function, providing the argument values as parameters. The constructor function can 
+// configure the object's own properties using this, which is set to the new Object.
+
+// The prototype for the new object is set to the object returned by the prototype property
+// of the constructor function. This leads to constructors being defined in two parts-the
+// function itself is used to configure the object's own properties, while the object
+// returned by the protoype property is used for the properties and methods that should
+// be shared by all the objects the constructor creates.
