@@ -1,9 +1,22 @@
-// Asserting an Unknown Value
+// Using Nullable Types
+// There is a hole in the TS static type sys: the JS null & undefined types.
+// The null type can only be assigned the null value and is used to
+// represent sth that doesnt exist or is invalid. The undefined value
+// can only be assigned the undefined value and is used when a 
+// variable has been defined but not yet assigned a value.
+// The problem is that, by default, TS treats null and undefined as
+// legal values for all types. The reason for this is convenience
+// because a lot of JS code that may be required for integration
+// into an application uses these values as part of its normal operation
+// but it does lead to inconsitencies in type checking.
 function calculateTax(amount, format) {
+    if (amount === 0) {
+        return null;
+    }
     const calcAmount = amount * 1.2;
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
-let taxValue = calculateTax(100, false);
+let taxValue = calculateTax(0, false);
 switch (typeof taxValue) {
     case "number":
         console.log(`Number Value: ${taxValue.toFixed(2)}`);
