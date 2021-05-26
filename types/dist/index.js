@@ -1,4 +1,12 @@
-// Expanding a Type Union
+// Removing null from a Union with an Assertion
+// Remember that unions present the intersection of the API of each
+// individual type. The null and undefined values don't present any 
+// properties or methods, which means that values for nullable type
+// unions can't be used directly, even if non-null types have an 
+// intersection of useful properties and methods. 
+// A non-null assertion tells the compiler that a value isnt null, 
+// which removes null from the type union and allows the intersection 
+// if the other types to be used.
 function calculateTax(amount, format) {
     if (amount === 0) {
         return null;
@@ -6,7 +14,7 @@ function calculateTax(amount, format) {
     const calcAmount = amount * 1.2;
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
-let taxValue = calculateTax(0, false);
+let taxValue = calculateTax(100, false);
 switch (typeof taxValue) {
     case "number":
         console.log(`Number Value: ${taxValue.toFixed(2)}`);
@@ -24,9 +32,8 @@ switch (typeof taxValue) {
             console.log(`Unexpected type for value: ${value}`);
         }
 }
-// Expanding the type Union makes it obvious that null values may be
-// returned by the function, ensuring that code that uses the function
-// knows that string, number, or null values have to be dealt with. 
-// Using typeof on null values returns object, so guarding against 
-// null values is done using an explicit value check, which the 
-// TS compiler understands as a type guard.
+// A non-null value is asserted by applying the ! character after 
+// value. The assertion in the listing tells the compiler that the
+// result from the calculateTax function will not be null, which
+// allows it to be assigned to the taxValue variable, whose type
+// is string | number.
