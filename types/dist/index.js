@@ -1,7 +1,4 @@
-// Removing null from a Union with a TypeGurad
-// An alternative approach is to filter out null or undefined values
-// using a type guard. 
-// This approach has the advantage of testing values at runtime.
+// Using the Definitive Assignment Assertion
 function calculateTax(amount, format) {
     if (amount === 0) {
         return null;
@@ -9,7 +6,8 @@ function calculateTax(amount, format) {
     const calcAmount = amount * 1.2;
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
-let taxValue = calculateTax(100, false);
+let taxValue;
+eval("taxValue = calculateTax(100, false)");
 if (taxValue !== null) {
     let nonNullTaxValue = taxValue;
     switch (typeof taxValue) {
@@ -24,7 +22,9 @@ if (taxValue !== null) {
 else {
     console.log("Value is not a string or a number");
 }
-// The compiler knows that the test for null values meants that the
-// value can be treated as the non-nullable string | number union
-// type with the if code block. (The compiler also knows that 
-// taxValue can be null only in the else code block.)
+// The definitive assessment assertion is a ! character, but it is
+// applied after the name when the variable is defined, unlike the 
+// non-null assertion that is applied in expressions. Just as with
+// the other assertions, you are responsible for ensuring that 
+// a value really is assigned. You may encounter a runtime error
+// if you use an assertion but don't perform an assignment. 
