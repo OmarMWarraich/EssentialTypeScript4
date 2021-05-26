@@ -5,6 +5,7 @@
     "rootDir": "./src",
     "noEmitOnError": true,
     // "lib": ["es5", "dom", "ES2015.Collection"]
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "sourceMap":true
   }
 }
