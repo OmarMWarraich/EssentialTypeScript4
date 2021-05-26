@@ -1,14 +1,13 @@
-// Inspecting and Modifying an Object's inheritance
-// Object is the prototype for most objects, but it also provides methods that are used directly, rather than
-// through inheritance, and that can be used to get information about prototypes.
+// Creating Custom Prototypes
 
-// Useful Object Methods
+// Create a prototype specifically for those objects that are known to have name and price properties, which
+// can be done using the Object.setPrototypeOf method.
 
-//               Name                                  Description
-
-//          getPrototypeOf                    This method returns an object's prototype.
-//          setPrototypeOf                    This method changes the prototye of an object.
-//          getOwnPropertyNames               This method returns the names of an object's own properties.
+let ProductProto = {
+    toString: function() {
+        return `toString: Name: ${this.name}, Price: ${this.price}`;
+    }
+}
 
 let hat = {
     name: "Hat",
@@ -26,9 +25,12 @@ let boots = {
     }
 }
 
-let hatPrototype = Object.getPrototypeOf(hat);
-hatPrototype.toString = function(){
-    return `toString: Name: ${this.name}, Price: ${this.price}`;
-}
+Object.setPrototypeOf(hat, ProductProto);
+Object.setPrototypeOf(boots, ProductProto);
+
 console.log(hat.toString());
 console.log(boots.toString());
+
+// Prototypes can be defined just like any other object. In the listing, an object named Product Proto that 
+// defines a toString method is used as the prototype for the hat and boots objects. The ProductProto object
+// is just like any other object, and it means it also has a prototype which is Object.
