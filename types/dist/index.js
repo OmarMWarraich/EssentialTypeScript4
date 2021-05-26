@@ -1,8 +1,7 @@
-// Understanding the Never Type
-// TS provides the never type for situations where a type guard 
-// has dealt with all of the possible types for a value. 
-// Once all the possible values have been handled, the compiler
-// will only allow a value to be assigned to the never type.
+// Using the Unkown Type
+// TS also provides the unknown type which is a safer alternative
+// to any. An unknown value can be assigned only any or itself
+// unless a type assertion or type guard is used. 
 function calculateTax(amount, format) {
     const calcAmount = amount * 1.2;
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
