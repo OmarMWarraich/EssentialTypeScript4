@@ -1,14 +1,8 @@
-// Removing null from a Union with an Assertion
+// Removing null from a Union with a TypeGurad
 
-// Remember that unions present the intersection of the API of each
-// individual type. The null and undefined values don't present any 
-// properties or methods, which means that values for nullable type
-// unions can't be used directly, even if non-null types have an 
-// intersection of useful properties and methods. 
-
-// A non-null assertion tells the compiler that a value isnt null, 
-// which removes null from the type union and allows the intersection 
-// if the other types to be used.
+// An alternative approach is to filter out null or undefined values
+// using a type guard. 
+// This approach has the advantage of testing values at runtime.
 
 function calculateTax(amount: number, format: boolean): string | number | null {
     if (amount === 0) {
@@ -18,8 +12,9 @@ function calculateTax(amount: number, format: boolean): string | number | null {
     return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
 }
 
-let taxValue: string | number = calculateTax(100, false)!;
-
+let taxValue: string | number | null = calculateTax(100, false)!;
+if (taxValue !== null) {
+    let nonNullTaxValue: string | number = taxValue;
 switch (typeof taxValue) {
     case "number":
         console.log(`Number Value: ${taxValue.toFixed(2)}`);
@@ -27,18 +22,12 @@ switch (typeof taxValue) {
     case "string":
         console.log(`String Value: ${taxValue.charAt(0)}`);
         break;
-    default: 
-        if (taxValue === null) {
-            console.log("Value is null");
-        } else {
-            console.log(typeof taxValue);
-            let value: never = taxValue;
-            console.log(`Unexpected type for value: ${value}`);
-        }        
+}
+} else {
+    console.log("Value is not a string or a number")
 }
 
-// A non-null value is asserted by applying the ! character after 
-// value. The assertion in the listing tells the compiler that the
-// result from the calculateTax function will not be null, which
-// allows it to be assigned to the taxValue variable, whose type
-// is string | number.
+// The compiler knows that the test for null values meants that the
+// value can be treated as the non-nullable string | number union
+// type with the if code block. (The compiler also knows that 
+// taxValue can be null only in the else code block.)
