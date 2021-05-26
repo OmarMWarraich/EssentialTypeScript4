@@ -1,16 +1,13 @@
-// Create a Static Type with a Type Annotation
-
-// TS static type feature makes type assumptions explicit & 
-// allows the compiler to report an error when different data
-// types are used. Static types are defined using type
-// annotations.
-
-// Using a Type Annotation
+// Apply Annotations to Variables
 
 function calculateTax(amount: number): number {
     return amount * 1.2;
 }
 
-console.log(`${12} = ${calculateTax(12)}`);
-console.log(`${"Hello"} = ${calculateTax("Hello")}`);
-console.log(`${true} = ${calculateTax(true)}`);
+let price: number = 100;
+let taxAmount: number = calculateTax(price);
+let halfShare: number = taxAmount / 2;
+
+
+console.log(`Full Amount in tax: ${taxAmount}`);
+console.log(`Half Share: ${halfShare}`);
