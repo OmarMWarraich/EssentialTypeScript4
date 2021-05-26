@@ -1,27 +1,24 @@
-// Define Static Properties and Methods
+// Using JavaScript Classes
 
-// Properties and methods that are defined on the constructor function are often referrred
-// to as static, meaning they are accessed through the constructor and not individual
-// objects created by that constructor(as opposed to instance properties, which are accessed
-// through an object). The Object.setPrototypeOf and Object.getPrototypeOf methods are
-// good examples of static methods.
+class Product {
+    constructor(name, price) {
+        this.name = name;
+        this.price = price;
+    }
 
-let Product = function(name, price) {
-    this.name = name;
-    this.price = price;
+    toString() {
+        return `toString: Name: ${this.name}, Price: ${this.price}`;
+    }
 }
 
-Product.prototype.toString = function() {
-    return `toString: Name: ${this.name}, Price: ${this.price}`;
-}
+let hat = new Product("Hat", 100);
+let boots = new Product("Boots", 100);
 
-Product.process = (...products) => 
-    products.forEach(p => console.log(p.toString()));
+console.log(hat.toString());
+console.log(boots.toString());
 
-Product.process(new Product("Hat", 100, 1.2), new Product("Boots", 100));
-
-// The static process method is degined by adding a new property to the Product function
-// object and assigning it a funcion. Remember that JS functions are objects, and 
-// properties can be freely added and removed from objects. The process method defines
-// a rest parameter and uses the forEach method to invoke the toString method for each 
-// object it recieves and writes the result to the console.
+// Classes are defined with the class keyword, followed by a name for the class. 
+// Objects are created from classed using the new keyword.
+// The JS runtime creates a new object and invokes the class constructor function,
+// which recieves the new object through the this value and which is responsible
+// for defining the object's own properties. 
