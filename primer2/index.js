@@ -1,38 +1,42 @@
-// Storing Data by Key Using a Map
+// Using Symbols for Map Keys
 
-// Objects are easy to use as basic collections, but there are some limitations, such as 
-// being able to use only string values as keys. JS also provides Map, which is purpose-
-// built for storing data using keys of any type.
+// The main advantage of using Map is that any value can be used as a key, including 
+// Symbol values. Each Symbol value is unique and immutable and ideally suited as an
+// identifier for objects.
 
 
 class Product {
     constructor(name, price) {
+        this.id = Symbol();
         this.name = name;
         this.price = price;
     }
 
-    toString() {
-        return `toString: Name: ${this.name}, Price: ${this.price}`;
+}
+
+class Supplier {
+    constructor(name, productids) {
+        this.name = name;
+        this.productids = productids;
     }
 }
 
-let data = new Map();
-data.set("hat", new Product("Hat", 100));
-data.set("boots", new Product("Boots",100));
+let acmeProducts = [new Product("Hat", 100), new Product("Boots", 100)];
+let zoomProducts = [new Product("Hat", 100), new Product("Boots", 100)];
 
-[...data.keys()].forEach(key => console.log(data.get(key).toString()));
+let products = new Map();
+[...acmeProducts, ...zoomProducts].forEach(p => products.set(p.id, p));
+let suppliers = new Map();
+suppliers.set("acme", new Supplier("Acme Co", acmeProducts.map(p => p.id)));
+suppliers.set("zoom", new Supplier("Zoom Shoes", zoomProducts.map(p => p.id)));
 
-// The API provided by Map allows items to be stored and retrieved, and iterators 
-// are available for the keys and values.
+suppliers.get("acme").productids.forEach(id => 
+        console.log(`Name: ${products.get(id).name}`));
 
-// Useful Map methods 
 
-//     Name                         Description
-
-// set(key, value)     This method stores a value with the specified key.
-// get(key)            This method retrieves the value stored with the specified key.
-// keys()              This method returns an iterator for the keys in the Map.
-// values()            This method returns an iterator for the values in the Map.
-// entries()           This method returns an iterator for the key/value pairs in the Map,
-//                     each of which is presented as an array containing the key and value.
-//                     This is the default iterator for Map objects.                       
+// The benefit of using Symbol values as keys is that there is no possibility of two keys
+// colliding, which can happen if keys are derived from the value's characterstics. 
+// Here, each Product object has an id property that is assigned a Symbol value in the 
+// constructor and that is used to store the object in the Map.
+// Using a Symbol allows to store objects that have identical name and price properties
+// retrievable without any difficulty.
