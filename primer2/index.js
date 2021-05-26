@@ -1,9 +1,7 @@
-// Chaining Constructor Functions
+// Checking Prototype Types
 
-// Using the setPrototypeOf method to create a chain of custom prototypes is easy, but
-// doing the same thing with constructor functions requires a little more work to ensure
-// that objects are configured correctly by the functions and get the right prototypes
-// in the chain.
+// The instanceof operator is used to determine whether a constructor's prototype is part
+// of the chain for a specific object.
 
 let Product = function(name, price) {
     this.name = name;
@@ -34,6 +32,15 @@ let boots = new Product("Boots", 100);
 
 console.log(hat.toTaxString());
 console.log(boots.toString());
+console.log(`hat and TaxedProduct: ${ hat instanceof TaxedProduct}`);
+console.log(`hat and Product: ${ hat instanceof Product}`);
+console.log(`boots and TaxedProduct: ${boots instanceof TaxedProduct}`);
+console.log(`boots and Product: ${ boots instanceof Product}`);
+
+// The new statements use instanceof to determine whether the prototypes of the 
+// TaxedProduct and Product constructor functions are in the chains of the hat 
+// and boots objects.
+
 
 // 2 steps must be taken to arrange the constructors and their prototypes in a chain.
 // the first step is to use the call method to invoke the next constructor so that new
