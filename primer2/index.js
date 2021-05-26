@@ -1,7 +1,10 @@
-// Define Static Methods
+// Using  an Iterator
 
-// The static keyword is applied to create static methods that are accessed through the
-// class, rather than the object it creates.
+// Iterators are objects that return a sequence of values. An iterator defines a function
+// named next that returns an object with value and done properties: the value property
+// returns the next value in the sequence, and the done property is set to true when the
+// sequence is complete.
+
 
 class Product {
     constructor(name, price) {
@@ -14,29 +17,43 @@ class Product {
     }
 }
 
-class TaxedProduct extends Product {
+function createProductIterator() {
+    const hat = new Product("Hat", 100);
+    const boots = new Product("Boots", 100);
+    const umbrella = new Product("Umbrella", 23);
 
-    constructor(name, price, taxRate = 1.2) {
-        super(name, price);
-        this.taxRate = taxRate;
-    }
+    let lastVal;
 
-    getPriceIncTax() {
-        return Number(this.price) * this.taxRate;
-    }
+    return {
+        next() {
+            switch (lastVal) {
+                case undefined:
+                    lastVal = hat;
+                    return { value: hat, done: false };
+                    case hat:
+                        lastVal = boots;
+                        return { value: boots, done: false };
+                    case boots:
+                        lastVal = umbrella;
+                        return { value: umbrella, done: false };
+                    case umbrella:
+                        return { value: undefined, done: true };
 
-    toString() {
-        let chainResult = super.toString();
-        return `${chainResult}, Tax: ${this.getPriceIncTax()}`;
-    }
-
-    static process(...products) {
-        products.forEach(p => console.log(p.toString()));
+            }
+        }
     }
 }
 
-TaxedProduct.process(new TaxedProduct("Hat", 100, 1.2),
-    new TaxedProduct("Boots", 100));
+let iterator = createProductIterator();
+let result = iterator.next();
+while (!result.done) {
+    console.log(result.value.toString());
+    result = iterator.next();
+}
 
-// The static keyword is used on the process method defined by the TaxedProduct class
-// and is accessed as TaxedProduct.process.
+// The createProductIterator function returns an object that defines a next function.
+// Each time the next method is called, a different Product object is returned, once 
+// the set of objects has been exhausted, an object whose done property is true is 
+// returned to indicate the end of the data.
+// A while loop is used to process the iterator data, calling next after each project
+// has been processed.
