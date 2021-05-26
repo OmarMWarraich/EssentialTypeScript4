@@ -1,4 +1,13 @@
-// Define a Default iterator Method
+// Using JavaScript Collections
+
+// Traditionally, collections of data in JS have been managed using objects and arrays,
+// where objects are used to store data by key, and arrays are used to store data by 
+// index. JS also provides dedicated collection objects that provide more structure.
+
+// Storing Data by Key Using an Object
+
+// Objects can be used as collections, where each property is a key/value pair, with the
+// property name being the key.
 
 class Product {
     constructor(name, price) {
@@ -11,33 +20,20 @@ class Product {
     }
 }
 
-class GiftPack {
-    constructor(name, prod1, prod2, prod3) {
-        this.name = name;
-        this.prod1 = prod1;
-        this.prod2 = prod2;
-        this.prod3 = prod3;
-    }
-
-    getTotalPrice() {
-        return [this.prod1, this.prod2, this.prod3]
-            .reduce((total, p) => total + p.price, 0);
-    }
-
-    *[Symbol.iterator]() {
-        yield this.prod1;
-        yield this.prod2;
-        yield this.prod3;
-    }
+let data = {
+    hat: new Product("Hat", 100)
 }
 
-let winter = new GiftPack("winter", new Product("Hat", 100),
-    new Product("Boots", 80), new Product("Gloves", 23));
 
-console.log(`Total price: ${ winter.getTotalPrice() }`);
+//An object named data is used to collect Product objects. New vals can be added to the 
+//collection by defining new properties like this.
+data.boots = new Product("Boots", 100);
 
-[...winter].forEach(p => console.log(`Product: ${ p }`));
 
-// The Symbol.iterator property is used to denote the default iterator for an object.
-// Using the Symbol.iterator value as the name for a generator allows the object to
-// be iterated directly.
+//The Object.keys method is used to get an array containing the property names defined
+//by the data object and uses the array forEach method to get the corresponding value.
+//When a property name is assigned to a variable, the corresponding value can be
+//obtained using square brackets.
+
+Object.keys(data).forEach(key => console.log(data[key].toString()));
+
