@@ -1,4 +1,4 @@
-// Changing the Function result
+// Assigning the any Type
 function calculateTax(amount) {
     return `$${(amount * 1.2).toFixed(2)}`;
 }
@@ -8,5 +8,11 @@ let halfShare = taxAmount / 2;
 console.log(`Price: ${price}`);
 console.log(`Full Amount in tax: ${taxAmount}`);
 console.log(`Half Share: ${halfShare}`);
-// The function's result cannot be parsed into a number value,
-// so the Half share output is NaN.
+let newResult = calculateTax(200);
+let myNumber = newResult;
+console.log(`Number value: ${myNumber.toFixed(2)}`);
+// The compiler trusts that the any value can be treated as a 
+// number, which means a type mismatch occurs at runtime. This 
+// any type allows full use of the JS type features, which can
+// be useful but yield unexpected results when types are 
+// coerced automatically at runtime.
