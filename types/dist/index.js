@@ -1,5 +1,5 @@
 "use strict";
-// Apply Annotations to Variables
+// Using Implicitly Defined Static Types
 function calculateTax(amount) {
     return amount * 1.2;
 }
