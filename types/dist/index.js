@@ -1,6 +1,5 @@
-// Mixing Value Types in a Literal Value Type
-// A literal value type can be made up of any combination of values
-// that can be expressed literally, including enums.
+// Using Overrides with Literal Value Types
+// Types overrides cal also be applied to literal value types.
 function calculatePrice(quantity, price) {
     return quantity * price;
 }
@@ -15,8 +14,8 @@ var City;
     City["Paris"] = "PAR";
     City["Chicago"] = "CHI";
 })(City || (City = {}));
-function getMixedValue() {
-    switch (getRandomValue()) {
+function getMixedValue(input) {
+    switch (input) {
         case 1:
             return 1;
         case 2:
@@ -24,12 +23,15 @@ function getMixedValue() {
         case 3:
             return true;
         case 4:
+        default:
             return City.London;
     }
 }
-console.log(`Value: ${getMixedValue()}`);
-// The getRandomValue function returns one of four values, which are
-// used by the getMixedValue function to produce its result. The 
-// getMixedValue function shows how a literal value type can combine 
-// values that would usually be considered separate types, using a 
-// number value, a string value, a boolean value, and an enum value.
+let first = getMixedValue(1);
+let second = getMixedValue(2);
+let third = getMixedValue(4);
+console.log(`${first}, ${second}, ${third}`);
+// Each mapping creates a relationship between parameters and result
+// parameters, which can be expressed as one or more values. The TS
+// compiler can follow the overloads to determine the types for the
+// first, second and third variables.
