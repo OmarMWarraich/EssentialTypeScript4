@@ -5,4 +5,3 @@ declare enum Product {
     Gloves = 1,
     Umbrella = 2
 }
-declare let products: [Product, number][];
