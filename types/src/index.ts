@@ -1,42 +1,43 @@
-// Dealing with Excess Properties
+// Using Shape Type Unions
 
-// TS compiler is good at inferring types, which means that type annotations can often
-// be omitted. However, sometimes, providing information about types to the compiler can
-// change its behavious.
+// Earlier we read type union feature allowing multiple types to be expressed together,
+// so that, for example, arrays or function parameters can accept multiple types. 
+// Type Unions are types in their own right and contain the properties that are defined
+// by all of their constituent types. This isnt a useful feature when dealing with 
+// primitive data types because there are few common properties, but it is a more useful
+// feature when dealing with objects.
 
-// Define Objects
+// Using a Type Union(Objects)
 
-enum Feature { Waterproof, Insulated }
 
 type Product = { 
+    id: number,
     name: string,
     price?: number, 
-    hasFeature?(Feature): boolean
 };
 
-let hat = { name: "Hat", price : 100 };
-let gloves = { name: "Gloves", price: 75 };
-let umbrella = { name: "Umbrella", price: 30, 
-        hasFeature: (feature) => feature === Feature.Waterproof };
+type Person = {
+    id: string,
+    name: string,
+    city: string
+};
 
-let mirrorShades = { name: "Sunglasses", price: 54, finish: "mirrored"};
-let darkShades: Product = { name: "Sunglasses", price: 54, finish: "flat"};
+let hat = {id: 1, name: "Hat", price : 100 };
+let gloves = {id: 2, name: "Gloves", price: 75 };
+let umbrella = {id: 3, name: "Umbrella", price: 30 };
+let bob = {id: "bsmith", name: "Bob", city: "London" };
 
-let products: Product[] = [hat, gloves, umbrella, mirrorShades, darkShades];
+let dataItems: (Product | Person)[] = [hat, gloves, umbrella, bob];
 
-products.forEach(prod => console.log(`${prod.name}: ${prod.price} `
-    + `${ prod.hasFeature ? prod.hasFeature(Feature.Waterproof) : "false" }`));
+dataItems.forEach(item => console.log(`ID: ${item.id}, Name: ${item.name}`));
 
-// The compiler treats the mirrorShades and darkShades objects differently, even though
-// they have the same shape. The compiler reports errors when object literals with type
-// annotations define additional properties, because this is likely to be a mistake. In 
-// the case of the example, the darkShades object has a Product type annotation. The
-// finish property isn't part of the Product shape and is known as an excess property,
-// which the compiler reports as an error. Excess properties do not cause errors when an
-// object is defined without a type annotation, which means the darkShades object can be
-// used as a Product.
+// The dataItems array above has been annotated with a union of the Product and Person
+// types. These types have two properties in common, id and name, which means these 
+// properties can be used when processing the array without having to narrow to a 
+// single type.
 
-// However, when the suppressExcessPropertyErrors setting is true, the compiler wont
-// report an error if an object literal defines properties that are not part of the 
-// type declared by the annotation. When the change to the configuration file is saved,
-// the code will be compiled and executed and produce the desired output.
+// These are the only properties  that can be accessedd because they are the only
+// properties shared by all types in the union. Any attempt to access the price property
+// defined by the Product type or the city property defined by the Person type will
+// produce an error because these properties are not part of the Product | Person union.
+
