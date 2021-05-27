@@ -1,8 +1,6 @@
-// Using Template Literal String Types
-// Literal String types can be used with the JS template string
-// feature to create template strings that only accept specific
-// values, which can be a concise way to express complex 
-// combinations of values. 
+// Use Type Aliases
+// To avoid repitition, TypeScript provides the type alias feature, which allows a 
+// custom type combination to be assigned a name and applied where it is needed.
 function calculatePrice(quantity, price) {
     return quantity * price;
 }
@@ -16,3 +14,10 @@ function getCityString(city) {
 }
 let str = getCityString("London");
 console.log(str);
+// Type aliases are defined using the type keyword, followed by a name for the alias, 
+// the equal sign and the type that will be aliased.
+// Defining a type alias.
+// The name assigned to the alias is used in place of the full type description. Using
+// a type alias allows a complex type or combination of types to be referred to more 
+// easily, but it doesnt change the way the TS compiler deals with the type, and the
+// alias can be used in type annotations or assertions as normal.
