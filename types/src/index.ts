@@ -1,13 +1,10 @@
-// Using Shape Type Unions
+// Understanding Union Property Types
 
-// Earlier we read type union feature allowing multiple types to be expressed together,
-// so that, for example, arrays or function parameters can accept multiple types. 
-// Type Unions are types in their own right and contain the properties that are defined
-// by all of their constituent types. This isnt a useful feature when dealing with 
-// primitive data types because there are few common properties, but it is a more useful
-// feature when dealing with objects.
+// When a union of shape types is created, the types of each common property are 
+// combined, also using a union. This effect can be more easily understood by creating
+// a type that is equivalent to the union.
 
-// Using a Type Union(Objects)
+// Creating an Equivalent Type-to the Union
 
 
 type Product = { 
@@ -22,22 +19,21 @@ type Person = {
     city: string
 };
 
+type UnionType = {
+    id: number | string,
+    name : string
+};
+
 let hat = {id: 1, name: "Hat", price : 100 };
 let gloves = {id: 2, name: "Gloves", price: 75 };
 let umbrella = {id: 3, name: "Umbrella", price: 30 };
 let bob = {id: "bsmith", name: "Bob", city: "London" };
 
-let dataItems: (Product | Person)[] = [hat, gloves, umbrella, bob];
+let dataItems: UnionType[] = [hat, gloves, umbrella, bob];
 
 dataItems.forEach(item => console.log(`ID: ${item.id}, Name: ${item.name}`));
 
-// The dataItems array above has been annotated with a union of the Product and Person
-// types. These types have two properties in common, id and name, which means these 
-// properties can be used when processing the array without having to narrow to a 
-// single type.
-
-// These are the only properties  that can be accessedd because they are the only
-// properties shared by all types in the union. Any attempt to access the price property
-// defined by the Product type or the city property defined by the Person type will
-// produce an error because these properties are not part of the Product | Person union.
-
+// The UnionType shows the effect of the union between the Product and Person types. The 
+// id property type is a number | string union because the id property in the Product type
+// is a number, but the id property in the Person type is a string. The name property in
+// both types is a string, so this is the type for the name property in the union.
