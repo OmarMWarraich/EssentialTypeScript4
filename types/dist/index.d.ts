@@ -1,2 +1,2 @@
-declare function calculateTax(amount: any, discount?: number, ...extraFees: any[]): any;
-declare let taxValue: any;
+declare function calculateTax(amount: any, discount?: number, ...extraFees: number[]): number;
+declare let taxValue: number;
