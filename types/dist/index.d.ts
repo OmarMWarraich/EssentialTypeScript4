@@ -1,2 +1,2 @@
-declare function calculateTax(amount: number, format: boolean): string | number | null;
-declare let taxValue: string | number | null;
+declare function calculateTax(amount: any): number;
+declare let taxValue: number;
