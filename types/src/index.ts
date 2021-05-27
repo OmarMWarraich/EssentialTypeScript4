@@ -1,4 +1,9 @@
-// Using Tuple Types
+// Using Tuples wit h Optional Elements
+
+// Tuples can contain optional elements, which are denoted by the
+// question mark(the ? character). The tuple is still fixed-length,
+// and the optional element will be undefined if no value has been
+// defined.
 
 function calculateTax(amount: number): number {
     return amount * 1.2;
@@ -8,19 +13,26 @@ function writePrice(product: string, price: number): void {
     console.log(`Price for ${product}: $${price.toFixed(2)}`);
 }
 
-let hat: [string, number] = ["Hat", 100];
-let gloves: [string, number] = ["Gloves", 75];
+let hat: [string, number, number?] = ["Hat", 100];
+let gloves: [string, number, number?] = ["Gloves", 75, 10];
 
-let products: [string, number][] = [["Hat", 100], ["Gloves", 75]];
-let tupleUnion: ([string, number] | boolean)[] = [true, false, hat, ...products];
-
-tupleUnion.forEach((elem: [string, number] | boolean) => {
-    if (elem instanceof Array) {
-        let [str, num] = elem;
-        console.log(`Name: ${str}`);
-        console.log(`Price: ${num.toFixed(2)}`);
-    } else if (typeof elem === "boolean") {
-        console.log(`Boolean Value: ${elem}`);
+[hat, gloves].forEach(tuple => {
+    let [name, price, taxRate] = tuple;
+    if (taxRate != undefined) {
+        price += price * (taxRate / 100);
     }
+    writePrice(name, price);
 });
 
+// A tuple can have multiple optional elements, but they must be the
+// last elements defined by the tuple type.
+
+// The type of the optional element is a union of the specified type
+// and undefined so that in the example, the type is number|undefined.
+
+// The value of the element will be undefined if no value has been 
+// provided, and it is the responsibility of the code that processes
+// the tuple to narrow the type to exclude undefined values.
+
+// Defining an optional element means that the TS compiler wont 
+// complain if there is no corressponding value.
