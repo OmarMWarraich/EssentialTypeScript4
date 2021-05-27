@@ -1,9 +1,9 @@
-// Using Tuples wit h Optional Elements
+// Defining Tuples with Rest Elements
 
-// Tuples can contain optional elements, which are denoted by the
-// question mark(the ? character). The tuple is still fixed-length,
-// and the optional element will be undefined if no value has been
-// defined.
+// Tuples can also contain a rest element, that can be used to match
+// multiple values of a given type. This feature provides a variable
+// -length tuple that lacks the rigidly defined structure of basic
+// tuples.
 
 function calculateTax(amount: number): number {
     return amount * 1.2;
@@ -13,26 +13,15 @@ function writePrice(product: string, price: number): void {
     console.log(`Price for ${product}: $${price.toFixed(2)}`);
 }
 
-let hat: [string, number, number?] = ["Hat", 100];
-let gloves: [string, number, number?] = ["Gloves", 75, 10];
+let hat: [string, number, number?, ...number[]] = ["Hat", 100, 10, 1.20, 3, 0.95];
+let gloves: [string, number, number?, ...number[]] = ["Gloves", 75, 10];
 
 [hat, gloves].forEach(tuple => {
-    let [name, price, taxRate] = tuple;
+    let [name, price, taxRate, ...coupons] = tuple;
     if (taxRate != undefined) {
         price += price * (taxRate / 100);
     }
+    coupons.forEach(c => price -= c);
     writePrice(name, price);
 });
 
-// A tuple can have multiple optional elements, but they must be the
-// last elements defined by the tuple type.
-
-// The type of the optional element is a union of the specified type
-// and undefined so that in the example, the type is number|undefined.
-
-// The value of the element will be undefined if no value has been 
-// provided, and it is the responsibility of the code that processes
-// the tuple to narrow the type to exclude undefined values.
-
-// Defining an optional element means that the TS compiler wont 
-// complain if there is no corressponding value.
