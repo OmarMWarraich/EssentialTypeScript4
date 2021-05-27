@@ -1,27 +1,29 @@
-// Overloading Function Types
-function calculateTax(amount) {
-    if (amount != null) {
-        return amount * 1.2;
+// Understanding Assert Functions
+// An assert function is one that evaluates an expresion condition
+// and typically throws an error if the result isnt true. 
+// Assert functions are sometimes used as type guards in pure JS,
+// where the static types of TS are not available.
+// The problem with assert functions is that the TS compiler
+// cannot infer the effect of the assert function on types.
+function check(expression) {
+    if (!expression) {
+        throw new Error("Expression is false");
     }
-    return null;
 }
-function writeValue(label, value) {
-    console.log(`${label}: ${value}`);
+function calculateTax(amount) {
+    check(typeof amount == "number");
+    return amount * 1.2;
 }
 let taxAmount = calculateTax(100);
-// if (typeof taxAmount === 'number') {
-writeValue("Tax value", taxAmount);
-// }
-// Each type overload defines a combination of types supported by
-// the function, describing a mapping between the parameters and the
-// result they produce.
-// The Type Overloads replace the function definition as the type
-// information used by the TypeScript compiler, which means that
-// only those combinations of types can be used. 
-// When the function is invoked, the compiler can determine the
-// result type based on the type of the arguments provided, 
-// allowing the taxAmount variable to be defined as a number and 
-// removing the need for the type guard to pass on the result to
-// the writeValue function. 
-// The compiler knows that taxAmount can only be a number and 
-// doesn't require the type to be narrowed.
+console.log(`Tax value: ${taxAmount}`);
+// The check function defines a boolean parameter and throws an 
+// error if it is false. This is the basic pattern of an assert
+// function.
+// The calculateTax function accepts a number | null argument
+// and uses the check function to narrow the type so that null
+// values cause errors and so number values are used to produce
+// a result.
+// The problem with this code is that the TypeScript compiler 
+// doesnt understand that the check function means that only 
+// number values will be processed. following error message.
+// TS2531: Object is possibly 'null'
