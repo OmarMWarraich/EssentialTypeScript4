@@ -1,13 +1,6 @@
-// Understanding Assert Functions
+// Denote an Assert Function
 
-// An assert function is one that evaluates an expresion condition
-// and typically throws an error if the result isnt true. 
-// Assert functions are sometimes used as type guards in pure JS,
-// where the static types of TS are not available.
-// The problem with assert functions is that the TS compiler
-// cannot infer the effect of the assert function on types.
-
-function check(expression: boolean) {
+function check(expression: boolean) : asserts expression {
     if (!expression) {
         throw new Error("Expression is false")
     }
@@ -23,17 +16,12 @@ function calculateTax(amount: number | null): number
 let taxAmount: number = calculateTax(100);
 console.log(`Tax value: ${taxAmount}`)
 
-// The check function defines a boolean parameter and throws an 
-// error if it is false. This is the basic pattern of an assert
-// function.
+// The assert keyword is used like a result type and is followed 
+// by the name of the parameter that the function asserts.
 
-// The calculateTax function accepts a number | null argument
-// and uses the check function to narrow the type so that null
-// values cause errors and so number values are used to produce
-// a result.
+// TS compiler can take the effect of the check function into account
+// and knows that the calculateTax function narrows the type of amount
+// parameter to exclude null values.
 
-// The problem with this code is that the TypeScript compiler 
-// doesnt understand that the check function means that only 
-// number values will be processed. following error message.
-
-// TS2531: Object is possibly 'null'
+// There is a variation for assert functions that operate on types
+// directly, rather than just evaluating an expression.
