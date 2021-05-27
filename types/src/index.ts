@@ -1,7 +1,8 @@
-// Using Inferred Typings for Arrays
+// Mixing Array Types
 
-// TS compiler is adept at inferring types automatically, and the
-// same example can be expressed without type annotations.
+// compiler infers array types using the values used to populate the
+// array when it is created. This can lead to type errors if the 
+// values used to populate an array are accidentally mixed.
 
 function calculateTax(amount: number): number {
     return amount * 1.2;
@@ -11,20 +12,15 @@ function writePrice(product: string, price: number): void {
     console.log(`Price for ${product}: $${price.toFixed(2)}`);
 }
 
-let prices = [100, 75, 42];
+let prices = [100, 75, 42, "20"];
 
-let names = ["Hat", "Gloves", "Umbrella"];
+let names = ["Hat", "Gloves", "Umbrella", "Sunglasses"];
 
 prices.forEach((price, index) => {
     writePrice(names[index], calculateTax(price));
 })
 
-// The compiler can determine the array types based on the set of
-// values that are assigned when the arrays are initialized and it
-// uses the inferred types to follow through to the forEach method.
-
-// The compiler is skilled at inferring types, but if you dont get
-// the results you expect, you can expect the files that the compiler
-// emits when the declaration option is eabled. This option generates
-// type declaration files, which are used to provide type information
-// when a package is used in another TS project.
+// The new value used to initialize the prie array causes the following
+// error when code is compiled. This
+// ts2345: Arg of type 'string' | 'number' not assignable to parameter
+// of type 'number'.
