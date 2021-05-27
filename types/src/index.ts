@@ -1,21 +1,17 @@
-// Narrowing Types Directly
+// Preparing for Chapter 9: Arrays, Tuples and Enums
 
-function checkNumber(val: any) : asserts val is number {
-    if (typeof val !== 'number') {
-        throw new Error("Not a number")
-    }
+function calculateTax(amount: number): number {
+    return amount * 1.2;
 }
 
-function calculateTax(amount: number | null): number
-    {
-        checkNumber(amount);
-        return amount * 1.2;
-    } 
+function writePrice(product: string, price: number): void {
+    console.log(`Price for ${product}: $${price.toFixed(2)}`);
+}
 
+let hatPrice = 100;
+let glovesPrice = 75;
+let umbrellaPrice = 42;
 
-let taxAmount: number = calculateTax(100);
-console.log(`Tax value: ${taxAmount}`)
-
-// The asserts keyword is followed by val is number, which tells 
-// the TS compiler that the effect of the checkNumber function is 
-// ensire that the val parameter is a number value.
+writePrice("Hat", calculateTax(hatPrice));
+writePrice("Gloves", calculateTax(glovesPrice));
+writePrice("Umbrella", calculateTax(umbrellaPrice));
