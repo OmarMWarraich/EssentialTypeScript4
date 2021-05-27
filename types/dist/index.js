@@ -1,10 +1,4 @@
-// Working with Arrays
-// JS arrays can contain any combination of types and have variable
-// length, which means that values can be added and removed
-// dynamically without the need to explicitly resize the array.
-// TS doesnt change the flexible size of arrays, but it does allow
-// the data types they contain to be restricted through the use of 
-// type annotations.
+// Performing Operations on Typed Arrays
 function calculateTax(amount) {
     return amount * 1.2;
 }
@@ -13,6 +7,10 @@ function writePrice(product, price) {
 }
 let prices = [100, 75, 42];
 let names = ["Hat", "Gloves", "Umbrella"];
-writePrice(names[0], calculateTax(prices[0]));
-writePrice(names[1], calculateTax(prices[1]));
-writePrice(names[2], calculateTax(prices[2]));
+prices.forEach((price, index) => {
+    writePrice(names[index], calculateTax(price));
+});
+// The first argument of the function passed to the forEach method
+// recieves a number value because that's the type of the array that
+// is being processed. TS will ensure that only operations that are
+// allowed for number values are performed by the function.
