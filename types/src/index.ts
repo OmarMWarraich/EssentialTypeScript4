@@ -1,14 +1,14 @@
-// Denote an Assert Function
+// Narrowing Types Directly
 
-function check(expression: boolean) : asserts expression {
-    if (!expression) {
-        throw new Error("Expression is false")
+function checkNumber(val: any) : asserts val is number {
+    if (typeof val !== 'number') {
+        throw new Error("Not a number")
     }
 }
 
 function calculateTax(amount: number | null): number
     {
-        check(typeof amount == "number");
+        checkNumber(amount);
         return amount * 1.2;
     } 
 
@@ -16,12 +16,6 @@ function calculateTax(amount: number | null): number
 let taxAmount: number = calculateTax(100);
 console.log(`Tax value: ${taxAmount}`)
 
-// The assert keyword is used like a result type and is followed 
-// by the name of the parameter that the function asserts.
-
-// TS compiler can take the effect of the check function into account
-// and knows that the calculateTax function narrows the type of amount
-// parameter to exclude null values.
-
-// There is a variation for assert functions that operate on types
-// directly, rather than just evaluating an expression.
+// The asserts keyword is followed by val is number, which tells 
+// the TS compiler that the effect of the checkNumber function is 
+// ensire that the val parameter is a number value.
