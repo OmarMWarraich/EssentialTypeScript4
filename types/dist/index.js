@@ -1,6 +1,8 @@
-// Using String Enums
-// The default implementation of enums represents each value with 
-// a number, but a compiler can also use string values for enums.
+// Undestanding the Type Guard Limitation
+// A related problem arises when using a type guard. Testing types
+// is done using the JS typeof keyword, and since enums are implemented
+// using JS number values, typeof cannot be used to distinguish between
+// number and enum values.
 function calculateTax(amount) {
     return amount * 1.2;
 }
@@ -18,16 +20,11 @@ var Product;
     Product[Product["Gloves"] = 20] = "Gloves";
     Product[Product["Umbrella"] = 31] = "Umbrella";
 })(Product || (Product = {}));
-let productValue = 0;
-let productName = Product[productValue];
-console.log(`Value: ${productValue}, Name: ${productName}`);
-var City;
-(function (City) {
-    City["London"] = "London";
-    City["Paris"] = "Paris";
-    City["NY"] = "NewYork";
-})(City || (City = {}));
-console.log(`City: ${City.London}`);
-// A string values must be provided for every enum value name, but 
-// the advantage of using string values is that they are easier to
-// recognize during debugging or in log files.
+let productValue = Product.Hat;
+if (typeof productValue === "number") {
+    console.log("Value is a number");
+}
+let unionValue = Product.Hat;
+if (typeof unionValue === "number") {
+    console.log("Value is a number");
+}

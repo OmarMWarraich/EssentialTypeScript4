@@ -10,9 +10,4 @@ declare enum Product {
     Umbrella = 31
 }
 declare let productValue: Product;
-declare let productName: string;
-declare enum City {
-    London = "London",
-    Paris = "Paris",
-    NY = "NewYork"
-}
+declare let unionValue: number | Product;
