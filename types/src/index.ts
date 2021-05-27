@@ -1,25 +1,28 @@
-// Defining Void Functions
+// Overloading Function Types
 
-// Functions that do not produce results are declared using the
-// void type.
+// Type Unions make it possible to define a range of types for
+// function parameters and results, but they don't allow the
+// relationship between them to be expressed accurately.
 
-function calculateTax(amount: number , discount: number = 0, ...extraFees:number[]): number 
+function calculateTax(amount: number | null): number | null
     {
-    return (amount * 1.2) - (discount)
-        + extraFees.reduce((total, val) => total + val, 0);
+        if (amount != null) {
+            return amount * 1.2;
+        }
+        return null;
     } 
 
 function writeValue(label: string, value: number): void {
     console.log(`${label}: ${value}`);
 }
 
-writeValue("Tax value", calculateTax(100, 0));
+let taxAmount: number | null = calculateTax(100);
+if (typeof taxAmount === 'number') {
+    writeValue("Tax value", taxAmount);
+}
 
-// The writeValue function doesn't return a result and has been
-// annotated with the void type. Using void ensure that the
-// compiler will warn you if the result keyword is used or if the
-// function is used to assign a value.
-
-
-
-
+// The type annotation describes the types that the calculateTax
+// function will accept, telling users that the function will 
+// accept either a number or null and will return a number or null.
+// The information provided by the type unions is correct but does
+// not fully describe the situation. 
