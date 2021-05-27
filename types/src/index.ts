@@ -1,4 +1,4 @@
-// Performing Operations on Typed Arrays
+// The Array Syntax
 
 
 function calculateTax(amount: number): number {
@@ -9,14 +9,13 @@ function writePrice(product: string, price: number): void {
     console.log(`Price for ${product}: $${price.toFixed(2)}`);
 }
 
-let prices: number[] = [100, 75, 42];
+// let prices: number[] = [100, 75, 42];
+// is equivalent to the following code: 
+let prices:Array<number> = [100, 75, 42];
 let names: string[] = ["Hat", "Gloves", "Umbrella"];
 
 prices.forEach((price: number, index: number) => {
     writePrice(names[index], calculateTax(price));
 })
 
-// The first argument of the function passed to the forEach method
-// recieves a number value because that's the type of the array that
-// is being processed. TS will ensure that only operations that are
-// allowed for number values are performed by the function.
+// The problem with this syntax is that it cant be used in TSX.
