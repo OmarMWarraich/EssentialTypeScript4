@@ -1,17 +1,15 @@
-// Use Type Annotations for Function Results
-// The compiler infers a function result type by analyzing the code
-// paths and creating a union of the types it encounters. 
-// Annotations for function results appear at the end of the 
-// function signature.
+// Defining Void Functions
+// Functions that do not produce results are declared using the
+// void type.
 function calculateTax(amount, discount = 0, ...extraFees) {
-    {
-        return (amount * 1.2) - (discount)
-            + extraFees.reduce((total, val) => total + val, 0);
-    }
+    return (amount * 1.2) - (discount)
+        + extraFees.reduce((total, val) => total + val, 0);
 }
-let taxValue = calculateTax(100, 0);
-console.log(`Tax value: ${taxValue}`);
-// set result type to number and null type from the amount parameter
-// removed. Ecplicit declaration of type means the compiler will 
-// report an error if by any chance a different type from the 
-// function is returned.
+function writeValue(label, value) {
+    console.log(`${label}: ${value}`);
+}
+writeValue("Tax value", calculateTax(100, 0));
+// The writeValue function doesn't return a result and has been
+// annotated with the void type. Using void ensure that the
+// compiler will warn you if the result keyword is used or if the
+// function is used to assign a value.
