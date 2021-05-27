@@ -11,4 +11,5 @@ declare let umbrella: {
 };
 declare let products: {
     name: string;
+    price: number;
 }[];

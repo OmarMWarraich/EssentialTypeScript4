@@ -1,4 +1,4 @@
-// Adding an Object
+// Using Shape Type Annotation
 let hat = { name: "Hat", price: 100 };
 let gloves = { name: "Gloves", price: 75 };
 let umbrella = { name: "Umbrella" };
