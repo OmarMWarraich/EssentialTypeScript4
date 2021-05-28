@@ -12,3 +12,5 @@ declare type Employee = {
 };
 declare type EmployedPerson = Person & Employee;
 declare let typeTest: never;
+declare let person1: EmployedPerson;
+declare let person2: EmployedPerson;
