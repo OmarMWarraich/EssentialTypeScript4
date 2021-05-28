@@ -1,4 +1,4 @@
-// Using Classes
+// Using the Access Control Keywords
 class Employee {
     constructor(id, name, dept, city) {
         this.id = id;
@@ -12,6 +12,7 @@ class Employee {
 }
 ;
 let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
+console.log(`Dept value: ${salesEmployee.dept}`);
 let data = [{ id: "bsmith", name: "Bob Smith", city: "London" },
     { id: "ajones", name: "Alice Jones", city: "Paris" },
     { id: "dpeters", name: "Dora Peters", city: "New York" },
@@ -24,11 +25,9 @@ data.forEach(item => {
         console.log(`${item.id} ${item.name}, ${item.city}`);
     }
 });
-// Syntax for a TS class requires the declaration of instance properties and their types.
-// This leads to more verbose classes-with the advantage of allowing the constructor
-// parameter types to be different from the types of the instance properties to which they
-// are assigned. Objects are created from classes using the standard new keyword and the
-// compiler understands the use of the instanceof keyword for type narrowing when classes
-// are used.
-// The compiler generates standard classes that depend on the JS constructor function and
-// prototype features at runtime. 
+// The effect of the private keyword is to restrict access to within the Employee class,
+// and the compiler generates the following error for the statement that attempts to 
+// read the value of the dept property from outside the class.
+// error TS2341: pvt and only accessible within class.
+// The only way that the dept prop be accessed is thru the writeDept method a part of 
+// Employee class allowed by the pvt keyword.
