@@ -4,9 +4,9 @@ declare type Person = {
     city: string;
 };
 declare class Employee {
+    #private;
     id: string;
     name: string;
-    private dept;
     city: string;
     constructor(id: string, name: string, dept: string, city: string);
     writeDept(): void;

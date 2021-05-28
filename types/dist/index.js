@@ -1,15 +1,31 @@
-// Using the Access Control Keywords
+// Using JavaScript Private Fields
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _dept;
 class Employee {
     constructor(id, name, dept, city) {
+        _dept.set(this, void 0);
         this.id = id;
         this.name = name;
-        this.dept = dept;
+        __classPrivateFieldSet(this, _dept, dept);
         this.city = city;
     }
     writeDept() {
-        console.log(`${this.name} works in ${this.dept}`);
+        console.log(`${this.name} works in ${__classPrivateFieldGet(this, _dept)}`);
     }
 }
+_dept = new WeakMap();
 ;
 let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
 salesEmployee.writeDept();
@@ -25,9 +41,8 @@ data.forEach(item => {
         console.log(`${item.id} ${item.name}, ${item.city}`);
     }
 });
-// The effect of the private keyword is to restrict access to within the Employee class,
-// and the compiler generates the following error for the statement that attempts to 
-// read the value of the dept property from outside the class.
-// error TS2341: pvt and only accessible within class.
-// The only way that the dept prop be accessed is thru the writeDept method a part of 
-// Employee class allowed by the pvt keyword.
+// Private Fields are denoted with the # character.
+// # advantage over keyword private is that the # character is not removed during the
+// compilation process, which means that access control is enforced by JS runtime.
+// Like most JS features, the private keyword is not included in the JS code produced
+// by the compiler, which means that access control is not enforced in the JS code.

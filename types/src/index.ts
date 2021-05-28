@@ -1,21 +1,10 @@
-// Using the Access Control Keywords
+// Using JavaScript Private Fields
 
-// Js doesnt provide access controls which means that all of an object's instance
-// properties are accessible, such that classes-or the objects created from them-can be
-// easily changed or depndencies created on impementation features. In pure JS, property
-// naming conventions are used to indicate which properties are not to be used, but TS
-// goes further and supports keywords that can be used to manage access to class properties.
+// TS supports a JS feature working its way through the standardization process and that
+// is likely to be added to the language specification. This feature is support for pvt
+// fields which provides an alternatve to the private keyword however private is recommended.
 
-// The TypeScript Access Control Keywords
-
-// public --- Free access to a property or method and is the default if no keyword used.
-
-// private -- Restricts access to the class that defines the prop or meth its applied to.
-
-// protected-rstcts aces 2da clas definng peop or meth its aplyd 2 & its subclasses.
-
-// Although TS treats props as public by default when there is no keyword, however, the
-// public keyword can be explicitly applied for easy understanding.
+// Using a Private Field
 
 type Person = {
     id: string,
@@ -26,18 +15,18 @@ type Person = {
 class Employee {
     public id: string;
     public name: string;
-    private dept: string; 
+    #dept: string; 
     public city: string;
     
     constructor(id: string, name: string, dept: string, city: string) {
         this.id = id;
         this.name = name;
-        this.dept = dept;
+        this.#dept = dept;
         this.city = city;
     }
 
     writeDept() {
-        console.log(`${this.name} works in ${this.dept}`);
+        console.log(`${this.name} works in ${this.#dept}`);
     }
 };
 
@@ -59,10 +48,9 @@ data.forEach(item => {
     }
 });
 
-// The effect of the private keyword is to restrict access to within the Employee class,
-// and the compiler generates the following error for the statement that attempts to 
-// read the value of the dept property from outside the class.
-// error TS2341: pvt and only accessible within class.
+// Private Fields are denoted with the # character.
 
-// The only way that the dept prop be accessed is thru the writeDept method a part of 
-// Employee class allowed by the pvt keyword.
+// # advantage over keyword private is that the # character is not removed during the
+// compilation process, which means that access control is enforced by JS runtime.
+// Like most JS features, the private keyword is not included in the JS code produced
+// by the compiler, which means that access control is not enforced in the JS code.
