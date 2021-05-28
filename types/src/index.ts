@@ -1,9 +1,16 @@
-// Using Different Type Arguments
+// Constraining Generic Type Values
 
-// The value of a generic type parameter affects only a single object, and a differnt
-// type can be used for the generic type argument for each use of the new keyword,
-// producing a DataCollection<T> object that works with a different type.
+// Earlier getNames method commented out. By default any type can be used for a generic
+// type argument, so the compiler treats generic types as any by default, meaning it
+// wont let me access the name property on which the getNames method depends without 
+// some kind of type narrowing.
 
+// TypeNarrowing could be done within the getNames method. Better still to restrict the
+// range of types that can be used as the value for the generic type parameter so that
+// the class be instantiated only with types that define the features on which the
+// generic class relies.
+
+// Restricting Generic Types
 
 import { Person, Product } from './dataTypes';
 
@@ -13,7 +20,7 @@ let products = [new Product("Running Shoes", 100), new Product("Hat", 25)];
 
 // type dataType = Person | Product;
 
-class DataCollection<T> {
+class DataCollection<T extends (Person | Product)> {
 
     private items: T[] = [];
 
@@ -25,9 +32,9 @@ class DataCollection<T> {
         this.items.push(newItem);
     }
 
-    // getNames(): string[] {
-    //     return this.items.map(item => item.name);
-    // }
+    getNames(): string[] {
+        return this.items.map(item => item.name);
+    }
 
     getItem(index: number): T {
         return this.items[index];
@@ -36,16 +43,18 @@ class DataCollection<T> {
 
 let peopleData = new DataCollection<Person>(people);
 
-//console.log(`Names: ${peopleData.getNames().join(', ')}`);
+console.log(`Person Names: ${peopleData.getNames().join(', ')}`);
 let firstPerson = peopleData.getItem(0);
 //if (firstPerson instanceof Person) {
 console.log(`First Person: ${firstPerson.name}, ${firstPerson.city}`);
 //}
 
 let productData = new DataCollection<Product>(products);
+console.log(`Product Names: ${productData.getNames().join(', ')}`);
 let firstProduct = productData.getItem(0);
 console.log(`First Product: ${firstProduct.name}, ${firstProduct.price}`);
 
-// The new statements create a DataCollection<Product> object by using Product for the
-// generic type argument. TS keeps track of specific object types and ensures typicity.
 
+// The extends keyword is used after the type parameter name to specify a constraint.
+
+// A generic type parameter restriction
