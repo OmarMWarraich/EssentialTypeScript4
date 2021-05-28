@@ -1,10 +1,7 @@
-// Using JavaScript Private Fields
+// Defining Readonly Properties
 
-// TS supports a JS feature working its way through the standardization process and that
-// is likely to be added to the language specification. This feature is support for pvt
-// fields which provides an alternatve to the private keyword however private is recommended.
-
-// Using a Private Field
+// The Readonly keyword can be used to create instance properties whose value is assigned
+// by the constructor but cannot otherwise be changed.
 
 type Person = {
     id: string,
@@ -13,7 +10,7 @@ type Person = {
 };
 
 class Employee {
-    public id: string;
+    public readonly id: string;
     public name: string;
     #dept: string; 
     public city: string;
@@ -32,6 +29,7 @@ class Employee {
 
 let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
 salesEmployee.writeDept();
+salesEmployee.id = "fidel"
 
 let data: (Person | Employee )[] = 
     [{id: "bsmith", name: "Bob Smith", city: "London"},
@@ -48,9 +46,10 @@ data.forEach(item => {
     }
 });
 
-// Private Fields are denoted with the # character.
+// The readonly keyword must come after the access control keyword if one has been used.
 
-// # advantage over keyword private is that the # character is not removed during the
-// compilation process, which means that access control is enforced by JS runtime.
-// Like most JS features, the private keyword is not included in the JS code produced
-// by the compiler, which means that access control is not enforced in the JS code.
+// The application of the readonly keyword to the id property means the value assigned by
+// the constructor cannot be changed subsequently. The statement that attempts to assign 
+// a new value to the id property causes the following compiler errors:
+
+// error TS2540: Cant assign to id coz its readonly

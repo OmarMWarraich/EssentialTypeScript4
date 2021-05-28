@@ -1,34 +1,20 @@
-// Using JavaScript Private Fields
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
-var _dept;
+// Defining Readonly Properties
 class Employee {
     constructor(id, name, dept, city) {
-        _dept.set(this, void 0);
         this.id = id;
         this.name = name;
-        __classPrivateFieldSet(this, _dept, dept);
+        this.#dept = dept;
         this.city = city;
     }
+    #dept;
     writeDept() {
-        console.log(`${this.name} works in ${__classPrivateFieldGet(this, _dept)}`);
+        console.log(`${this.name} works in ${this.#dept}`);
     }
 }
-_dept = new WeakMap();
 ;
 let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
 salesEmployee.writeDept();
+salesEmployee.id = "fidel";
 let data = [{ id: "bsmith", name: "Bob Smith", city: "London" },
     { id: "ajones", name: "Alice Jones", city: "Paris" },
     { id: "dpeters", name: "Dora Peters", city: "New York" },
@@ -41,8 +27,8 @@ data.forEach(item => {
         console.log(`${item.id} ${item.name}, ${item.city}`);
     }
 });
-// Private Fields are denoted with the # character.
-// # advantage over keyword private is that the # character is not removed during the
-// compilation process, which means that access control is enforced by JS runtime.
-// Like most JS features, the private keyword is not included in the JS code produced
-// by the compiler, which means that access control is not enforced in the JS code.
+// The readonly keyword must come after the access control keyword if one has been used.
+// The application of the readonly keyword to the id property means the value assigned by
+// the constructor cannot be changed subsequently. The statement that attempts to assign 
+// a new value to the id property causes the following compiler errors:
+// error TS2540: Cant assign to id coz its readonly

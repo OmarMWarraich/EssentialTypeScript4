@@ -5,7 +5,7 @@ declare type Person = {
 };
 declare class Employee {
     #private;
-    id: string;
+    readonly id: string;
     name: string;
     city: string;
     constructor(id: string, name: string, dept: string, city: string);
