@@ -1,11 +1,10 @@
-// Understanding Union Property Types
+// Using Type Guards for Objects
 
-// When a union of shape types is created, the types of each common property are 
-// combined, also using a union. This effect can be more easily understood by creating
-// a type that is equivalent to the union.
+// The typeof keyword is a standard JS feature that the TS compiler recognizes and uses
+// during the type checking process. But the typeof keyword cannot be used with objects
+// because it will always return the same result.
 
-// Creating an Equivalent Type-to the Union
-
+// Type Guarding
 
 type Product = { 
     id: number,
@@ -19,21 +18,19 @@ type Person = {
     city: string
 };
 
-type UnionType = {
-    id: number | string,
-    name : string
-};
-
 let hat = {id: 1, name: "Hat", price : 100 };
 let gloves = {id: 2, name: "Gloves", price: 75 };
 let umbrella = {id: 3, name: "Umbrella", price: 30 };
 let bob = {id: "bsmith", name: "Bob", city: "London" };
 
-let dataItems: UnionType[] = [hat, gloves, umbrella, bob];
+let dataItems: (Product | Person )[] = [hat, gloves, umbrella, bob];
 
-dataItems.forEach(item => console.log(`ID: ${item.id}, Name: ${item.name}`));
+dataItems.forEach(item => console.log(`ID: ${item.id}, Type: ${typeof item}`));
 
-// The UnionType shows the effect of the union between the Product and Person types. The 
-// id property type is a number | string union because the id property in the Product type
-// is a number, but the id property in the Person type is a string. The name property in
-// both types is a string, so this is the type for the name property in the union.
+// This listing resets the type of the array to be a union of the Product and Person
+// types and used the typeof keyword in the forEach function to determine the type of
+// each item in the array producing the desired result.
+
+// The shape type feature is provided entirely by TS, and all objects have the type
+// object as far as JS is concerned, with the result that the typeof keyword isn't useful
+// for determining whether an object conforms to the Product and Person shapes.
