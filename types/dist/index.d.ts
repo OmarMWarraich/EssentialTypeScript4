@@ -1,22 +1,21 @@
 interface Person {
     name: string;
     getDetails(): string;
-    dogName?: string;
-    getDogDetails?(): string;
 }
-declare abstract class AbstractDogOwner implements Person {
-    abstract name: string;
-    abstract dogName?: string;
-    abstract getDetails(): any;
-    getDogDetails(): string;
-}
-declare class DogOwningCustomer extends AbstractDogOwner {
-    readonly id: string;
+interface Product {
     name: string;
-    city: string;
-    creditLimit: number;
-    dogName: any;
-    constructor(id: string, name: string, city: string, creditLimit: number, dogName: any);
+    price: number;
+}
+declare class Employee implements Person {
+    name: string;
+    company: string;
+    constructor(name: string, company: string);
     getDetails(): string;
 }
-declare let alice: DogOwningCustomer;
+declare class SportsProduct implements Product {
+    name: string;
+    category: string;
+    price: number;
+    constructor(name: string, category: string, price: number);
+}
+declare let data: (Person | Product)[];
