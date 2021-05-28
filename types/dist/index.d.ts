@@ -12,4 +12,18 @@ declare class Employee extends Person {
     constructor(id: string, name: string, dept: string, city: string);
     writeDept(): void;
 }
-declare let data: Person[];
+declare class Customer extends Person {
+    readonly id: string;
+    name: string;
+    city: string;
+    creditLimit: number;
+    constructor(id: string, name: string, city: string, creditLimit: number);
+}
+declare class Supplier extends Person {
+    readonly id: string;
+    name: string;
+    city: string;
+    companyName: string;
+    constructor(id: string, name: string, city: string, companyName: string);
+}
+declare let data: (Employee | Customer)[];

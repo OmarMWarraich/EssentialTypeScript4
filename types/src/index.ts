@@ -1,10 +1,4 @@
-// Using Class Inheritance
-
-// TS builds on the standard class inheritance features to make them more consistent and
-// familiar, with some useful additions for commonly required tasks and for restricting
-// some of the JS characterstics that can cause problems. 
-
-// Adding A Class
+// Using Objects with a common Superclass
 
 class Person {
     constructor(public id: string, public name: string, public city: string) {}
@@ -20,15 +14,34 @@ class Employee extends Person {
     }
 }
 
-let data = [new Person("bsmith", "Bob Smith", "London"),
-    new Employee("fvega", "Fidel Vega", "Sales", "Paris")];
+class Customer extends Person {
+    constructor(public readonly id: string, public name: string, 
+        public city: string, public creditLimit: number) {
+            super(id, name, city);
+        }
+    }
+
+class Supplier extends Person {
+    constructor(public readonly id: string, public name: string, 
+        public city: string, public companyName: string) {
+            super(id, name, city);
+        }
+    }
+
+let data = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"),
+        new Customer("ajones", "Alice Jones", "London", 500)];
+
+data.push(new Supplier("dpeters", "Dora Peters", "New York", "Acme"));
 
 data.forEach(item => {
     console.log(`Person: ${item.name}, ${item.city}`);
     if (item instanceof Employee) {
         item.writeDept();
-    }
+    } else if (item instanceof Customer) {
+        console.log(`Customer ${item.name} has ${item.creditLimit} limit`);
+    } else if (item instanceof Supplier) {
+        console.log(`supplier ${item.name} works for ${item.companyName} limit`);}
 });
 
-// When using the extends keyword, TS require that the superclass contructor is invoked
-// using the super keyword, ensuring that its properties are initialized.
+// wont compile coz TS compiler gas inferred the type for the data array based on the 
+// types of objects it contains.
