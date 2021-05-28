@@ -1,10 +1,10 @@
-// Fixing the Generic Type Parameter
+// Restricting the Generic Type Parameter
 
-// Some classes need to define functionality that is only available using a subset of the
-// types that are supported by the superclass. In these situations, a subclass can use a 
-// fixed type for the superclass's type parameter, such that the subclass isnt a generic.
+// The third approach strikes a balnce between the earlier two commits, providing a generic
+// type variable but restricting it to specific types. This allows functionality that can 
+// depend on features of particular classes without fixing the type parameter completely.
 
-// Fixing a Generic Type Parameter
+// Restricting a Type Parameter
 
 import { City, Person, Product, Employee } from './dataTypes';
 
@@ -37,25 +37,33 @@ class DataCollection<T extends {name: string}> {
     }
 }
 
-class SearchableCollection extends DataCollection<Employee> {
+class SearchableCollection<T extends Employee | Person>  extends DataCollection<T> {
 
-    constructor(initialItems: Employee[]) {
+    constructor(initialItems: T[]) {
         super(initialItems);
     }
 
-    find(searchTerm: string): Employee[] {
-        return this.items.filter(item => 
-            item.name === searchTerm || item.role === searchTerm);
+    find(searchTerm: string): T[] {
+        return this.items.filter(item => {
+            if (item instanceof Employee ) {
+                return item.name === searchTerm || item.role === searchTerm;
+            } else if (item instanceof Person) {
+                return item.name === searchTerm || item.city === searchTerm;
+            }
+        });  
     }
 }
 
-let employeeData = new SearchableCollection(employees);
+
+let employeeData = new SearchableCollection<Employee>(employees);
 employeeData.find("Sales").forEach(e =>
     console.log(`Employee ${ e.name }, ${ e.role }`));
 
 
-// The SearchableCollection class extends DataColection<Employee>, which fixes the
-// generic type parameter so that the Searchable Collection can deal only with Employee
-// objects. No type parameter can be used to create a SearchableCollection object, and
-// the code in the find method can safely access the porperties defined by the
-// Employee class.
+// The type parameter specified by the subclass must be assignable to the type parameter
+// it inherits, meaning that only a more restrictive type can be used. Above, the 
+// Employee | Person Union can be assigned to the shape used to restrict the 
+// DataCollection<T> type parameter.
+
+// The find method uses the instanceof keyword to narrow objects to specific types to 
+// make property value comparisons.
