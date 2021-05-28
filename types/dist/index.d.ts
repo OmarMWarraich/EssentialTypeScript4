@@ -1,16 +1,6 @@
-interface Person {
-    name: string;
-    getDetails(): string;
-}
 interface Product {
     name: string;
     price: number;
-}
-declare class Employee implements Person {
-    name: string;
-    company: string;
-    constructor(name: string, company: string);
-    getDetails(): string;
 }
 declare class SportsProduct implements Product {
     name: string;
@@ -18,4 +8,8 @@ declare class SportsProduct implements Product {
     price: number;
     constructor(name: string, category: string, price: number);
 }
-declare let data: (Person | Product)[];
+declare class ProductGroup {
+    constructor(...initialProducts: [string, Product][]);
+    [propertyName: string]: Product;
+}
+declare let group: ProductGroup;
