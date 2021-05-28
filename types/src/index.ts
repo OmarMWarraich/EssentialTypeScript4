@@ -1,14 +1,10 @@
-// Extending Generic Classes
+// Fixing the Generic Type Parameter
 
-// A generic class can be extended and the subclass can choose to deal with the generic 
-// type parameters in several ways.
+// Some classes need to define functionality that is only available using a subset of the
+// types that are supported by the superclass. In these situations, a subclass can use a 
+// fixed type for the superclass's type parameter, such that the subclass isnt a generic.
 
-// Adding Extra Features to the Existing Type Parameters
-
-// The first approach is to simply add features to those defined by the superclass 
-// using the same generic types.
-
-// Subclassing a Generic Class
+// Fixing a Generic Type Parameter
 
 import { City, Person, Product, Employee } from './dataTypes';
 
@@ -41,31 +37,25 @@ class DataCollection<T extends {name: string}> {
     }
 }
 
-class SearchableCollection<T extends {name: string }> extends DataCollection<T> {
+class SearchableCollection extends DataCollection<Employee> {
 
-    constructor(initialItems: T[]) {
+    constructor(initialItems: Employee[]) {
         super(initialItems);
     }
 
-    find(name: string): T | undefined {
-        return this.items.find(item => item.name === name);
+    find(searchTerm: string): Employee[] {
+        return this.items.filter(item => 
+            item.name === searchTerm || item.role === searchTerm);
     }
 }
 
-let peopleData = new SearchableCollection<Person>(people);
-let foundPerson = peopleData.find("Bob Smith");
-if (foundPerson !== undefined) {
-    console.log(`Person ${ foundPerson.name }, ${ foundPerson.city }`);
-}
+let employeeData = new SearchableCollection(employees);
+employeeData.find("Sales").forEach(e =>
+    console.log(`Employee ${ e.name }, ${ e.role }`));
 
-// The SearchableCollection<T> class is derived from DataCollection<T> and defines a 
-// find method that locates an object by its name property. The declaration of the 
-// SerachableCollection<T> class uses the extends keyword and includes type parameters.
 
-// The type of a generic class includes its type parameters so that the superclass is
-// DataCollection<T>. The type parameter defined by the SearchableCollection<T> must be
-// compatible with the type parameter of the superclass, therefore, same shape type 
-// specifies types that defined a name property. 
-
-// The SearchableCollection<T> class is instantiated just like any other using a type 
-// argument (or allowing the ompiler to infer the type argument).
+// The SearchableCollection class extends DataColection<Employee>, which fixes the
+// generic type parameter so that the Searchable Collection can deal only with Employee
+// objects. No type parameter can be used to create a SearchableCollection object, and
+// the code in the find method can safely access the porperties defined by the
+// Employee class.

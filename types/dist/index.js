@@ -1,12 +1,10 @@
 "use strict";
-// Extending Generic Classes
+// Fixing the Generic Type Parameter
 Object.defineProperty(exports, "__esModule", { value: true });
-// A generic class can be extended and the subclass can choose to deal with the generic 
-// type parameters in several ways.
-// Adding Extra Features to the Existing Type Parameters
-// The first approach is to simply add features to those defined by the superclass 
-// using the same generic types.
-// Subclassing a Generic Class
+// Some classes need to define functionality that is only available using a subset of the
+// types that are supported by the superclass. In these situations, a subclass can use a 
+// fixed type for the superclass's type parameter, such that the subclass isnt a generic.
+// Fixing a Generic Type Parameter
 const dataTypes_1 = require("./dataTypes");
 let people = [new dataTypes_1.Person("Bob Smith", "London"),
     new dataTypes_1.Person("Dora Peters", "New York")];
@@ -34,21 +32,14 @@ class SearchableCollection extends DataCollection {
     constructor(initialItems) {
         super(initialItems);
     }
-    find(name) {
-        return this.items.find(item => item.name === name);
+    find(searchTerm) {
+        return this.items.filter(item => item.name === searchTerm || item.role === searchTerm);
     }
 }
-let peopleData = new SearchableCollection(people);
-let foundPerson = peopleData.find("Bob Smith");
-if (foundPerson !== undefined) {
-    console.log(`Person ${foundPerson.name}, ${foundPerson.city}`);
-}
-// The SearchableCollection<T> class is derived from DataCollection<T> and defines a 
-// find method that locates an object by its name property. The declaration of the 
-// SerachableCollection<T> class uses the extends keyword and includes type parameters.
-// The type of a generic class includes its type parameters so that the superclass is
-// DataCollection<T>. The type parameter defined by the SearchableCollection<T> must be
-// compatible with the type parameter of the superclass, therefore, same shape type 
-// specifies types that defined a name property. 
-// The SearchableCollection<T> class is instantiated just like any other using a type 
-// argument (or allowing the ompiler to infer the type argument).
+let employeeData = new SearchableCollection(employees);
+employeeData.find("Sales").forEach(e => console.log(`Employee ${e.name}, ${e.role}`));
+// The SearchableCollection class extends DataColection<Employee>, which fixes the
+// generic type parameter so that the Searchable Collection can deal only with Employee
+// objects. No type parameter can be used to create a SearchableCollection object, and
+// the code in the find method can safely access the porperties defined by the
+// Employee class.
