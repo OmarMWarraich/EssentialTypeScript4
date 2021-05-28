@@ -1,4 +1,4 @@
-// Dynamically Creating Properties
+// Enabling Index Value Checking
 class SportsProduct {
     constructor(name, category, price) {
         this.name = name;
@@ -14,7 +14,13 @@ class ProductGroup {
 }
 let group = new ProductGroup(["shoes", new SportsProduct("Shoes", "Running", 90.50)]);
 group.hat = new SportsProduct("Hat", "Skiing", 20);
-Object.keys(group).forEach(k => console.log(`Property Name: ${k}`));
+let total = group.hat.price + group.boots.price;
+console.log(`Total: ${total}`);
+// The statement that assigns a value to total uses the index signature to access hat and
+// boots properties. No boots property has been created, but the code still compiles and 
+// the result is an error when the compiled code is executed.
+// To configue the compiler to check index signature accesses, set the noUncheckedIndexedAccess
+// and strictNullChecks configuration options to true.
 // The ProductGroup class recieves an array of [string, Product] tuples through its 
 // constructor, each of which is used to create a property using the string value as its
 // name and the Product as its value. The compiler will allow the constructor to create

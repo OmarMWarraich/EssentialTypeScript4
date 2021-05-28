@@ -1,13 +1,10 @@
-// Dynamically Creating Properties
+// Enabling Index Value Checking
 
-// The TS compiler only allows values to be assigned to properties that are part of an
-// object's type, which means that interfaces and classes have to define all the properties
-// that the application requires. 
-// By contrast, JS allows new properties to be created on objects simply by assigning a 
-// value to an unused property name. The TS index signature feature bridges these two 
-// models, allowing properties to be defined dynamically while preserving type safety.
+// One potential pitfall with index signatures is that the TS compiler assumes that you
+// will only access properties that exist, which is inconsistent with the broader approach
+// taken by TS to force assumptions into the open so they can be explicitly verified.
 
-// Defining an Index Signature.
+// Accessing a Nonexistent Property.
     
 interface Product {
     name: string;
@@ -32,7 +29,18 @@ class ProductGroup {
 let group 
     = new ProductGroup(["shoes", new SportsProduct("Shoes", "Running", 90.50)]);
 group.hat = new SportsProduct("Hat", "Skiing", 20);
-Object.keys(group).forEach(k => console.log(`Property Name: ${k}`));
+
+let total = group.hat.price + group.boots.price;
+console.log(`Total: ${total}`);
+
+// The statement that assigns a value to total uses the index signature to access hat and
+// boots properties. No boots property has been created, but the code still compiles and 
+// the result is an error when the compiled code is executed.
+
+// To configue the compiler to check index signature accesses, set the noUncheckedIndexedAccess
+// and strictNullChecks configuration options to true.
+
+
 
 // The ProductGroup class recieves an array of [string, Product] tuples through its 
 // constructor, each of which is used to create a property using the string value as its
