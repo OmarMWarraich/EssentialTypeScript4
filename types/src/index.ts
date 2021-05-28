@@ -1,4 +1,8 @@
-// Adding a Type Alias
+// Using Classes
+
+// TS doesnt have good support for constructor functions but that is because the focus
+// has been on classes, building on the features provided by JS to make them more 
+// familiar to programmers accustomed to languages such as C#.
 
 type Person = {
     id: string,
@@ -6,23 +10,22 @@ type Person = {
     city: string
 };
 
-type Employee = {
-    id: string,
-    name: string,
-    dept: string, 
-    city: string, 
-    writeDept: () => void
-};
+class Employee {
+    id: string;
+    name: string;
+    dept: string; 
+    city: string;
+    
+    constructor(id: string, name: string, dept: string, city: string) {
+        this.id = id;
+        this.name = name;
+        this.dept = dept;
+        this.city = city;
+    }
 
-let Employee = function (id: string, name: string, dept: string, city: string) {
-    this.id = id;
-    this.name = name;
-    this.dept = dept;
-    this.city = city;
-};
-
-Employee.prototype.writeDept = function () {
-    console.log(`${this.name} works in ${this.dept}`);
+    writeDept() {
+        console.log(`${this.name} works in ${this.dept}`);
+    }
 };
 
 let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
@@ -35,14 +38,19 @@ let data: (Person | Employee )[] =
 
 
 data.forEach(item => {
-    if ("dept" in item) {
+    if (item instanceof Employee) {
         item.writeDept();
     } else {
     console.log(`${item.id} ${item.name}, ${item.city}`);
     }
 });
 
-// TS compiler may not understand the significance of the constructor function, but it 
-// can match the objects it creates by shape. Above a shape type that  corresponds to those
-// created by the constructor function, including the method that is accessed through the 
-// prototype. 
+// Syntax for a TS class requires the declaration of instance properties and their types.
+// This leads to more verbose classes-with the advantage of allowing the constructor
+// parameter types to be different from the types of the instance properties to which they
+// are assigned. Objects are created from classes using the standard new keyword and the
+// compiler understands the use of the instanceof keyword for type narrowing when classes
+// are used.
+
+// The compiler generates standard classes that depend on the JS constructor function and
+// prototype features at runtime. 

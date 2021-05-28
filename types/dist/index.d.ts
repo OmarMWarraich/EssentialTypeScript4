@@ -3,13 +3,13 @@ declare type Person = {
     name: string;
     city: string;
 };
-declare type Employee = {
+declare class Employee {
     id: string;
     name: string;
     dept: string;
     city: string;
-    writeDept: () => void;
-};
-declare let Employee: (id: string, name: string, dept: string, city: string) => void;
-declare let salesEmployee: any;
+    constructor(id: string, name: string, dept: string, city: string);
+    writeDept(): void;
+}
+declare let salesEmployee: Employee;
 declare let data: (Person | Employee)[];
