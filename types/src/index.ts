@@ -1,11 +1,9 @@
-// Creating Generic Class
+// Using Different Type Arguments
 
-// A generic class is a class that has a generic type parameter. A generic type parameter
-// is a placeholder for a type that is specified when the class is used to create a new 
-// object. Generic type parameters allow classes to be written that operate on a specified
-// type without knowing what that type will be in advance.
+// The value of a generic type parameter affects only a single object, and a differnt
+// type can be used for the generic type argument for each use of the new keyword,
+// producing a DataCollection<T> object that works with a different type.
 
-// Using a Generic Type
 
 import { Person, Product } from './dataTypes';
 
@@ -44,13 +42,10 @@ let firstPerson = peopleData.getItem(0);
 console.log(`First Person: ${firstPerson.name}, ${firstPerson.city}`);
 //}
 
-// The DataCollection has been defined with a generic type parameter, which is part of the
-// class declaration.
+let productData = new DataCollection<Product>(products);
+let firstProduct = productData.getItem(0);
+console.log(`First Product: ${firstProduct.name}, ${firstProduct.price}`);
 
-// A generic type parameter
-// A generic type parameter is defined between angle brackets (the <and> characters), and
-// only a name is specified. The convention is to start with the letter T as the name of
-// the type parameter, although any naming scheme may be used.
+// The new statements create a DataCollection<Product> object by using Product for the
+// generic type argument. TS keeps track of specific object types and ensures typicity.
 
-// The result is known as generic class, meaning a class with atleast one generic type
-// parameter. 
