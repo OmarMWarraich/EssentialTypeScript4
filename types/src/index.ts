@@ -1,17 +1,17 @@
-// Implementing Multiple Interfaces
+// Defining Optional Interface Properties and Methods
 
-// A class can implement more than one interface, meaning it must define the methods 
-// and properties defined by all of them.
+// Adding an optional property to an interface allows classes that implement the interface
+// to provide the property without making it a requirement.
 
 interface Person {
     name: string;
     getDetails(): string;
-}
 
-interface DogOwner {
-    dogName: string;
-    getDogDetails(): string;
+    dogName?: string;
+    getDogDetails?(): string;
+
 }
+    
 
 class Employee implements Person {
     constructor(public readonly id: string, public name: string, 
@@ -23,7 +23,7 @@ class Employee implements Person {
     }
 }
 
-class Customer implements Person, DogOwner {
+class Customer implements Person {
 
     constructor(public readonly id: string, public name: string, 
         public city: string, public creditLimit: number, public dogName) {        
@@ -38,23 +38,20 @@ class Customer implements Person, DogOwner {
 
 
 let alice = new Customer("ajones", "Alice Jones", "London", 500, "Fido");
-
-let dogOwners: DogOwner[] = [alice];
-dogOwners.forEach(item => console.log(item.getDogDetails()));
-
 let data: Person[] = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"), alice];
+data.forEach(item => {
+    console.log(item.getDetails());
+    if (item.getDogDetails) {
+        console.log(item.getDogDetails());
+    }
+});
 
+// Declaring an optional property on an interface is done using the question mark 
+// character after the name.
 
-data.forEach(item => console.log(item.getDetails()));
-    
-// Interfaces are listed after the implements keyword, spearated with commas. Above, the
-// Customer class implements the Person and DowgOwner interfaces, which means that the 
-// Person object assigned to the variable named alice can be added to the arrays typed
-// for Person and DogOwner objects.
+// Defining optional interface members
 
-//Note!
-// A class can implement multiple interfaces only if there are no overlapping properties
-// with conflicting types. e.g., if the Person interface defined a string property named
-// id and if the DogOwner interface defined a number property with the same name, the 
-// Customer class would not be able to implement both interfaces because there is no value
-// that could be assigned to its id property that could represent both types.
+// Optional interface features can be defined through the interdace type without causing
+// compiler errors, but you must check to ensure that you do not recieve undefined Values
+// since objects may have been created from classes that have not implemented them.
+

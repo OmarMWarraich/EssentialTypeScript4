@@ -1,4 +1,4 @@
-// Implementing Multiple Interfaces
+// Defining Optional Interface Properties and Methods
 class Employee {
     constructor(id, name, dept, city) {
         this.id = id;
@@ -27,17 +27,16 @@ class Customer {
     }
 }
 let alice = new Customer("ajones", "Alice Jones", "London", 500, "Fido");
-let dogOwners = [alice];
-dogOwners.forEach(item => console.log(item.getDogDetails()));
 let data = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"), alice];
-data.forEach(item => console.log(item.getDetails()));
-// Interfaces are listed after the implements keyword, spearated with commas. Above, the
-// Customer class implements the Person and DowgOwner interfaces, which means that the 
-// Person object assigned to the variable named alice can be added to the arrays typed
-// for Person and DogOwner objects.
-//Note!
-// A class can implement multiple interfaces only if there are no overlapping properties
-// with conflicting types. e.g., if the Person interface defined a string property named
-// id and if the DogOwner interface defined a number property with the same name, the 
-// Customer class would not be able to implement both interfaces because there is no value
-// that could be assigned to its id property that could represent both types.
+data.forEach(item => {
+    console.log(item.getDetails());
+    if (item.getDogDetails) {
+        console.log(item.getDogDetails());
+    }
+});
+// Declaring an optional property on an interface is done using the question mark 
+// character after the name.
+// Defining optional interface members
+// Optional interface features can be defined through the interdace type without causing
+// compiler errors, but you must check to ensure that you do not recieve undefined Values
+// since objects may have been created from classes that have not implemented them.
