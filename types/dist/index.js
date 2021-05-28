@@ -1,14 +1,12 @@
 "use strict";
-// Allowing the Compiler to Infer Type Arguments
+// Extending Generic Classes
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.empData = exports.collatedData = exports.peopleData = void 0;
-// TS compiler can infer generic type arguments based on the way that objects are 
-// created or methods are invoked. This can be a useful way to write concise code but 
-// requires caution because you must ensure that you initialize objects with the types
-// that you would have specified explicitly.
-// Below DataCollection<T> instantiated and collate method invoked without type arguments
-// leaving the compiler to infer the type.
-// Using Generic Type Inference
+// A generic class can be extended and the subclass can choose to deal with the generic 
+// type parameters in several ways.
+// Adding Extra Features to the Existing Type Parameters
+// The first approach is to simply add features to those defined by the superclass 
+// using the same generic types.
+// Subclassing a Generic Class
 const dataTypes_1 = require("./dataTypes");
 let people = [new dataTypes_1.Person("Bob Smith", "London"),
     new dataTypes_1.Person("Dora Peters", "New York")];
@@ -32,11 +30,25 @@ class DataCollection {
         return results;
     }
 }
-exports.peopleData = new DataCollection(people);
-exports.collatedData = exports.peopleData.collate(cities, "city", "name");
-exports.collatedData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.population}`));
-exports.empData = exports.peopleData.collate(employees, "name", "name");
-exports.empData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.role}`));
-// The compiler is able to infer the type arguments based on the argument passed to the
-// DataCollection<T> constructor and the first argument passed to the collate method.
-// To check the types inferred by the compiler, examine the index.d.ts.
+class SearchableCollection extends DataCollection {
+    constructor(initialItems) {
+        super(initialItems);
+    }
+    find(name) {
+        return this.items.find(item => item.name === name);
+    }
+}
+let peopleData = new SearchableCollection(people);
+let foundPerson = peopleData.find("Bob Smith");
+if (foundPerson !== undefined) {
+    console.log(`Person ${foundPerson.name}, ${foundPerson.city}`);
+}
+// The SearchableCollection<T> class is derived from DataCollection<T> and defines a 
+// find method that locates an object by its name property. The declaration of the 
+// SerachableCollection<T> class uses the extends keyword and includes type parameters.
+// The type of a generic class includes its type parameters so that the superclass is
+// DataCollection<T>. The type parameter defined by the SearchableCollection<T> must be
+// compatible with the type parameter of the superclass, therefore, same shape type 
+// specifies types that defined a name property. 
+// The SearchableCollection<T> class is instantiated just like any other using a type 
+// argument (or allowing the ompiler to infer the type argument).
