@@ -13,3 +13,5 @@ declare function correlateData(peopleData: Person[], staff: Employee[]): Employe
 declare let people: Person[];
 declare let employees: Employee[];
 declare let dataItems: EmployedPerson[];
+declare function writePerson(per: Person): void;
+declare function writeEmployee(emp: Employee): void;

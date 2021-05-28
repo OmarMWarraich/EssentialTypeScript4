@@ -1,4 +1,4 @@
-// Using Intersections for Data Collection
+// Understanding Intersection Merging
 function correlateData(peopleData, staff) {
     const defaults = { company: "None", dept: "None" };
     return peopleData.map(p => ({ ...p,
@@ -10,19 +10,18 @@ let people = [{ id: "bsmith", name: "Bob Smith", city: "London" },
 let employees = [{ id: "bsmith", company: "Acme Co", dept: "Sales" },
     { id: "dpeters", company: "Acme Co", dept: "Development" }];
 let dataItems = correlateData(people, employees);
+function writePerson(per) {
+    console.log(`Person: ${per.id}, ${per.name}, ${per.city}`);
+}
+function writeEmployee(emp) {
+    console.log(`Employee: ${emp.id}, ${emp.company}, ${emp.dept}`);
+}
 dataItems.forEach(item => {
-    console.log(`Person: ${item.id}, ${item.name}, ${item.city}`);
-    console.log(`Employee: ${item.id}, ${item.name}, ${item.city}`);
+    writePerson(item);
+    writeEmployee(item);
 });
-// Above, the correlateData function recieves an array of Person Objects and an array of
-// Employee objects and uses the id property they share to produce objects that combine
-// the properties of both shape types. As each Person object is processed by the map
-// method, the array find method is used to locate the Employee object with the same id
-// value, and the objecct spread operator is used to create objects that match the 
-// intersection shape. Since the results from the correlateData function have to define 
-// all the intersection properties, default values are used where there is no matching
-// Employee object.
-// Type annotations are used above to make the purpose of the code easier, but the code
-// would work without them. The TS compiler is adept at understanding the effect of code
-// statemetns and can understand the effect of this statement is to create objects that
-// conform to the shape of the type intersection.
+// The compiler matches an object to a shape by ensuring that it defines all properties
+// in the shape and doesnt care about excess properties (excess when defining an object
+// literal). The object that conform to the EmployedPerson type can be used in the 
+// writePerson and writeEmployee functions because they conform to the types specified
+// for the function's parameter.

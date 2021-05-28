@@ -1,13 +1,11 @@
-// Using Intersections for Data Collection
+// Understanding Intersection Merging
 
-// Intersections are useful when you recieve objects from one source and need to 
-// introduce new functionality so they can be used elsewhere in the application or when
-// objects from two data sources need to be correlated and combined.
-// JS makes it easy to introduce functionality from one object into another, and 
-// intersections allow the types that are used to be clearly descriced so they can be
-// checked by the TS compiler.
+// Because an intersection combines features from multiple types, an object that
+// conforms to the intersection shape also conforms to each of the types in intersection.
+// e.g., an object that conforms to Person & Employee can be used where the Person type
+// or the Employee type is specified.
 
-// Correlating Data
+// Using Underlying Types in an Intersection
 
 type Person = {
     id: string,
@@ -40,21 +38,22 @@ let employees: Employee[] =
 
 let dataItems: EmployedPerson[] = correlateData(people, employees);
 
+function writePerson(per: Person): void {
+    console.log(`Person: ${per.id}, ${per.name}, ${per.city}`);
+}
+
+
+function writeEmployee(emp: Employee): void {
+    console.log(`Employee: ${emp.id}, ${emp.company}, ${emp.dept}`);
+}
+
 dataItems.forEach(item => {
-    console.log(`Person: ${item.id}, ${item.name}, ${item.city}`);
-    console.log(`Employee: ${item.id}, ${item.name}, ${item.city}`);
+    writePerson(item);
+    writeEmployee(item);
 })
 
-// Above, the correlateData function recieves an array of Person Objects and an array of
-// Employee objects and uses the id property they share to produce objects that combine
-// the properties of both shape types. As each Person object is processed by the map
-// method, the array find method is used to locate the Employee object with the same id
-// value, and the objecct spread operator is used to create objects that match the 
-// intersection shape. Since the results from the correlateData function have to define 
-// all the intersection properties, default values are used where there is no matching
-// Employee object.
-
-// Type annotations are used above to make the purpose of the code easier, but the code
-// would work without them. The TS compiler is adept at understanding the effect of code
-// statemetns and can understand the effect of this statement is to create objects that
-// conform to the shape of the type intersection.
+// The compiler matches an object to a shape by ensuring that it defines all properties
+// in the shape and doesnt care about excess properties (excess when defining an object
+// literal). The object that conform to the EmployedPerson type can be used in the 
+// writePerson and writeEmployee functions because they conform to the types specified
+// for the function's parameter.
