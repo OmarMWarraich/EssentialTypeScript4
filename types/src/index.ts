@@ -1,59 +1,42 @@
-// Understanding Intersection Merging
+// Merging Properties with same type
 
-// Because an intersection combines features from multiple types, an object that
-// conforms to the intersection shape also conforms to each of the types in intersection.
-// e.g., an object that conforms to Person & Employee can be used where the Person type
-// or the Employee type is specified.
+// Properties with the same name and same types such as the id props defined by the
+// Person and Employee types in previous commit merged into the intersection without
+// any changes. No issues coz any value assgnd 2 id prop will be a string and will 
+// conform to the requirements of the object and intersection types.
 
-// Using Underlying Types in an Intersection
+// Merging Properties with Differnt Types
+
+// Props with same name but different types, the compiler keeps the name but intersects 
+// the type. Below, function removed and contact property added to the Person and 
+// Employee types.
 
 type Person = {
     id: string,
     name: string,
-    city: string
+    city: string,
+    contact: number
 };
 
 type Employee = {
     id: string,
     company: string,
-    dept: string
+    dept: string,
+    contact: string
 };
 
 type EmployedPerson = Person & Employee;
 
-function correlateData(peopleData: Person[], staff: Employee[]): EmployedPerson[] {
-    const defaults = { company: "None", dept: "None" };
-    return peopleData.map(p => ({ ...p,
-        ...staff.find(e => e.id === p.id) || { ...defaults, id: p.id } }));
-}
+let typeTest = ({} as EmployedPerson).contact;
 
-let people: Person[] = 
-    [{ id: "bsmith", name: "Bob Smith", city: "London" },
-     { id: "ajones", name: "Alice Jones", city: "Paris" },
-     { id: "dpeters", name: "Dora Peters", city: "New York" }]
+// The last statement is a useful trick for seeing what type the compiler assigns to a
+// property in the intersection by looking at the declaration file created in the dist
+// folder when the declaration compiler configuration option is true. The statement uses
+// a type assertion to tell the compiler that an empty object conforms to the
+// EmployedPerson type and assigns to the contact property to the typeTest variable.
+// When the changes to the index.ts file are saved, the compiler will compile the code,
+// and the index.d.ts file in the dist folder will show the type for the contact property
+// in the intersection.
 
-let employees: Employee[] =
-    [{ id: "bsmith", company: "Acme Co", dept: "Sales"},
-    { id: "dpeters", company: "Acme Co", dept: "Development" }];
-
-let dataItems: EmployedPerson[] = correlateData(people, employees);
-
-function writePerson(per: Person): void {
-    console.log(`Person: ${per.id}, ${per.name}, ${per.city}`);
-}
-
-
-function writeEmployee(emp: Employee): void {
-    console.log(`Employee: ${emp.id}, ${emp.company}, ${emp.dept}`);
-}
-
-dataItems.forEach(item => {
-    writePerson(item);
-    writeEmployee(item);
-})
-
-// The compiler matches an object to a shape by ensuring that it defines all properties
-// in the shape and doesnt care about excess properties (excess when defining an object
-// literal). The object that conform to the EmployedPerson type can be used in the 
-// writePerson and writeEmployee functions because they conform to the types specified
-// for the function's parameter.
+// The compiler created an intersection between the type of the contact property defined
+// by Person and the type of the contact property defined by Employee.
