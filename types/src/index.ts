@@ -1,34 +1,10 @@
-// Using a Fallback Value
-    
-interface Product {
-    name: string;
-    price: number;
-}
+import { Person, Product } from './dataTypes';
 
-class SportsProduct implements Product {
-    constructor(public name: string, public category: string, 
-        public price: number) {
-            // no statements required
-        }
-}
+let people = [new Person("Bob Smith", "London"),
+    new Person("Dora Peters", "New York")];
+let products = [new Product("Running Shoes", 100), new Product("Hat", 25)];
 
-class ProductGroup {
-    constructor(...initialProducts: [string, Product][]) {
-        initialProducts.forEach(p => this[p[0]] = p[1]);
-    }
+[...people, ...products].forEach(item => console.log(`Item: ${item.name}`));
 
-    [propertyName: string]: Product;
-}
-
-let group 
-    = new ProductGroup(["shoes", new SportsProduct("Shoes", "Running", 90.50)]);
-group.hat = new SportsProduct("Hat", "Skiing", 20);
-
-
-let total = group.hat.price + (group.boots?.price ?? 0);
-console.log(`Total: ${total}`);
-
-
-// The if expression ensures that the boots property wont be used if its undefined. An
-// alternative approach is to use optional chaining and the nullish operator to provide
-// a fallback value.
+// The listing uses an import statement to declare dependencies on the Person and Product
+// classes defined in the dataTypes module. 
