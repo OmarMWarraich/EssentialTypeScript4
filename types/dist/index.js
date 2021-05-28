@@ -1,30 +1,17 @@
-// Type Guarding with a Type Predicate Function
-let hat = { id: 1, name: "Hat", price: 100 };
-let gloves = { id: 2, name: "Gloves", price: 75 };
-let umbrella = { id: 3, name: "Umbrella", price: 30 };
-let bob = { id: "bsmith", name: "Bob", city: "London" };
-let dataItems = [hat, gloves, umbrella, bob];
-function isPerson(testObj) {
-    return testObj.City !== undefined;
-}
+// Using Type Intersections
+let bob = { id: "bsmith", name: "Bob", city: "London",
+    company: "Acme Co", dept: "Sales" };
+let dataItems = [bob];
 dataItems.forEach(item => {
-    if (isPerson(item)) {
-        console.log(`Person: ${item.name}: ${item.city}`);
-    }
-    else {
-        console.log(`Product: ${item.name}: ${item.price}`);
-    }
+    console.log(`Person: ${item.id}, ${item.name}, ${item.city}`);
+    console.log(`Employee: ${item.id}, ${item.name}, ${item.city}`);
 });
-// Type guardging for objects is done with a function that uses the is keyword.
-// The result of the function, which is a type predicate, tells the compiler which of
-// the function's parameter is being tested and the type that the function checks for.
-// The isPerson function tests its testObj parameter for the Person type. If the result
-// of the function is true, then the TS compiler will treat the object as the specified
-// type.
-// Using a function for typeguarding can be more flexible because the parameter type is 
-// any, allowing properties to be tested for without having to use string literals and 
-// the in keyword.
-// Tip: There are no restrictions on the name of the type guard function, but the 
-// convention is to prefix the guarded type with is, such that a function that tests for
-// the Person type is named isPerson and a function that tests for the Product type is
-// named isProduct.
+// The type of the dataItems array is set to the intersection of the Person and Employee
+// types. Intersections are defined using the ampersand between two or more types.
+// Defining an intersection type.
+// An object will conform to the shape of a type intersection only if it defines the
+// properties defined by merging all the types in that intersection.
+// the intersection btw Person and Employee types has the effect that the dataItems array
+// can contain only objects that define id, name, city, company and dept properties.
+// The contents of the array are processed using the forEach method, which demonstrates
+// that the properties from both types in the intersection can be used. 
