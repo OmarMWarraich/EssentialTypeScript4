@@ -4,14 +4,12 @@ declare type Person = {
     city: string;
 };
 declare type Employee = {
-    company: string;
-    dept: string;
-};
-declare let bob: {
     id: string;
-    name: string;
-    city: string;
     company: string;
     dept: string;
 };
-declare let dataItems: (Person & Employee)[];
+declare type EmployedPerson = Person & Employee;
+declare function correlateData(peopleData: Person[], staff: Employee[]): EmployedPerson[];
+declare let people: Person[];
+declare let employees: Employee[];
+declare let dataItems: EmployedPerson[];
