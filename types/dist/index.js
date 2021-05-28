@@ -1,37 +1,34 @@
-// Simplifying Class Constructors
-class Employee {
+// Using Class Inheritance
+// TS builds on the standard class inheritance features to make them more consistent and
+// familiar, with some useful additions for commonly required tasks and for restricting
+// some of the JS characterstics that can cause problems. 
+// Adding A Class
+class Person {
+    constructor(id, name, city) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+    }
+}
+class Employee extends Person {
     constructor(id, name, dept, city) {
+        super(id, name, city);
         this.id = id;
         this.name = name;
         this.dept = dept;
         this.city = city;
-        // no statements required
     }
     writeDept() {
         console.log(`${this.name} works in ${this.dept}`);
     }
 }
-;
-let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
-salesEmployee.writeDept();
-//salesEmployee.id = "fidel"
-let data = [{ id: "bsmith", name: "Bob Smith", city: "London" },
-    { id: "ajones", name: "Alice Jones", city: "Paris" },
-    { id: "dpeters", name: "Dora Peters", city: "New York" },
-    salesEmployee];
+let data = [new Person("bsmith", "Bob Smith", "London"),
+    new Employee("fvega", "Fidel Vega", "Sales", "Paris")];
 data.forEach(item => {
+    console.log(`Person: ${item.name}, ${item.city}`);
     if (item instanceof Employee) {
         item.writeDept();
     }
-    else {
-        console.log(`${item.id} ${item.name}, ${item.city}`);
-    }
 });
-// To simplify the constructor, access control keywords are applied to the parameters.
-// The compiler automatically creates an instance property for each of the constructor
-// arguments to which an access control keyword has been applied and assign the parameter
-// value. The use of the access control keywords doesnt change the way the constructor
-// is invoked and is required only to tell the compiler that corresponding instance
-// variables are required. The concise syntax may be mixed with conventional parameters
-// if required, and the readonly keyword is carried over to the instance properties 
-// created by compiler.
+// When using the extends keyword, TS require that the superclass contructor is invoked
+// using the super keyword, ensuring that its properties are initialized.
