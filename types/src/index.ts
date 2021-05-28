@@ -1,11 +1,16 @@
-// Using Interfaces
+// Implementing Multiple Interfaces
 
-// Interface are used to describe the shape of an object, which a class that implements
-// the interface must conform to.
+// A class can implement more than one interface, meaning it must define the methods 
+// and properties defined by all of them.
 
 interface Person {
     name: string;
     getDetails(): string;
+}
+
+interface DogOwner {
+    dogName: string;
+    getDogDetails(): string;
 }
 
 class Employee implements Person {
@@ -18,34 +23,38 @@ class Employee implements Person {
     }
 }
 
-class Customer implements Person {
+class Customer implements Person, DogOwner {
+
     constructor(public readonly id: string, public name: string, 
-        public city: string, public creditLimit: number) {        
+        public city: string, public creditLimit: number, public dogName) {        
         }
     getDetails() {
         return `${this.name} has ${this.creditLimit} limit`;
     }
+    getDogDetails() {
+        return `${this.name} has a dog named ${this.dogName}`
+    }
 }
 
-let data: Person[] = [
-    new Employee("fvega", "Fidel Vega", "Sales", "Paris"),
-    new Customer("ajones", "Alice Jones", "London", 500)];
+
+let alice = new Customer("ajones", "Alice Jones", "London", 500, "Fido");
+
+let dogOwners: DogOwner[] = [alice];
+dogOwners.forEach(item => console.log(item.getDogDetails()));
+
+let data: Person[] = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"), alice];
 
 
 data.forEach(item => console.log(item.getDetails()));
     
-// Interfaces are defined by the interface keyword and contain the set of properties and
-// methods that a class must provide in order to conform to the interface.
+// Interfaces are listed after the implements keyword, spearated with commas. Above, the
+// Customer class implements the Person and DowgOwner interfaces, which means that the 
+// Person object assigned to the variable named alice can be added to the arrays typed
+// for Person and DogOwner objects.
 
-// Unlike abstract classes, interfaces don't implement methods or define a constructor
-// and just define a shape. Interfaces are implemented by classes through the implements
-// keyword.
-
-// The Person interface defines a name property and getDetails method, so the Employee
-// and Customer classes must define the same property and method. These classes can
-// define extra properties and methods, but they can only conform to the interface by 
-// providing name and getDetails. 
-
-// The data array can contain any object created from a class that implements the Product
-// array, although the function passed to the forEach method can acess only the features
-// defined by the interface unless objects are narrowed to a more specific type.
+//Note!
+// A class can implement multiple interfaces only if there are no overlapping properties
+// with conflicting types. e.g., if the Person interface defined a string property named
+// id and if the DogOwner interface defined a number property with the same name, the 
+// Customer class would not be able to implement both interfaces because there is no value
+// that could be assigned to its id property that could represent both types.
