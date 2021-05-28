@@ -1,13 +1,14 @@
 "use strict";
-// Applying a Type Parameter to a Method
+// Allowing the Compiler to Infer Type Arguments
 Object.defineProperty(exports, "__esModule", { value: true });
-// The second type parameter isnt as flexible as it could be because it requires the 
-// data type used by the collate method to be specified when the DataCollection object
-// is created, meaning that's the only data type that can be used with that method.
-// When a type is used by only one method, the type parameter can be moved from the class
-// declaration and applied directly to the method, allowing a different type to be 
-// specified each time the method is invoked.
-// Applying a Type Parameter to a Method
+exports.empData = exports.collatedData = exports.peopleData = void 0;
+// TS compiler can infer generic type arguments based on the way that objects are 
+// created or methods are invoked. This can be a useful way to write concise code but 
+// requires caution because you must ensure that you initialize objects with the types
+// that you would have specified explicitly.
+// Below DataCollection<T> instantiated and collate method invoked without type arguments
+// leaving the compiler to infer the type.
+// Using Generic Type Inference
 const dataTypes_1 = require("./dataTypes");
 let people = [new dataTypes_1.Person("Bob Smith", "London"),
     new dataTypes_1.Person("Dora Peters", "New York")];
@@ -31,12 +32,11 @@ class DataCollection {
         return results;
     }
 }
-let peopleData = new DataCollection(people);
-let collatedData = peopleData.collate(cities, "city", "name");
-collatedData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.population}`));
-let empData = peopleData.collate(employees, "name", "name");
-empData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.role}`));
-// The type parameter U is applied directly to the collate method, allowing a type to
-// provided when the method is invoked.
-// The method's type parameter allows the collate method to be invoked using City objects
-// and then invoked again with Employee objects.
+exports.peopleData = new DataCollection(people);
+exports.collatedData = exports.peopleData.collate(cities, "city", "name");
+exports.collatedData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.population}`));
+exports.empData = exports.peopleData.collate(employees, "name", "name");
+exports.empData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.role}`));
+// The compiler is able to infer the type arguments based on the argument passed to the
+// DataCollection<T> constructor and the first argument passed to the collate method.
+// To check the types inferred by the compiler, examine the index.d.ts.
