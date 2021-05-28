@@ -1,12 +1,17 @@
-// Using Constructor Functions
-
-// Constructor functions can be used in TS albiet in a counterintuitive manner not as 
-// elegant as the way classes are handled.
+// Adding a Type Alias
 
 type Person = {
     id: string,
     name: string,
     city: string
+};
+
+type Employee = {
+    id: string,
+    name: string,
+    dept: string, 
+    city: string, 
+    writeDept: () => void
 };
 
 let Employee = function (id: string, name: string, dept: string, city: string) {
@@ -30,27 +35,14 @@ let data: (Person | Employee )[] =
 
 
 data.forEach(item => {
-    if (item instanceof Employee) {
+    if ("dept" in item) {
         item.writeDept();
     } else {
     console.log(`${item.id} ${item.name}, ${item.city}`);
     }
 });
 
-// The Employee constructor functon creates objects with id, name, dept and city properties
-// and there is a method named writeDept defined on the Employee prototype. The data array
-// is updated to contain Person and Employee objects and the function passed to the forEach
-// method uses the instanceof operator to narrow the type of each object in the array.
-
-// error TS2304: Cannot find name Employee.
-// error TS4025: Exported variable data has or is using private name Employee.
-// error TS 2339: Property writeDept doesnt exist on type {}
-
-// TS treats the Employee constructor function like any other function and looks at its
-// parameter and result types to describe its shape. When the Employee function is used
-// with the new keyword, the compiler uses the any type for the object assigned to the
-// salesEmployee variable. The result is a series of error as the compiler struggles to
-// make sense of the way the constructor function is used.
-
-// The simplest way to solve this problem is to provide the comopiler with additional 
-// information about the shapes of the objects that are used. 
+// TS compiler may not understand the significance of the constructor function, but it 
+// can match the objects it creates by shape. Above a shape type that  corresponds to those
+// created by the constructor function, including the method that is accessed through the 
+// prototype. 
