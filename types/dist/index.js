@@ -1,18 +1,14 @@
-// Defining Optional Interface Properties and Methods
-class Employee {
-    constructor(id, name, dept, city) {
-        this.id = id;
-        this.name = name;
-        this.dept = dept;
-        this.city = city;
-        //no statements required
-    }
-    getDetails() {
-        return `${this.name} works in ${this.dept}`;
+// Defining an Abstract Interface Implementation.
+class AbstractDogOwner {
+    getDogDetails() {
+        if (this.dogName) {
+            return `${this.name} has a dog called ${this.dogName}`;
+        }
     }
 }
-class Customer {
+class DogOwningCustomer extends AbstractDogOwner {
     constructor(id, name, city, creditLimit, dogName) {
+        super();
         this.id = id;
         this.name = name;
         this.city = city;
@@ -22,21 +18,12 @@ class Customer {
     getDetails() {
         return `${this.name} has ${this.creditLimit} limit`;
     }
-    getDogDetails() {
-        return `${this.name} has a dog named ${this.dogName}`;
-    }
 }
-let alice = new Customer("ajones", "Alice Jones", "London", 500, "Fido");
-let data = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"), alice];
-data.forEach(item => {
-    console.log(item.getDetails());
-    if (item.getDogDetails) {
-        console.log(item.getDogDetails());
-    }
-});
-// Declaring an optional property on an interface is done using the question mark 
-// character after the name.
-// Defining optional interface members
-// Optional interface features can be defined through the interdace type without causing
-// compiler errors, but you must check to ensure that you do not recieve undefined Values
-// since objects may have been created from classes that have not implemented them.
+let alice = new DogOwningCustomer("ajones", "Alice Jones", "London", 500, "Fido");
+if (alice.getDogDetails) {
+    console.log(alice.getDogDetails());
+}
+// AbstractDogOwner provides a partial implementation of the Person interface but 
+// declares the interface features that it doesnt implement as abstract, which forces
+// subclasses to implement them. There is one subclass that extends AbstractDogOwner,
+// which inherits the getDogDetails method from the abstract class.

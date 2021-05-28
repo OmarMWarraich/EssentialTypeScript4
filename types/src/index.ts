@@ -1,7 +1,8 @@
-// Defining Optional Interface Properties and Methods
+// Defining an Abstract Interface Implementation.
 
-// Adding an optional property to an interface allows classes that implement the interface
-// to provide the property without making it a requirement.
+// Abstract classes can be used to implement some or all of the features described by an
+// interface. This can reduce code duplication when some of the classes that implement an
+// interface would do so in the same way using the same code.
 
 interface Person {
     name: string;
@@ -12,46 +13,38 @@ interface Person {
 
 }
     
+abstract class AbstractDogOwner implements Person {
 
-class Employee implements Person {
-    constructor(public readonly id: string, public name: string, 
-        private dept: string, public city: string) {
-            //no statements required
-        }
-    getDetails() {
-        return `${this.name} works in ${this.dept}`;
-    }
-}
+    abstract name: string;
+    abstract dogName?: string;
 
-class Customer implements Person {
+    abstract getDetails();
 
-    constructor(public readonly id: string, public name: string, 
-        public city: string, public creditLimit: number, public dogName) {        
-        }
-    getDetails() {
-        return `${this.name} has ${this.creditLimit} limit`;
-    }
     getDogDetails() {
-        return `${this.name} has a dog named ${this.dogName}`
+        if (this.dogName) {
+            return `${this.name} has a dog called ${this.dogName}`;
+        }
     }
+
 }
 
+class DogOwningCustomer extends AbstractDogOwner {
 
-let alice = new Customer("ajones", "Alice Jones", "London", 500, "Fido");
-let data: Person[] = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"), alice];
-data.forEach(item => {
-    console.log(item.getDetails());
-    if (item.getDogDetails) {
-        console.log(item.getDogDetails());
-    }
-});
+    constructor(public readonly id: string, public name: string,
+            public city: string, public creditLimit: number, public dogName) {
+                super();
+           }
+           getDetails() {
+               return `${this.name} has ${this.creditLimit} limit`;
+           }
+}
 
-// Declaring an optional property on an interface is done using the question mark 
-// character after the name.
+let alice = new DogOwningCustomer("ajones", "Alice Jones", "London", 500, "Fido");
+if (alice.getDogDetails) {
+    console.log(alice.getDogDetails());
+}
 
-// Defining optional interface members
-
-// Optional interface features can be defined through the interdace type without causing
-// compiler errors, but you must check to ensure that you do not recieve undefined Values
-// since objects may have been created from classes that have not implemented them.
-
+// AbstractDogOwner provides a partial implementation of the Person interface but 
+// declares the interface features that it doesnt implement as abstract, which forces
+// subclasses to implement them. There is one subclass that extends AbstractDogOwner,
+// which inherits the getDogDetails method from the abstract class.
