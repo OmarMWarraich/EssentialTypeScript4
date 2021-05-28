@@ -1,9 +1,10 @@
-// Type Guarding by Checking Properties
+// Type Guarding with a Type Predicate Function
 
-// The simplest way to differentiate between shape types is to use the JS in keyword to
-// check for a property.
+// The in keyword is a useful way to identify whether an objects conforms to a shape, but
+// it requires the same checks to be written each time types need to be identified. TS 
+// also supports guarding object types using a function.
 
-// Type Guarding
+// Type Guarding with a Function
 
 type Product = { 
     id: number,
@@ -24,25 +25,31 @@ let bob = {id: "bsmith", name: "Bob", city: "London" };
 
 let dataItems: (Product | Person )[] = [hat, gloves, umbrella, bob];
 
+function isPerson(testObj: any): testObj is Person {
+    return testObj.City !== undefined;
+}
+
 dataItems.forEach(item => {
-    if ("city" in item) {
+    if (isPerson(item)) {
         console.log(`Person: ${item.name}: ${item.city}`);        
     } else {
         console.log(`Product: ${item.name}: ${item.price}`);
     }
 })
 
-// The goal is to be able to determine each object in the array conforms to the Product
-// shape or the Person shape. These are the only types that the array can contain because
-// its type annotation is ( Product | Person )[].
+// Type guardging for objects is done with a function that uses the is keyword.
 
-//      A shape is a combination of properties, and a type guard must test for one or 
-// more properties that are included in one shape but not the other. Any object that has
-// a city property must conform to the Person shape since this property is not part of 
-// the Product shape. To create a type guard that checks for a property, the property
-// name is expressed as a string literal followed by the in keyword followed by the
-// object to test.
+// The result of the function, which is a type predicate, tells the compiler which of
+// the function's parameter is being tested and the type that the function checks for.
+// The isPerson function tests its testObj parameter for the Person type. If the result
+// of the function is true, then the TS compiler will treat the object as the specified
+// type.
 
-// The in expression returns true for objects that define the specified property and
-// false otherwise. TS compiler recognizes the significance of testing for a property
-// and infers the type within the code blocks of the if/else statement.
+// Using a function for typeguarding can be more flexible because the parameter type is 
+// any, allowing properties to be tested for without having to use string literals and 
+// the in keyword.
+
+// Tip: There are no restrictions on the name of the type guard function, but the 
+// convention is to prefix the guarded type with is, such that a function that tests for
+// the Person type is named isPerson and a function that tests for the Product type is
+// named isProduct.
