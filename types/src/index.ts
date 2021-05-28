@@ -28,7 +28,7 @@ class Supplier extends Person {
         }
     }
 
-let data = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"),
+let data:Person[] = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"),
         new Customer("ajones", "Alice Jones", "London", 500)];
 
 data.push(new Supplier("dpeters", "Dora Peters", "New York", "Acme"));
