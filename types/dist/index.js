@@ -1,10 +1,19 @@
-"use strict";
-// Using a Generic Type Parameter with a Mapped Type
-Object.defineProperty(exports, "__esModule", { value: true });
-let p = { name: "Kayak", price: 275 };
-console.log(`Mapped type: ${p.name}, ${p.price}`);
-let c = { name: "London", population: 8136000 };
-console.log(`Mapped type: ${c.name}, ${c.population}`);
-// The Mapped<T> type defines a generic type parameter named T, which is the type to be 
-// transformed. The type parameter is used in the name and type selectors, meaning that 
-// any type can be mapped using a generic type parameter. 
+// Understand Mapping For Constructors and Methods
+// Mapping operates only on properties. When applied to a class, a type mapping produces
+// a shape type that contains properties but omits the constructor and implementation of
+// methods.
+class MyClass {
+    constructor(name) {
+        this.name = name;
+    }
+    getName() {
+        return this.name;
+    }
+}
+//is mapped to the following type by the Mapping<T> type mapping in last commit.
+{
+    name: string;
+    getName: () => string;
+}
+// Type Mapping produces shapes that can be used for object literals, implemented by
+// classes, or extended by interfaces. Type Mapping does not produce a class, however.
