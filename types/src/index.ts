@@ -1,8 +1,8 @@
-// Using Generic Iterators
+// Combining an iterable and iterator
 
-// Iterators allow a sequence of values to be enumerated and support for iterators is a 
-// common feature for classes that operate on other types such as collections. TS provides
-// the interfaces for describingiterators and their results.
+// The IterableIterator<T> interface can be used to describe objects that can be iterated
+// and that also define a Symbol.iterator property. Objects that implement this interface
+// can be enumerated more elegantly.
 
 // The TypeScript Iterator Interface
 
@@ -17,7 +17,7 @@
 // IterableIterator<T.  combines Iterator<T> and Iterable<T> interfaces to describe an 
 //                        object with a symbol defining a next method and result property.
 
-//Iterating Objects
+//Using an Iterable Iterator
 
 import { City, Person, Product, Employee } from "./dataTypes";
 
@@ -45,7 +45,7 @@ class Collection<T extends shapeType> {
         return this.items.size;
     }
 
-    values(): Iterator<T> {
+    values(): IterableIterator<T> {
         return this.items.values();
     }
 }
@@ -53,16 +53,19 @@ class Collection<T extends shapeType> {
 let productCollection: Collection<Product> = new Collection(products);
 console.log(`There are ${ productCollection.count } products`);
 
-let iterator: Iterator<Product> = productCollection.values();
-let result: IteratorResult<Product> = iterator.next();
-while (!result.done) {
-    console.log(`Product: ${ result.value.name }, ${ result.value.price }`);
-    result = iterator.next();
-}
+[...productCollection.values()].forEach(p =>
+    console.log(`Product: ${p.name}, ${p.price}`));
+
+// let iterator: Iterator<Product> = productCollection.values();
+// let result: IteratorResult<Product> = iterator.next();
+// while (!result.done) {
+//     console.log(`Product: ${ result.value.name }, ${ result.value.price }`);
+//     result = iterator.next();
+// }
 
 
-// The values method defined by the Collection<T> class returns an Iterator<T>. When
-// this method is invoked on the Collection<Product> object, the iterator it returns 
-// will produce IteratorResult<Product> objects through its next method. The result
-// property of each IteratorResult<Product> object will return a Product, allowing
-// the objects managed by the collection to be iterated.
+// The values methods return an IterableIterator object, which it is able to do because the
+// result of the Map method defines all the members specified by the interface. The combined
+// interface allows the result of the values method to be iterated directly, and the listing
+// uses the spread operator to populate an array and then enumerates its contents with the
+// forEach method.
