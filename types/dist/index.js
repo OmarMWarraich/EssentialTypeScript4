@@ -1,9 +1,7 @@
 "use strict";
-// Explicitly Provide Generic Type Parameters for Index Types
+// Using the Indexed Access Operator
 Object.defineProperty(exports, "__esModule", { value: true });
-// The getValue method was invoked without generic type arguments, allowing the compiler to
-// infer the types from the function arguments. Explicitly stating the type arguments 
-// reveals an aspect of using the index type query operator taht can be confusing.
+// The indexed access operator is used to get the type from one or more properties.
 const dataTypes_1 = require("./dataTypes");
 function getValue(item, keyname) {
     console.log(`Value: ${item[keyname]}`);
@@ -14,9 +12,15 @@ getValue(p, "price");
 let e = new dataTypes_1.Employee("Bob Smith", "Sales");
 getValue(e, "name");
 getValue(e, "role");
-// It can appear as though the property that is required for the example is specified 
-// twice, but name has two different uses in the modified statement.
-// An index type and value
-// As a generic type argument, name is a literal value that specifies one of the keyof
-// Product types and is used by the TS compiler for typechecking. as a function argument,
-// name is a string value that is used by the JS runtime when the code is executed.
+// The indexed access operator is expressed using square brackets following a type so 
+// that Product["price"], e.g, is number, since that is the type of the price property
+// defined by the Product class. The indexed access operator works on literal value types,
+// which means it can be used with index type queries.
+// The keyof Product expression returns a literal value type union with the property 
+// names defined by the Product clas, "name" | "price". The indexed access operator 
+// returns the union of the types of those properties, such that Product[keyof Product]
+// is string | number, which is the union of the types of the name and price properties.
+// The types returned by the indexed access operator are known as lookup types.
+// The indexed access operator is most commonly used with generic types, which allows
+// property types to be handled safely even though the specific types that will be used
+// are unknown.
