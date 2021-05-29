@@ -1,8 +1,8 @@
-// Defining Generic Interfaces
+// Extending Generic Interfaces
 
-// Interfaces can be defined with generic type parameters, allowing functionality to be
-// defined without specifying individual types. Below an interface defined with a generic
-// type parameter.
+// Generic Interfaces can be extended just like regular interfaces, and the options for
+// dealing with its type parameters are the same as when extending a generic class. Below
+// shows a set of interfaces that extend the Collection<T> interface.
 
 import { City, Person, Product, Employee } from './dataTypes';
 
@@ -15,10 +15,16 @@ interface Collection<T extends shapeType> {
     count: number;
 }
 
-//The Collection<T> interface has a generic type parameter named T, following the same 
-// syntax used for class type parameters. The type parameter is used by the add and get
-// methods, and it has been constrained to ensure that only types that have a name
-// property can be used.
-// An interface with a generic type parameter describes a set of abstract operations but
-// doesnt specify which types they can be performed on, leaving specific types to be
-// selected by derived dinterfaces or implementation classes.
+interface SearchableCollection<T extends shapeType> extends Collection<T> {
+    find(name: string): T | undefined;
+}
+
+interface ProductCollection extends Collection<Product> {
+    sumPrices(): number;
+}
+
+interface PeopleCollection<T extends Product | Employee> extends Collection<T> {
+    getNames(): string[];
+}
+
+// No output
