@@ -1,6 +1,17 @@
 "use strict";
-// Using A Map.
+// Using Generic Iterators
 Object.defineProperty(exports, "__esModule", { value: true });
+// Iterators allow a sequence of values to be enumerated and support for iterators is a 
+// common feature for classes that operate on other types such as collections. TS provides
+// the interfaces for describingiterators and their results.
+// The TypeScript Iterator Interface
+//     Name                   Description
+//  Iterator<T>    Interface describes an iterator whose next method returns Iterator Result<T> objects.    
+// IteratorResult<T>   result produced by an iterator, with done and value properties.
+// Iterable<T>     object that has a Symbol.iterator property and that supports iteration directly.
+// IterableIterator<T.  combines Iterator<T> and Iterable<T> interfaces to describe an 
+//                        object with a symbol defining a next method and result property.
+//Iterating Objects
 const dataTypes_1 = require("./dataTypes");
 let products = [new dataTypes_1.Product("Running Shoes", 100), new dataTypes_1.Product("Hat", 25)];
 class Collection {
@@ -17,12 +28,20 @@ class Collection {
     get count() {
         return this.items.size;
     }
+    values() {
+        return this.items.values();
+    }
 }
 let productCollection = new Collection(products);
 console.log(`There are ${productCollection.count} products`);
-let p = productCollection.get("Hat");
-console.log(`Product: ${p.name}, ${p.price}`);
-// Generic classes dont have to provide generic type parameters for collections and can
-// specify concrete types instead. A Map is used to store objects using the name property
-// as a key. The name property can be used safely because it is part of the restriction 
-// applied to the type paramter named T.
+let iterator = productCollection.values();
+let result = iterator.next();
+while (!result.done) {
+    console.log(`Product: ${result.value.name}, ${result.value.price}`);
+    result = iterator.next();
+}
+// The values method defined by the Collection<T> class returns an Iterator<T>. When
+// this method is invoked on the Collection<Product> object, the iterator it returns 
+// will produce IteratorResult<Product> objects through its next method. The result
+// property of each IteratorResult<Product> object will return a Product, allowing
+// the objects managed by the collection to be iterated.
