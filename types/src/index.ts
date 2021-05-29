@@ -1,15 +1,7 @@
-// Implementing a Generic Interface
+// Restricting or Fixing the Generic Type Parameter
 
-// When a class implements a generic interface, it must implement all the interface
-// properties and methods but it has some choices about how to deal with type parameters,
-// as described in the following sections. Some of these options are similar to those
-// used when extending generic classes and interfaces.
-
-// Passing on the Generic Type Parameter
-
-// The simplest approach is to implement the interface properties and methods without 
-// changing the type parameter, creating a generic class that directly implements the
-// interface.
+// Classes can provide an in implementation of an interface that is speccific to a type 
+// or a subset of the types supported by the interface.
 
 // Implementing an Interface.
 
@@ -24,14 +16,14 @@ interface Collection<T extends shapeType> {
     count: number;
 }
 
-class ArrayCollection<DataType extends shapeType> implements Collection<DataType> {
-    private items: DataType[] = [];
+class PersonCollection implements Collection<Person> {
+    private items: Person[] = [];
 
-    add(...newItems): void {
+    add(...newItems: Person[]): void {
         this.items.push(...newItems);
     }
 
-    get(name: string): DataType {
+    get(name: string): Person {
         return this.items.find(item => item.name === name);
     }
 
@@ -40,20 +32,9 @@ class ArrayCollection<DataType extends shapeType> implements Collection<DataType
     }
 }
 
-let peopleCollection: Collection<Person> = new ArrayCollection<Person>();
+let peopleCollection: Collection<Person> = new PersonCollection();
 peopleCollection.add(new Person("Bob Smith", "London"),
     new Person("Dora Peters", "New York"));
 console.log(`Collection size: ${peopleCollection.count}`);
 
-// The ArrayCollection<DataType> class uses the implements keyword to declare that it
-// conforms to the interface. The interface has a generic type parameter, so the 
-// ArrayCollection<DataType> class must define a compatible parameter. Since the type
-// parameter for the interface is required to have a name property, so must the parameter
-// for the class.
-
-// The ArrayCollection<DataType> class requires a type argument when an object is created
-// and can be operated on through the Collection<T> interface. 
-
-// The type argument resolves the generic type for the class and the interface it 
-// implements so that an ArrayCollection<Person> object implements the Collection<Person> interface.
-
+// The PersonCollection class implements the Collection<Product> interface.
