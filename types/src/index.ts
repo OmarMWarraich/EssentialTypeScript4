@@ -1,10 +1,10 @@
-// Use Type Mapping
+// Changine Mapping Names and Types
 
-// Mapped types are created by applying a transformation to the properties of an existing
-// type. The best way to understand how mapped types work is to create one that processes
-// a type but doesnt make any changes.
+// The previous commit preserved the names and types of the properties during the
+// mapping. But type mapping is more flexible and there is support for changing both the
+// name and the type of the properties in the new type. 
 
-// Using a Mapped Type
+// Changin Mapping Names and Types
 
 import { City, Person, Product, Employee } from "./dataTypes";
 
@@ -15,18 +15,26 @@ type MappedProduct = {
 let p: MappedProduct = { name: "Kayak", price: 275 };
 console.log(`Mapped type: ${p.name}, ${p.price}`);
 
-// A type mapping is an expression that selects property names to be included in the
-// mapped type and the type for each of them.
+// The AllowStrings type is created with a mapping that creates a type union between
+// string and the property's original type.
+// result => type AllowStrings = {name: string; price: number | string;}
 
-// The property name selector defines a type parameter, named P in this example and uses
-// the in keyword to enumerate the types in a literal value union. The type union can be
-// expressed directly, such as "name" | "price", or obtained using keyof.
+type AllowStrings = {
+    [P in keyof Product] : Product[P] | string
+}
+let q: AllowStrings = { name: "Kayak", price: "apples" };
+console.log(`Changed type # 1: ${q.name}, ${q.price}`);
 
-// TS compiler creates a new property in the mapped type for each of the types in the
-// union. The type of each property is determined by the type selector, which can be 
-// obtained from the source type ussing the indexed acess operator with P as the literal
-// valae type to look up. 
+// The changeNames types is created with a mapping that alters the name of each property
+// by adding Property.
 
-// The MappedProduct type above used keyof to select the properties defined by the 
-// Product class and used the indexed type operator to get the type of each of these
-// properties.
+type ChangeNames = {
+    [P in keyof Product as `${P}Property`] : Product[P]
+}
+
+// The as keyword is combined with an expression that defines the property name. In this 
+// case a template string is used to modify the existing name, with the result that is
+//  =>  type ChangeNames {nameProperty: string;, priceProperty: number;}
+
+let r: ChangeNames = { nameProperty: "Kayak", priceProperty: 12};
+console.log(`Changed type # 2: ${r.nameProperty}, ${r.priceProperty}`);
