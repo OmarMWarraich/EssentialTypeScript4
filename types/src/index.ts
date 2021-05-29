@@ -1,23 +1,47 @@
-// Understand Mapping For Constructors and Methods
+// Changing Property Optionality and Mutability
 
-// Mapping operates only on properties. When applied to a class, a type mapping produces
-// a shape type that contains properties but omits the constructor and implementation of
-// methods.
+// Mapped types can change properties to make them optional or required and to add or remove
+// the readonly keyword.
 
-class MyClass {
+// Changing Properties in Mapped Types.
 
-    constructor(public name: string ) {}
+import { City, Person, Product,Employee } from "./dataTypes";
 
-    getName(): string { 
-        return this.name}
-}
+type MakeOptional<T> = {
+    [P in keyof T]? : T[P]
+};
 
-//is mapped to the following type by the Mapping<T> type mapping in last commit.
+type MakeRequired<T> = {
+    [P in keyof T]-? : T[P]
+};
 
-{
-    name: string;
-    getName: () => string;
-}
+type MakeReadOnly<T> = {
+    readonly [P in keyof T] : T[P]
+};
 
-// Type Mapping produces shapes that can be used for object literals, implemented by
-// classes, or extended by interfaces. Type Mapping does not produce a class, however.
+type MakeReadWrite<T> = {
+    -readonly [P in keyof T] : T[P]
+};
+
+type optionalType = MakeOptional<Product>;
+type requiredType = MakeRequired<optionalType>;
+type readOnlyType = MakeReadOnly<requiredType>;
+type readWriteType = MakeReadWrite<readOnlyType>;
+
+let p: readWriteType = { name: "Kayak", price: 275 };
+console.log(`Mapped type: ${p.name}, ${p.price}`);
+
+// ? placed after the name selector to make the properties in the mapped type optional, and
+// -? used 2 make property required. Read-only and read-write by preceding the name selector
+// with readonly and -readonly.
+
+// Mapped types change all the properties defined by the type they transform so that the
+// type produced by MakeOptional<T> when applied to the Product class, e.g., is equivalent
+// to this type =>     typeOptional = {name?: string; price?: number;}
+
+// The types produced by mappings can be fed into other mappings, creating a chain of 
+// transformations. In the listing, the type produced by the MakeOptional<T> mapping is
+// then transformed by the Makerequired<T> mapping, the output of which is then fed to the 
+// MakeReadOnly<T> mapping and the the MakeReadWrite<T> mapping. The result is that the
+// propertuies are made optional and then required and then read-only and finally read-write.
+
