@@ -1,10 +1,12 @@
 "use strict";
-// Restricting the Generic Type Parameter
+// Type Guarding Generic Types
 Object.defineProperty(exports, "__esModule", { value: true });
-// The third approach strikes a balnce between the earlier two commits, providing a generic
-// type variable but restricting it to specific types. This allows functionality that can 
-// depend on features of particular classes without fixing the type parameter completely.
-// Restricting a Type Parameter
+// The SearchableCollection<T> class last commit used the instanceof keyword to identify 
+// Employee and Person objects. This is manageable because the restriction applied to the
+// type parameters means that there are only a small number of types to deal with. For classes
+// with type parameters that are not restricted, narrowing to a specific type can be
+// difficult.
+// Narrowing a Generic Type
 const dataTypes_1 = require("./dataTypes");
 let people = [new dataTypes_1.Person("Bob Smith", "London"),
     new dataTypes_1.Person("Dora Peters", "New York")];
@@ -17,37 +19,15 @@ class DataCollection {
         this.items = [];
         this.items.push(...initalItems);
     }
-    collate(targetData, itemProp, targetProp) {
-        let results = [];
-        this.items.forEach(item => {
-            let match = targetData.find(d => d[targetProp] === item[itemProp]);
-            if (match !== undefined) {
-                results.push({ ...match, ...item });
-            }
-        });
-        return results;
+    filter() {
+        return this.items.filter(item => item instanceof V);
     }
 }
-class SearchableCollection extends DataCollection {
-    constructor(initialItems) {
-        super(initialItems);
-    }
-    find(searchTerm) {
-        return this.items.filter(item => {
-            if (item instanceof dataTypes_1.Employee) {
-                return item.name === searchTerm || item.role === searchTerm;
-            }
-            else if (item instanceof dataTypes_1.Person) {
-                return item.name === searchTerm || item.city === searchTerm;
-            }
-        });
-    }
-}
-let employeeData = new SearchableCollection(employees);
-employeeData.find("Sales").forEach(e => console.log(`Employee ${e.name}, ${e.role}`));
-// The type parameter specified by the subclass must be assignable to the type parameter
-// it inherits, meaning that only a more restrictive type can be used. Above, the 
-// Employee | Person Union can be assigned to the shape used to restrict the 
-// DataCollection<T> type parameter.
-// The find method uses the instanceof keyword to narrow objects to specific types to 
-// make property value comparisons.
+let mixedData = new DataCollection([...people, ...products]);
+let filteredProducts = mixedData.filter();
+filteredProducts.forEach(p => console.log(`Product: ${p.name}, ${p.price}`));
+// introduced a filter method that uses the instanceof keyword to select objects of a 
+// specific type from the array of data items. A DataCollection<Person | Product> object
+// is created with an array that contains a mix of Person and Product objects, and the new
+// filter method is used to select the Product objects.
+// error TS2693: 'V' only refers to a type, but is being used as a value here.
