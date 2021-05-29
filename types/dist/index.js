@@ -1,9 +1,6 @@
 "use strict";
-// Defining a Static Method on a Generic Class
+// Adding a Type Parameter
 Object.defineProperty(exports, "__esModule", { value: true });
-// Only instance properties and methods have generic type, which can be different for
-// each object. Static methods are accessed through the class.
-// Using a Type Predicate Function
 const dataTypes_1 = require("./dataTypes");
 let people = [new dataTypes_1.Person("Bob Smith", "London"),
     new dataTypes_1.Person("Dora Peters", "New York")];
@@ -31,3 +28,8 @@ let filteredProducts = mixedData.filter(isProduct);
 filteredProducts.forEach(p => console.log(`Product: ${p.name}, ${p.price}`));
 let reversedCities = DataCollection.reverse(cities);
 reversedCities.forEach(c => console.log(`City: ${c.name}, ${c.population}`));
+// The reverse method defines a type parameter that specifies the array type it processes.
+// When the method is invoked, it is done so through the DataCollection class and a type 
+// argument is provided after the method name.
+// The type parameters defined by static methods are separate from those defined by the
+// class for use by its instance properties and methods.
