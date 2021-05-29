@@ -1,8 +1,7 @@
-// Combining an iterable and iterator
+// Creating an Iterable Class
 
-// The IterableIterator<T> interface can be used to describe objects that can be iterated
-// and that also define a Symbol.iterator property. Objects that implement this interface
-// can be enumerated more elegantly.
+// Classes that define a Symbol.iterator property can implement the Iterable<T> interface,
+// which allows iteration without needing to call a method or read a property.
 
 // The TypeScript Iterator Interface
 
@@ -17,7 +16,7 @@
 // IterableIterator<T.  combines Iterator<T> and Iterable<T> interfaces to describe an 
 //                        object with a symbol defining a next method and result property.
 
-//Using an Iterable Iterator
+//Creating an Iterable clas
 
 import { City, Person, Product, Employee } from "./dataTypes";
 
@@ -25,7 +24,7 @@ let products = [new Product("Running Shoes", 100), new Product("Hat", 25)];
 
 type  shapeType = { name: string };
 
-class Collection<T extends shapeType> {
+class Collection<T extends shapeType> implements Iterable<T> {
     private items: Map<string, T>;
 
     constructor(initialItems: T[] = []) {
@@ -45,7 +44,7 @@ class Collection<T extends shapeType> {
         return this.items.size;
     }
 
-    values(): IterableIterator<T> {
+    [Symbol.iterator](): Iterator<T> {
         return this.items.values();
     }
 }
@@ -53,7 +52,7 @@ class Collection<T extends shapeType> {
 let productCollection: Collection<Product> = new Collection(products);
 console.log(`There are ${ productCollection.count } products`);
 
-[...productCollection.values()].forEach(p =>
+[...productCollection].forEach(p =>
     console.log(`Product: ${p.name}, ${p.price}`));
 
 // let iterator: Iterator<Product> = productCollection.values();
@@ -64,8 +63,6 @@ console.log(`There are ${ productCollection.count } products`);
 // }
 
 
-// The values methods return an IterableIterator object, which it is able to do because the
-// result of the Map method defines all the members specified by the interface. The combined
-// interface allows the result of the values method to be iterated directly, and the listing
-// uses the spread operator to populate an array and then enumerates its contents with the
-// forEach method.
+// The new property implements the Iterable<T> interface, indicating that it defines a 
+// Symbol.iterator property that returns an Iterator<T> object that can be used for 
+// iteration.
