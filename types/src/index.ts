@@ -1,8 +1,7 @@
-// Using a Type Predicate Function
+// Defining a Static Method on a Generic Class
 
-// In situations where objects need to be identified by type, a predicate function must
-// be used. Below a parameter added to the filter method that accepts a type predicate
-// function, which is then used to find objects of a specific type.
+// Only instance properties and methods have generic type, which can be different for
+// each object. Static methods are accessed through the class.
 
 // Using a Type Predicate Function
 
@@ -28,6 +27,10 @@ class DataCollection<T> {
     filter<V extends T>(predicate: (target) => target is V): V[] {
         return this.items.filter(item => predicate(item)) as V[];
     }
+
+    static reverse(items: any[]){
+        return items.reverse();
+    }
 }
 
 let mixedData = new DataCollection<Person | Product>([...people, ...products]);
@@ -37,6 +40,5 @@ function isProduct(target): target is Product {
 let filteredProducts = mixedData.filter<Product>(isProduct);
 filteredProducts.forEach(p => console.log(`Product: ${p.name}, ${p.price}`));
 
-// The predicate function for the required type is provided as an argument to the filter
-// method using JS features available at code execution; providing a method with the means 
-// to select the required objects.
+let reversedCities: City[] = DataCollection.reverse(cities);
+reversedCities.forEach(c => console.log(`City: ${c.name}, ${c.population}`));
