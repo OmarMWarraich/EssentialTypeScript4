@@ -1,80 +1,32 @@
-// Using an Index Type for the Collection<T> Class
+// Use Type Mapping
 
-// Using an index type allows to change the COllection<T> class so that it can store any
-// type of object and not just those that define a name property. Below shows the change
-// to the class, which uses an index type query to restrict the propertyName constructor 
-// property to the names of the properties defined by the generic type parameter T, 
-// providing the key by which objects can be stored in the Map.
+// Mapped types are created by applying a transformation to the properties of an existing
+// type. The best way to understand how mapped types work is to create one that processes
+// a type but doesnt make any changes.
+
+// Using a Mapped Type
 
 import { City, Person, Product, Employee } from "./dataTypes";
 
-let products = [new Product("Running Shoes", 100), new Product("Hat", 25)];
+type MappedProduct = {
+    [P in keyof Product] : Product[P]
+};
 
-//type shapeType = {name: string};
+let p: MappedProduct = { name: "Kayak", price: 275 };
+console.log(`Mapped type: ${p.name}, ${p.price}`);
 
-class Collection<T, K extends keyof T> implements Iterable<T> {
-    private items: Map<T[K], T>;
+// A type mapping is an expression that selects property names to be included in the
+// mapped type and the type for each of them.
 
-    constructor(initialItems: T[] = [], private propertyName: K) {
-        this.items = new Map<T[K], T>();
-        this.add(...initialItems);
-    }
+// The property name selector defines a type parameter, named P in this example and uses
+// the in keyword to enumerate the types in a literal value union. The type union can be
+// expressed directly, such as "name" | "price", or obtained using keyof.
 
-    add(...newItems:T[]):void {
-        newItems.forEach(newItem =>
-            this.items.set(newItem[this.propertyName], newItem));
-    }
+// TS compiler creates a new property in the mapped type for each of the types in the
+// union. The type of each property is determined by the type selector, which can be 
+// obtained from the source type ussing the indexed acess operator with P as the literal
+// valae type to look up. 
 
-    get(key: T[K]): T {
-        return this.items.get(key)
-    }
-
-    get count(): number {
-        return this.items.size;
-    }
-
-    [Symbol.iterator](): Iterator<T> {
-        return this.items.values();
-    }   
-}
-
-let productCollection: Collection<Product, "name">
-    = new Collection(products, "name");
-console.log(`There are ${ productCollection.count } products`);
-
-let itemByKey = productCollection.get("Hat");
-console.log(`Item: ${ itemByKey.name }, ${ itemByKey.price }`);
-
-// The class has been rewritten with an additional generic type parameter,K, that is 
-// restricted to keyof T, which is the data type of the objects stored by the collection.
-
-// The dense chains of angle and square brackets above can be difficult to make sense
-// of when you first start using index types. Following table describes the significant 
-// type and constructor parameters and the types they are resolved to for the 
-// Collection<Product, "name"> object.
-
-// The SIgnificant Types Used by the Collection<T> class
-
-//  Name                Description
-
-//   T  =  type of the objects stored in the Collection calss, provided by the first
-//         generic type argument which is Product for the object created in the listing.
-
-//   K  =  key property name, restricted to the property names defined by T. The value for
-//         this type is provided by the second generic type argument, which is name for the
-//         object created in the listing.
-
-//  T[K]=  key property, obtained using the indexed acess operator which is used to specify
-//         the key type when creating the Map Object and to restrict the type for the 
-//         parameters. This is the type of the Product.name property for the object created
-//         in the listing, which is string.
-
-// propertyName  = key property name required as a value that can be used by the JS runtime
-//               after  the TS generic type information has been removed. For the object
-//             created in the listing, this value is name, corresponding to the generic
-//             type K.
-
-// The results of the index type in above example are that any property can be used to store
-// objects and that any type of object can be stored. Next commit shows the way that 
-// Collection<T, K> class is instantiated so that the proce property is used as the key. further
-// generic type arguments omitted and compiler allowed to infer the required types.
+// The MappedProduct type above used keyof to select the properties defined by the 
+// Product class and used the indexed type operator to get the type of each of these
+// properties.
