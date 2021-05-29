@@ -1,40 +1,22 @@
-// Changine Mapping Names and Types
+// Using a Generic Type Parameter with a Mapped Type
 
-// The previous commit preserved the names and types of the properties during the
-// mapping. But type mapping is more flexible and there is support for changing both the
-// name and the type of the properties in the new type. 
+// Mapped types become more useful when they define a generic type parameter, as below,
+// which allows the transformation they describe to be applied to a broader range of types.
 
-// Changin Mapping Names and Types
+// Use a Generic Type Parameter with a Mapped Type
 
 import { City, Person, Product, Employee } from "./dataTypes";
 
-type MappedProduct = {
-    [P in keyof Product] : Product[P]
+type Mapped<T> = {
+    [P in keyof T] : T[P]
 };
 
-let p: MappedProduct = { name: "Kayak", price: 275 };
+let p: Mapped<Product> = { name: "Kayak", price: 275 };
 console.log(`Mapped type: ${p.name}, ${p.price}`);
 
-// The AllowStrings type is created with a mapping that creates a type union between
-// string and the property's original type.
-// result => type AllowStrings = {name: string; price: number | string;}
+let c: Mapped<City> = { name: "London", population: 8136000};
+console.log(`Mapped type: ${c.name}, ${c.population}`);
 
-type AllowStrings = {
-    [P in keyof Product] : Product[P] | string
-}
-let q: AllowStrings = { name: "Kayak", price: "apples" };
-console.log(`Changed type # 1: ${q.name}, ${q.price}`);
-
-// The changeNames types is created with a mapping that alters the name of each property
-// by adding Property.
-
-type ChangeNames = {
-    [P in keyof Product as `${P}Property`] : Product[P]
-}
-
-// The as keyword is combined with an expression that defines the property name. In this 
-// case a template string is used to modify the existing name, with the result that is
-//  =>  type ChangeNames {nameProperty: string;, priceProperty: number;}
-
-let r: ChangeNames = { nameProperty: "Kayak", priceProperty: 12};
-console.log(`Changed type # 2: ${r.nameProperty}, ${r.priceProperty}`);
+// The Mapped<T> type defines a generic type parameter named T, which is the type to be 
+// transformed. The type parameter is used in the name and type selectors, meaning that 
+// any type can be mapped using a generic type parameter. 
