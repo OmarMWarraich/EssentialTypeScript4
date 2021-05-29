@@ -1,12 +1,10 @@
-// Type Guarding Generic Types
+// Using a Type Predicate Function
 
-// The SearchableCollection<T> class last commit used the instanceof keyword to identify 
-// Employee and Person objects. This is manageable because the restriction applied to the
-// type parameters means that there are only a small number of types to deal with. For classes
-// with type parameters that are not restricted, narrowing to a specific type can be
-// difficult.
+// In situations where objects need to be identified by type, a predicate function must
+// be used. Below a parameter added to the filter method that accepts a type predicate
+// function, which is then used to find objects of a specific type.
 
-// Narrowing a Generic Type
+// Using a Type Predicate Function
 
 import { City, Person, Product, Employee } from './dataTypes';
 
@@ -27,18 +25,18 @@ class DataCollection<T> {
         this.items.push(...initalItems);
     }
 
-    filter<V extends T>(): V[] {
-        return this.items.filter(item => item instanceof V) as V[];
+    filter<V extends T>(predicate: (target) => target is V): V[] {
+        return this.items.filter(item => predicate(item)) as V[];
     }
 }
 
 let mixedData = new DataCollection<Person | Product>([...people, ...products]);
-let filteredProducts = mixedData.filter<Product>();
+function isProduct(target): target is Product {
+    return target instanceof Product;
+}
+let filteredProducts = mixedData.filter<Product>(isProduct);
 filteredProducts.forEach(p => console.log(`Product: ${p.name}, ${p.price}`));
 
-// introduced a filter method that uses the instanceof keyword to select objects of a 
-// specific type from the array of data items. A DataCollection<Person | Product> object
-// is created with an array that contains a mix of Person and Product objects, and the new
-// filter method is used to select the Product objects.
-
-// error TS2693: 'V' only refers to a type, but is being used as a value here.
+// The predicate function for the required type is provided as an argument to the filter
+// method using JS features available at code execution; providing a method with the means 
+// to select the required objects.
