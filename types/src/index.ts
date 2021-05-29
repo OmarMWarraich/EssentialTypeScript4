@@ -1,13 +1,16 @@
-// Restricting or Fixing the Generic Type Parameter
+// Creating an Abstract Interface Implementation
 
-// Classes can provide an in implementation of an interface that is speccific to a type 
-// or a subset of the types supported by the interface.
+// An abstract class can provide a partial implementation of an interface, which can be
+// completed by subclasses. The abstract class has the same set of options for dealing 
+// with type parametrs as regular classes: pass it on to subclasses unchanged, apply further
+// restrictions or fix for specific types. Below shows an abstract class passed on the 
+// interface's generic type argument.
 
-// Implementing an Interface.
+// Defining an Abstract Class.
 
-import { City, Person, Product, Employee } from './dataTypes';
+import { City, Person, Product, Employee } from "./dataTypes";
 
-type shapeType = { name: string };
+type  shapeType = { name: string };
 
 interface Collection<T extends shapeType> {
 
@@ -16,25 +19,51 @@ interface Collection<T extends shapeType> {
     count: number;
 }
 
-class PersonCollection implements Collection<Person> {
-    private items: Person[] = [];
+abstract class ArrayCollection<T extends shapeType> implements Collection<T> {
+    protected items: T[] = [];
 
-    add(...newItems: Person[]): void {
+    add(...newItems: T[]): void {
         this.items.push(...newItems);
-    }
-
-    get(name: string): Person {
-        return this.items.find(item => item.name === name);
-    }
-
+    }    
+    
+    abstract get(searchTerm: string): T;
+        
     get count(): number {
         return this.items.length;
     }
 }
 
-let peopleCollection: Collection<Person> = new PersonCollection();
-peopleCollection.add(new Person("Bob Smith", "London"),
-    new Person("Dora Peters", "New York"));
-console.log(`Collection size: ${peopleCollection.count}`);
+class ProductCollection extends ArrayCollection<Product> {
 
-// The PersonCollection class implements the Collection<Product> interface.
+    get(searchTerm: string): Product {
+        return this.items.find(item => item.name === searchTerm);
+    }
+}
+
+class PersonCollection extends ArrayCollection<Person> {
+
+    get(searchTerm: string): Person {
+        return this.items.find(item => 
+            item.name === searchTerm || item.city === searchTerm);        
+    }
+}
+
+let peopleCollection: Collection<Person> = new PersonCollection();
+peopleCollection.add(new Person("Bob Smith", "London"), 
+    new Person("Dora Peters", "New York"));
+let productCollection: Collection<Product> = new ProductCollection();
+productCollection.add(new Product("Running Shoes", 100), new Product("Hat", 25));
+[peopleCollection, productCollection].forEach(c => console.log(`Size: ${c.count}`));
+
+// The ArrayCollection<T> class is abstract and provides a partial implementation of the 
+// Collection<T> interface, leaving subclasses to provide the get method. The 
+// ProductCollection and PersonCollection classes extend ArrayCollection<T>, narrowing
+// the generic type parameter to specify types and impementing the get method to use the 
+// properties of the type they operate on.
+
+
+
+
+
+
+
