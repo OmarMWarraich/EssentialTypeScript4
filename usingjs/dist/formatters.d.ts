@@ -5,4 +5,3 @@ export function sizeFormatter(thing: any, count: any): void;
  * @param { number | string } cost - the value associated with the item
  */
 export function costFormatter(thing: string, cost: number | string): void;
-export function writeMessage(message: any): void;
