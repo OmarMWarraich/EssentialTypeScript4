@@ -14,10 +14,9 @@ cart.addProduct(hat, 2);
 formatters_1.sizeFormatter("Cart", cart.itemCount);
 formatters_1.costFormatter("Cart", `${cart.totalPrice}`);
 formatters_1.writeMessage("Test Message");
-// The compiler will process the changes to the index.ts file when they are saved and report
-// the following error:
-// src/index.ts: error TS2305: module '"usingjs/src/formatters"' has no exported
-// member 'writeMessage'.
+// The compiler relies entirely on the type declaration file to describe the contents of 
+// the formatters module. A declaration statement in the formatters.d.ts is required to
+// make the writeMessage function visible to the compiler.
 // The compiler relies entirely on the type declaration file to describe the contents of 
 // the formatters module. A declaration statement in the formatters.d.ts is required to
 // make the writeMessage function visible to the compiler.
