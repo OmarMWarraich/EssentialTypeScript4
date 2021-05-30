@@ -1,10 +1,27 @@
-// Using the Wrong type in src/index.ts
+// Using Packages that Include Type Declarations
 
+// As TS has become more popular, packages have started to include declaration files so
+// that no additional downloads are required. The easiest way to see whether a project 
+// includes a declaration file is to install the package and look in the node_modules
+// folder. As a demo, open a new command prompt, navigate to the usingjs folder,add pkg.
+
+// npm install chalk@4.1.0
+
+// The Chalk package provides styles for console output. Examine the contents of the
+// node_modules/chalk folder, and you will see that it contains a types folder with an
+// index.d.ts file. The node_modules/chalk/package.json file contains a types property
+// that tells the TypeScript compiler where to find the declaration file.
+//...
+//"types": "types/index.d.ts",
+//...
+
+// Adding Statements in src/index.ts
 
 import { SportsProduct, SPORT } from './product';
 import { Cart } from './cart';
 import { sizeFormatter, costFormatter, writeMessage } from "./formatters";
 import debug from "debug";
+import chalk from "chalk";
 
 let kayak = new SportsProduct(1, "Kayak", 275, SPORT.Watersports);
 let hat = new SportsProduct(2, "Hat", 22.10, SPORT.Running, SPORT.Watersports);
@@ -14,29 +31,20 @@ let cart = new Cart("Bob");
 cart.addProduct(kayak, 1);
 cart.addProduct(hat, 1);
 cart.addProduct(hat, 2);
-writeMessage("Test Message");
-
-
-// The compiler relies entirely on the type declaration file to describe the contents of 
-// the formatters module. A declaration statement in the formatters.d.ts is required to
-// make the writeMessage function visible to the compiler.
-
-// The compiler relies entirely on the type declaration file to describe the contents of 
-// the formatters module. A declaration statement in the formatters.d.ts is required to
-// make the writeMessage function visible to the compiler.
 
 sizeFormatter("Cart", cart.itemCount);
 costFormatter("Cart", `${cart.totalPrice}`);
 
-let db = debug("Example App");
-db.enabled = true;
-db("Message:%o", "Test message");
+console.log(chalk.greenBright("Formatted message"));
+console.log(chalk.notAColor("Formatted message"));
 
-// The TS compiler will locate the declaration file because pure JS doesnt require the no. 
-// of arguments used to invoke a function matches the no. of parameters it defines. 
+// One of the features provided by the Chalk package is coloring for text written to the
+// console. The first statement tells Chalk to apply the greenBright color, and the 
+// second statement uses a nonexistent property. When the changes to the index.ts file
+// are saved, the compiler will use the declaration file and report the following error:
 
-// You dont have to create a deliberate error to check that the compiler has found the 
-// declaration file. Instead, open a new comman propmpt, navigate to the usingjs folder,
-// and run the command below.
+// src/index.ts(20,19): error TS2339: Property 'notAColor' does not exist on type 
+// 'Chalk & { supportsColor: ColorSupport; }'. 
 
-// tsc --traceResolution
+// To enable the compiler support for importing the functionality from the Chalk package,
+// add the config settings.
