@@ -1,23 +1,20 @@
 "use strict";
-// Inferring the Array Type
+// Inferring Types f Functions
 Object.defineProperty(exports, "__esModule", { value: true });
+// The compiler can also infer types in generic types that accept functions.
 const dataTypes_1 = require("./dataTypes");
-function getValue(data, propName) {
-    if (Array.isArray(data)) {
-        return data[0][propName];
-    }
-    else {
-        return data[propName];
-    }
+function processArray(data, func) {
+    return data.map(item => func(item));
 }
+let selectName = (p) => p.name;
 let products = [new dataTypes_1.Product("Kayak", 275), new dataTypes_1.Product("Lifejacket", 48.95)];
-console.log(`Array Value: ${getValue(products, "price")}`);
-console.log(`Single Total: ${getValue(products[0], "price")}`);
-// Types are inferred with the infer keyword and they introduce a generic type whose
-// type will be inferred by the compiler when the conditional type is resolved.
-// Above, the type U is inferred if T is an array. The type of U is inferred by the 
-// compiler from the generic type parameter T when the type is resolved. The effect is
-// that the type of targetKeys<Product> and targetKeys<Product[]> both produce the
-// "name" | "price" union. The conditional type can be employed to constrain the 
-// property of the getValue<T, P> function, providing consistent typing for btoh single
-// objects and arrays.
+let names = processArray(products, selectName);
+names.forEach(name => console.log(`Name: ${name}`));
+// The Result<T> conditional type uses the infer keyword to obtain the result type for
+// a function that accepts an object of type T and produces an any result. The use of 
+// type inference allows functions that process a specific type to be used while ensuring
+// that the result of the processArray function is a specific type, based on the result 
+// of the function provided for the func parameter. The selectName function returns the
+// string value of the name property of a Product object, and the inference means that
+// Result<(...args:Product[]) => string)> is correctly identified as string, allowing the
+// processArray function to return a string[] result. 

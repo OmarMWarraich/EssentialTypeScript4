@@ -1,28 +1,27 @@
-// Inferring the Array Type
+// Inferring Types f Functions
+
+// The compiler can also infer types in generic types that accept functions.
 
 import { City, Person, Product, Employee } from './dataTypes';
 
-type targetKeys<T> = T extends (infer U)[] ? keyof U: keyof T;
+type Result<T> = T extends (...args: any) => infer R ? R : never;
 
-
-function getValue<T, P extends targetKeys<T>>(data: T, propName: P): T[P] {
-    if (Array.isArray(data)) {
-        return data[0][propName];
-    } else {
-        return data[propName];
-    }
-}
+function processArray<T, 
+        Func extends (T) => any>(data: T[], func: Func): Result<Func>[] {
+            return data.map(item => func(item));
+        }
+let selectName = (p: Product) => p.name;
 
 let products = [new Product("Kayak", 275), new Product("Lifejacket", 48.95)];
-console.log(`Array Value: ${getValue(products, "price")}`);
-console.log(`Single Total: ${getValue(products[0], "price")}`);
 
-// Types are inferred with the infer keyword and they introduce a generic type whose
-// type will be inferred by the compiler when the conditional type is resolved.
+let names: string[] = processArray(products, selectName);
+names.forEach(name => console.log(`Name: ${name}`));
 
-// Above, the type U is inferred if T is an array. The type of U is inferred by the 
-// compiler from the generic type parameter T when the type is resolved. The effect is
-// that the type of targetKeys<Product> and targetKeys<Product[]> both produce the
-// "name" | "price" union. The conditional type can be employed to constrain the 
-// property of the getValue<T, P> function, providing consistent typing for btoh single
-// objects and arrays.
+// The Result<T> conditional type uses the infer keyword to obtain the result type for
+// a function that accepts an object of type T and produces an any result. The use of 
+// type inference allows functions that process a specific type to be used while ensuring
+// that the result of the processArray function is a specific type, based on the result 
+// of the function provided for the func parameter. The selectName function returns the
+// string value of the name property of a Product object, and the inference means that
+// Result<(...args:Product[]) => string)> is correctly identified as string, allowing the
+// processArray function to return a string[] result. 
