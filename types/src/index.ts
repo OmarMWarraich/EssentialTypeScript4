@@ -1,52 +1,25 @@
-// Using the Basic Built-in Mappings
+// Mapping Specific Properties
 
-// TS provides built-in mapped types, some of which correspond to the transformations 
-// below and some that are described later. Earlier commit namely Change Mappings 
-// Names and types(3rd last commit), describes the basic built-in mappings.
+// The index type query for a mapped type can be expressed as a generic type parameter,
+// which can then be used to select specific properties to map by name.
 
-// The Basic Type Mappings
-
-//   Name                   Description
-
-// Partial<T>  -- Makes properties optional.
-// Required<T> -- Makes properties required.
-// Readonly<T> -- adds the readonly keyword to properites.
-// Pick<T, K>  -- selects specific properties to create a new type.
-//                  (as described in "Mapping Specific Properties" section)
-// Omit<T, Key>-- selects specific properties to create a new type.
-//                  (as described in "Mapping Specific Properties" section)
-// Record<T, K>-- creates a type without transforming an existing one.
-///                 (as described in "Creating Types with a Type Mapping" section)
-
-// There is no built-in mapping to remove the readonly keyword, but below commit replaces
-// the custom mappings with TS provided mappings.
-
-// Using built-in mappings
+// Map Specific Properties.
 
 import { City, Person, Product,Employee } from "./dataTypes";
 
-// type MakeOptional<T> = {
-//     [P in keyof T]? : T[P]
-// };
-
-// type MakeRequired<T> = {
-//     [P in keyof T]-? : T[P]
-// };
-
-// type MakeReadOnly<T> = {
-//     readonly [P in keyof T] : T[P]
-// };
-
-type MakeReadWrite<T> = {
-    -readonly [P in keyof T] : T[P]
+type SelectProperties<T, K extends keyof T> = {
+    [P in K]: T[P]
 };
 
-type optionalType = Partial<Product>;
-type requiredType = Required<optionalType>;
-type readOnlyType = Readonly<requiredType>;
-type readWriteType = MakeReadWrite<readOnlyType>;
+let p1: SelectProperties<Product, "name"> = { name: "Kayak" };
+let p2: Pick<Product, "name"> = { name: "Kayak"};
+let p3: Omit<Product, "price"> = { name: "Kayak" };
+console.log(`Custom mapped type: ${p1.name}`);
+console.log(`Built-in mapped type (Pick): ${p2.name}`);
+console.log(`Built-in mapped type (Omit): ${p3.name}`);
 
-let p: readWriteType = { name: "Kayak", price: 275 };
-console.log(`Mapped type: ${p.name}, ${p.price}`);
-
-// The built-in mappings have the same effect as the ones in previous commit.
+// The SelectProperties mapping defines an additional generic type parameter named K that
+// is restricted using keyof so that only types that correspond to properties defined by
+// the type parameter can be specified. The new type parameter is used in the mapping's 
+// name selector, with the result that individual properties cn be selected for inclusion
+// in the mapped type. all 3 results "Kayak"
