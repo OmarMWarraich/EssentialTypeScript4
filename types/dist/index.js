@@ -1,45 +1,47 @@
 "use strict";
-// Using Conditional Types in Generic Classes
+// Using Conditional Types with Type Unions
 Object.defineProperty(exports, "__esModule", { value: true });
-// Conditional types can be used to express the relationship between a method or function's
-// paramter types and the results it produces. This is a more concise alternative to 
-// the function type overloading.
-// Use Conditional Types in Generic Classes
+// Conditional Types can be used to filter type unions, allowing types to be easily selected
+// or excluded from the set that the union contains.
+// Filtering a Type Union
 const dataTypes_1 = require("./dataTypes");
-class Collection {
-    constructor(...initialItems) {
-        this.items = initialItems || [];
-    }
-    total(propName, format) {
-        let totalValue = this.items.reduce((t, item) => t += Number(item[propName]), 0);
-        return format ? `$${totalValue.toFixed()}` : totalValue;
-    }
+function FilterArray(data, predicate) {
+    return data.filter(item => !predicate(item));
 }
-let data = new Collection(new dataTypes_1.Product("Kayak", 275), new dataTypes_1.Product("Life Jacket", 48.95));
-let firstVal = data.total("price", true);
-console.log(`Formatted value: ${firstVal}`);
-let secondVal = data.total("price", false);
-console.log(`Unformatted value: ${secondVal}`);
-// The Collection<T> class uses an array to store objects whose type is specified by the
-// generic type parameter named T. The total method defiens two generic type parameters: P,
-// which specifies a property to use to create a total, and U, which specifies whether the 
-// result should be formatted. The result of the total method is a conditional type, which
-// is resolved using the value provided for the type parameter U.
+let dataArray = [new dataTypes_1.Product("Kayak", 275), new dataTypes_1.Person("Bob", "London"),
+    new dataTypes_1.Product("Lifejacket", 27.50)];
+function isProduct(item) {
+    return item instanceof dataTypes_1.Product;
+}
+let filteredData = FilterArray(dataArray, isProduct);
+filteredData.forEach(item => console.log(`Person: ${item.name}`));
+// when conditional type provided with type union, TS compiler distributes the condition
+// over each type in the union, creating what is known as a distributive conditional 
+// type. This effect is applied when a conditional type is used like a type union, like this
+// e.g.,
 //...
-//total<P extends keyof T, U extends boolean>(propName: P, format: U): resultType<U>{}
+// type filteredUnion = Filter<Product } Person, Product>
 //...
-//The use of the conditional type means that the result of the total method is determined
-// by the argument provided for the type paramter U. Since the compiler can infer U from
-// the value provided for the argument format, the method can be invoked like this.
+// TS compiler applies the conditional type to each type in the union separately and then
+// create a union of the result like this:...
 //...
-//let firstVal: string = data.total("price", true);
+//  type filteredUnion = Filter<Product | Person, Product>
 //...
-// When arg 4 format param is true, the conditional type resolves to set the result type
-// of the total method to string. This matches the data type produced by method implementation.
+//  TS compiler applies conditional type to each type in the union separately and then
+// create a union of the results like this.
 //...
-// return format ? `$${totalValue.toFixed()}` : totalValue as any;
+//   type filteredUnion = Filter<Product, Product> | Filter<Person, Product>
 //...
-// When arg 4 format param is false,the conditional type resolves to set the result type
-// of the total method to number.allowing the method to rtrn da unformatted value number.
+//   The Filter<T, U> conditional type evaluates to never when the first type parameter
+// is the same as the second, producing this result:
 //...
-// return format ? `$${totalValue.toFixed()}` : totalValue as any;
+//   type filterdUnion = never | Person
+//...
+//   It isnt possible to have a union with never, so the compiler omits it from the union,
+//   with the result that Filter<Product | Person, Product> is equivalent to this type.
+//...
+//   type filteredUnion = Person
+//...
+//   The conditional type filters out any type that cannot be assigned to Person and returns
+// the remaining types in the Union. The FilterArray<T, U> method does the work of filtering
+// an array using a predicate function and returns the FilterArray<T, U> type. result: Bob
