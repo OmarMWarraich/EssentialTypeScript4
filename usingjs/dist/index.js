@@ -12,5 +12,5 @@ cart.addProduct(hat, 1);
 cart.addProduct(hat, 2);
 formatters_1.sizeFormatter("Cart", cart.itemCount);
 formatters_1.costFormatter("Cart", cart.totalPrice);
-console.log(`Cart has ${cart.itemCount} items`);
-console.log(`cart value is $${cart.totalPrice.toFixed(2)}`);
+// console.log(`Cart has ${cart.itemCount} items`);
+// console.log(`cart value is $${cart.totalPrice.toFixed(2)}`);
