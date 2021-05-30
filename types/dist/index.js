@@ -1,23 +1,50 @@
 "use strict";
-// Using Conditional Types in Type Mappings
+// Identify Properties of a Specific Type
 Object.defineProperty(exports, "__esModule", { value: true });
-// Conditional Types can be combined with type mappings, allowing different transformations
-// to be applied to the properties in a type, which can provide greater flexibility than using
-// either feature alone. 
-// Type Mapping with a Conditional Type
+// A common requirement is to limit a type parameter so that it can be used only to 
+// specify a property that has a specific type. e.g., the Collection<T> class earlier 
+// somewhere defined a total method that accepts a property name and that should be
+// restricted dto number properties. 
+// Identifying Properties
 const dataTypes_1 = require("./dataTypes");
-function convertProduct(p) {
-    return { name: p.name, price: `$${p.price.toFixed(2)}` };
+function total(data, propName) {
+    return data.reduce((t, item) => t += Number(item[propName]), 0);
 }
-let kayak = convertProduct(new dataTypes_1.Product("Kayak", 275));
-console.log(`Product: ${kayak.name}, ${kayak.price}`);
-// The changeProps<T, U, V> mapping slects the properties of type U and changes them to
-// type V in the mapped type. This statement applies the mapping to the Product class,
-// specifying that number properties should be made into string properties.
+let products = [new dataTypes_1.Product("Kayak", 275), new dataTypes_1.Product("Lifejacket", 48.95)];
+console.log(`Total: ${total(products, "price")}`);
+// method 4 identifying props is unusual, 2 steps
 //...
-//  type modifiedProduct = changeProp<Product, number, string>;
+// type unionOfTypeNames<T, U> = {
+//    [P in keyof T] : T[P] extends U ? P : never;
+//};
+// conditional statement checks the type of each property. if a property doesnt have the
+// target type, then its type is changed to never. If a property does have the expected
+// type, then its type is changed to the literal value that i s the property name. mapping
+// unionof...
 //...
-//   the mapped type defines names and prices propserties, both of which are typed as string,
-// The modifiedProduct type is used as the result of the convertProduct function, which
-// accepts a Product objects and returns an object that conforms to the shape of the mapped
-// type by formatting the proce property. 
+//  { name: never , price: "price"}
+// this odd mapped type provides the input to the second stage in the process ,which is
+// to use the indexed access operator to get a union of the types of the properties
+// defined by the mapped type.
+//...
+//   type propertiesOfType<T, U> = unionOfTypeNames<T, U>[keyof T];
+//...
+// For the mapped type created by unionOfTypeNames<Product, number>, the indexed access
+// operator produces the following union:
+//...
+//   never | "price"
+//...
+// never i sautomatically removed from unions, leaving a union of literal value types 
+// that are the properties of the required type. The union of property names can then be 
+// used to restrict generic type parameters.
+//...
+//   function total<T, P extends propertiesOfType<T, number>>(data: T[],
+//           propName: P): number {
+//      return data.reduce((t, item) => t += Number(item[propName]), 0)}
+//...
+// The propName parameter of the total function can be used only with the names of the
+// number properties in the type T.
+//...
+//   console.log(`Total: ${total(products, "price")}`);
+//...
+//   flexibility of TS but unusual steps reqd 2 achieve specific effect.
