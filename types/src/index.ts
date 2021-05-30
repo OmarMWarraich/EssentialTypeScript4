@@ -1,56 +1,33 @@
-// Using Conditional Types with Type Unions
+// Using Conditional Types in Type Mappings
 
-// Conditional Types can be used to filter type unions, allowing types to be easily selected
-// or excluded from the set that the union contains.
+// Conditional Types can be combined with type mappings, allowing different transformations
+// to be applied to the properties in a type, which can provide greater flexibility than using
+// either feature alone. 
 
-// Filtering a Type Union
+// Type Mapping with a Conditional Type
 
 import { City, Person, Product, Employee } from './dataTypes';
 
-type Filter<T, U> = T extends U ? never : T;
+type changeProps<T, U, V> ={
+    [P in keyof T]: T[P] extends U ? V: T[P]
+};
 
-function FilterArray<T, U>(data: T[],
-        predicate: (item) => item is U): Filter<T, U>[]{
-            return data.filter(item => !predicate(item)) as any;
-        }
+type modifiedProduct = changeProps<Product, number, string>;
 
-let dataArray = [new Product("Kayak", 275), new Person("Bob", "London"),
-    new Product("Lifejacket", 27.50)];
-
-function isProduct(item: any): item is Product {
-    return item instanceof Product;
+function convertProduct(p: Product): modifiedProduct {
+    return { name: p.name, price: `$${p.price.toFixed(2)}`};
 }
 
-let filteredData: Person[] = FilterArray(dataArray, isProduct);
-filteredData.forEach(item => console.log(`Person: ${item.name}`));
+let kayak = convertProduct(new Product("Kayak", 275));
+console.log(`Product: ${kayak.name}, ${kayak.price}`);
 
-// when conditional type provided with type union, TS compiler distributes the condition
-// over each type in the union, creating what is known as a distributive conditional 
-// type. This effect is applied when a conditional type is used like a type union, like this
-// e.g.,
+// The changeProps<T, U, V> mapping slects the properties of type U and changes them to
+// type V in the mapped type. This statement applies the mapping to the Product class,
+// specifying that number properties should be made into string properties.
 //...
-// type filteredUnion = Filter<Product } Person, Product>
+//  type modifiedProduct = changeProp<Product, number, string>;
 //...
-// TS compiler applies the conditional type to each type in the union separately and then
-// create a union of the result like this:...
-//...
-//  type filteredUnion = Filter<Product | Person, Product>
-//...
-//  TS compiler applies conditional type to each type in the union separately and then
-// create a union of the results like this.
-//...
-//   type filteredUnion = Filter<Product, Product> | Filter<Person, Product>
-//...
-//   The Filter<T, U> conditional type evaluates to never when the first type parameter
-// is the same as the second, producing this result:
-//...
-//   type filterdUnion = never | Person
-//...
-//   It isnt possible to have a union with never, so the compiler omits it from the union,
-//   with the result that Filter<Product | Person, Product> is equivalent to this type.
-//...
-//   type filteredUnion = Person
-//...
-//   The conditional type filters out any type that cannot be assigned to Person and returns
-// the remaining types in the Union. The FilterArray<T, U> method does the work of filtering
-// an array using a predicate function and returns the FilterArray<T, U> type. result: Bob
+//   the mapped type defines names and prices propserties, both of which are typed as string,
+// The modifiedProduct type is used as the result of the convertProduct function, which
+// accepts a Product objects and returns an object that conforms to the shape of the mapped
+// type by formatting the proce property. 
