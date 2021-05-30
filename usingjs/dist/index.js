@@ -13,12 +13,11 @@ cart.addProduct(hat, 1);
 cart.addProduct(hat, 2);
 formatters_1.sizeFormatter("Cart", cart.itemCount);
 formatters_1.costFormatter("Cart", `${cart.totalPrice}`);
-// The new statement invokes the costFormatter function with two string arguments. The TS
-// compiler doesnt understand this will cause a problem and cimpiles the code without
-// error. But when the code is executed, the costFormatter function invokes the toFixed 
-// method without checking that it has recieved a number value, causing the following
-// runtime error:
-// TypeError: cost.toFixed is not a function.
-// issue resolution following two commits by providing the compiler with type information
-// that describes the JS code so that its use can be checked during compilation. 2 approaches
-// to describe types in JS code.
+formatters_1.writeMessage("Test Message");
+// The compiler will process the changes to the index.ts file when they are saved and report
+// the following error:
+// src/index.ts: error TS2305: module '"usingjs/src/formatters"' has no exported
+// member 'writeMessage'.
+// The compiler relies entirely on the type declaration file to describe the contents of 
+// the formatters module. A declaration statement in the formatters.d.ts is required to
+// make the writeMessage function visible to the compiler.

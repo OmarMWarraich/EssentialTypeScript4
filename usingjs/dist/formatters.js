@@ -1,7 +1,7 @@
 "use strict";
-// Using comments to describe a Type Union
+// Exporting a Function in the formatters.js File in the src Folder
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.costFormatter = exports.sizeFormatter = void 0;
+exports.writeMessage = exports.costFormatter = exports.sizeFormatter = void 0;
 //@ts-nocheck   
 function sizeFormatter(thing, count) {
     writeMessage(`The ${thing} has ${count} items`);
@@ -24,7 +24,4 @@ exports.costFormatter = costFormatter;
 function writeMessage(message) {
     console.log(message);
 }
-// The costFormatter function has been modified so that it can accept number and string
-// values for its cost parameter, which is reflected in the updated JSDoc comment, which
-// specified the type as number | string. When the changes are saved, the code will be 
-// compiled and the following output will be produces.
+exports.writeMessage = writeMessage;

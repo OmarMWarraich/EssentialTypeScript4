@@ -1,4 +1,4 @@
-// Using comments to describe a Type Union
+// Exporting a Function in the formatters.js File in the src Folder
 
 //@ts-nocheck   
 
@@ -22,11 +22,7 @@ export function costFormatter(thing, cost) {
     
 }
 
-function writeMessage(message) {
+export function writeMessage(message) {
     console.log(message);
 }
 
-// The costFormatter function has been modified so that it can accept number and string
-// values for its cost parameter, which is reflected in the updated JSDoc comment, which
-// specified the type as number | string. When the changes are saved, the code will be 
-// compiled and the following output will be produces.
