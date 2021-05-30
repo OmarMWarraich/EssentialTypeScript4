@@ -1,34 +1,46 @@
-// Create Types with a Type Mapping
+// Use Conditional Types
 
-// The final feature provided by type mappings is the ability to create new types, rather
-// than transform a specific one. Below shows the basic use of this feature, which creates
-// a type that contains name and city properties.
+// Conditional types are expressions containing generic type parameters that are 
+// evaluated to select new types. Below a basic conditional type.
 
-// Creating a Type.
+// Using a Conditional Type.
 
 import { City, Person, Product,Employee } from "./dataTypes";
 
-type CustomMapped<K extends keyof any, T> = {
-    [P in K]: T
-};
+type resultType<T extends boolean> = T extends true ? string : number;
+
+let firstVal: resultType<true> = "String Value";
+let secondVal: resultType<false> = 100;
+
+let mismatchCheck: resultType<false> = "String Value";
+
+// Conditional Types have a generic type parameter and a ternary expression that 
+// selects a result type.
+
+// A conditional type is a placeholder for one of its result types, which isnt chosen
+// until the generic type parameter is used, which allows the expression to be 
+// evaluated using one of the result types selected.
+
+// Above, the resultType<T> conditional type is a placeholder for the string and number
+// types, meaning that the argument for the generic type T will determine whether the 
+// conditional type resolves to string or number. The generic type parameter T is 
+// restricted so that it can only accept boolean values, and the expression will evaluate
+// as true if the argument provided for T is the literal value type true. The result is 
+// that resultType<T> resolves to string when T is true.
+// ...
+// let firstVal: resultType<true> = "String Value";
+// let stringTypeCheck: string = firstVal;
+// ...
+// The compiler resolves the conditional type and knows that the type annotation for 
+// firstVal resolves to string, allowing a string literal value to be assigned to firstVal.
+// When the generic type argument is false, the conditional type resolves to number.
+
+// ...
+// let secondVal: resultType<false> = 100;
+// let numberTypeCheck: number = secondVal;
+
+// The compiler enforces type safety with conditional types. Final statement: conditional
+// type resolves to number but is assigned a string value producing compiler error;
+// TS2322: Type 'String Value' is not assignable to type 'number'.
 
 
-
-let p1: CustomMapped<"name" | "city", string> = { name: "Bob", city: "London" };
-let p2: Record<"name" | "city", string > = { name: "Alice", city: "Paris" };
-
-console.log(`Custom mapped type: ${p1.name}, ${p1.city}`);
-console.log(`Built-in mapped type (Pick): ${p2.name}, ${p2.city}`);
-
-// The first generic type parameter is restricted using keyof any, which means that a
-// literal value type union can be specified and that it can contain the property names
-// required for the new type. The second generic type parameter is used to specify the
-// type for the properties that are created and is used like this.
-// let p1: CustomMapped<"name" | "city", string> = { name: "Bob", city: "London" };
-
-// The mapping produces a type with two string properties: name and city. TS provides
-// the builtin Record mapping, which performs the same task.
-// let p2: Record<"name"| "city", string> = { name: "Alice", city: "Paris"};
-
-//Mappings are more flexible than they might appear and that literal value types restricted
-// by keyof any can accept any combination of property names.
