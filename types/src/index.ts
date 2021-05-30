@@ -1,47 +1,52 @@
-// Changing Property Optionality and Mutability
+// Using the Basic Built-in Mappings
 
-// Mapped types can change properties to make them optional or required and to add or remove
-// the readonly keyword.
+// TS provides built-in mapped types, some of which correspond to the transformations 
+// below and some that are described later. Earlier commit namely Change Mappings 
+// Names and types(3rd last commit), describes the basic built-in mappings.
 
-// Changing Properties in Mapped Types.
+// The Basic Type Mappings
+
+//   Name                   Description
+
+// Partial<T>  -- Makes properties optional.
+// Required<T> -- Makes properties required.
+// Readonly<T> -- adds the readonly keyword to properites.
+// Pick<T, K>  -- selects specific properties to create a new type.
+//                  (as described in "Mapping Specific Properties" section)
+// Omit<T, Key>-- selects specific properties to create a new type.
+//                  (as described in "Mapping Specific Properties" section)
+// Record<T, K>-- creates a type without transforming an existing one.
+///                 (as described in "Creating Types with a Type Mapping" section)
+
+// There is no built-in mapping to remove the readonly keyword, but below commit replaces
+// the custom mappings with TS provided mappings.
+
+// Using built-in mappings
 
 import { City, Person, Product,Employee } from "./dataTypes";
 
-type MakeOptional<T> = {
-    [P in keyof T]? : T[P]
-};
+// type MakeOptional<T> = {
+//     [P in keyof T]? : T[P]
+// };
 
-type MakeRequired<T> = {
-    [P in keyof T]-? : T[P]
-};
+// type MakeRequired<T> = {
+//     [P in keyof T]-? : T[P]
+// };
 
-type MakeReadOnly<T> = {
-    readonly [P in keyof T] : T[P]
-};
+// type MakeReadOnly<T> = {
+//     readonly [P in keyof T] : T[P]
+// };
 
 type MakeReadWrite<T> = {
     -readonly [P in keyof T] : T[P]
 };
 
-type optionalType = MakeOptional<Product>;
-type requiredType = MakeRequired<optionalType>;
-type readOnlyType = MakeReadOnly<requiredType>;
+type optionalType = Partial<Product>;
+type requiredType = Required<optionalType>;
+type readOnlyType = Readonly<requiredType>;
 type readWriteType = MakeReadWrite<readOnlyType>;
 
 let p: readWriteType = { name: "Kayak", price: 275 };
 console.log(`Mapped type: ${p.name}, ${p.price}`);
 
-// ? placed after the name selector to make the properties in the mapped type optional, and
-// -? used 2 make property required. Read-only and read-write by preceding the name selector
-// with readonly and -readonly.
-
-// Mapped types change all the properties defined by the type they transform so that the
-// type produced by MakeOptional<T> when applied to the Product class, e.g., is equivalent
-// to this type =>     typeOptional = {name?: string; price?: number;}
-
-// The types produced by mappings can be fed into other mappings, creating a chain of 
-// transformations. In the listing, the type produced by the MakeOptional<T> mapping is
-// then transformed by the Makerequired<T> mapping, the output of which is then fed to the 
-// MakeReadOnly<T> mapping and the the MakeReadWrite<T> mapping. The result is that the
-// propertuies are made optional and then required and then read-only and finally read-write.
-
+// The built-in mappings have the same effect as the ones in previous commit.
