@@ -1,50 +1,26 @@
 "use strict";
-// Identify Properties of a Specific Type
+// Inferring Additional Types in Condtions
 Object.defineProperty(exports, "__esModule", { value: true });
-// A common requirement is to limit a type parameter so that it can be used only to 
-// specify a property that has a specific type. e.g., the Collection<T> class earlier 
-// somewhere defined a total method that accepts a property name and that should be
-// restricted dto number properties. 
-// Identifying Properties
+// There can be a tension between the need to accept a wide range of types through a
+// generic type parameter and the need to know the details of those types. 
+// Defining a Function
 const dataTypes_1 = require("./dataTypes");
-function total(data, propName) {
-    return data.reduce((t, item) => t += Number(item[propName]), 0);
+function getValue(data, propName) {
+    if (Array.isArray(data)) {
+        return data[0][propName];
+    }
+    else {
+        return data[propName];
+    }
 }
 let products = [new dataTypes_1.Product("Kayak", 275), new dataTypes_1.Product("Lifejacket", 48.95)];
-console.log(`Total: ${total(products, "price")}`);
-// method 4 identifying props is unusual, 2 steps
-//...
-// type unionOfTypeNames<T, U> = {
-//    [P in keyof T] : T[P] extends U ? P : never;
-//};
-// conditional statement checks the type of each property. if a property doesnt have the
-// target type, then its type is changed to never. If a property does have the expected
-// type, then its type is changed to the literal value that i s the property name. mapping
-// unionof...
-//...
-//  { name: never , price: "price"}
-// this odd mapped type provides the input to the second stage in the process ,which is
-// to use the indexed access operator to get a union of the types of the properties
-// defined by the mapped type.
-//...
-//   type propertiesOfType<T, U> = unionOfTypeNames<T, U>[keyof T];
-//...
-// For the mapped type created by unionOfTypeNames<Product, number>, the indexed access
-// operator produces the following union:
-//...
-//   never | "price"
-//...
-// never i sautomatically removed from unions, leaving a union of literal value types 
-// that are the properties of the required type. The union of property names can then be 
-// used to restrict generic type parameters.
-//...
-//   function total<T, P extends propertiesOfType<T, number>>(data: T[],
-//           propName: P): number {
-//      return data.reduce((t, item) => t += Number(item[propName]), 0)}
-//...
-// The propName parameter of the total function can be used only with the names of the
-// number properties in the type T.
-//...
-//   console.log(`Total: ${total(products, "price")}`);
-//...
-//   flexibility of TS but unusual steps reqd 2 achieve specific effect.
+console.log(`Array Value: ${getValue(products, "price")}`);
+console.log(`Single Total: ${getValue(products[0], "price")}`);
+// dosent compile as relationship btw types not captured by generic parameters. 
+// if total function recieves an array through the data parameter, it returns the value
+// of the property specified by the propName parameter for the first item in the array.
+// if the function recieves a single object through data, then it returns the propName
+// value for that object. The propName parameter is constrained using keyof, which is a 
+// problem when an array is used because keyof returns a unions of the property names
+// defined by the JS array object and not the porperties of the type contained in the 
+// array, which can be seen in the compiler error message.
