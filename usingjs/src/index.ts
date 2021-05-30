@@ -1,5 +1,6 @@
 // Using the Wrong type in src/index.ts
 
+
 import { SportsProduct, SPORT } from './product';
 import { Cart } from './cart';
 import { sizeFormatter, costFormatter } from "./formatters";
