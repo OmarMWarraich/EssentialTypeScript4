@@ -37,6 +37,15 @@
 // and feeding the compiled code into the bundle created by webpack. To configure webpack,
 // add a file named webpack.config.js to the webapp folder with following contents.
 
+// Adding a Development Web Server
+
+// A web server is required to deliver the bundle file to the brower so it can be executed.
+// The Webpack Dev Server(WDS) is an HTTP server that is integrated into webpack and includes
+// support for trigerring automatic browser reloads when a code file changes and a new
+// bundle file is produced. Add WDS package
+// npm install --save-dev wepack-dev-server@3.11.2
+
+
 module.exports = {
     mode: "development",
     devtool: "inline-source-map",
@@ -47,15 +56,14 @@ module.exports = {
         rules: [
             { test: /\.ts/, use: "ts-loader", exclude: /node_modules/  }
         ]
+    },
+    devServer: {
+        contentBase: "./assets",
+        port: 4500
     }
 }
 
-// The entry and output settings tell webpack to start with the src/index.ts file when 
-// resolving the application's dependencies and to give the bundle file the name bundle.js.
-// The other settings configure webpack to use the ts-loader package to process files
-// with the ts file extension.
+// The new config settings tell WDS to look for any file that is not a bundle in a 
+// folder named assets and to listen for HTTP requests on port 4500. To provide WDS with
+// an HTML file that can be used to respond to browsers, create a webapp/assets/index.html.
 
-// npx webpack
-
-// node dist/bundle.js     
-//> Web App
