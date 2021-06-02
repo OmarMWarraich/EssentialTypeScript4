@@ -26,10 +26,10 @@ export class HtmlDisplay {
         let categories = await this.props.dataSource.getCategories();
         this.containerElem.innerHTML = "";
         let content = <div>
-            <productList products={ products } categories={ categories }
+            <ProductList products={ products } categories={ categories }
                 selectedCategory={ this.selectedCategory}
                 addToOrderCallback={ this.addToOrder }
-                filterCallback={ this.selectedCategory } />
+                filterCallback={ this.selectCategory } />
         </div>
         this.containerElem.appendChild(content);
     }
