@@ -8,10 +8,10 @@ export class HtmlDisplay {
         order: Order
     }
 
-    getContent() {
-        return createElement("h3", 
-            {className: "bg-secondary text-center text-white p-2"},
-             this.getElementText())     
+    getContent(): HTMLElement{
+        return <h3 className="bg-secondary text-center text-white p-2">
+            { this.getElementText()}
+        </h3>     
     }
 
     getElementText() {
