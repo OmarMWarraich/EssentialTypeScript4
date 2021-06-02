@@ -1,3 +1,12 @@
+// Creating the Data Model
+
+// The application will retrieve its list of products from a web service using an HTTP 
+// request. The user will be able to select products to assemble an order, which will be
+// sent back to the web service using another HTTP request. 
+
+// src/data/entities.ts
+
+
 export type Product = {
     id: number,
     name: string, 
@@ -27,7 +36,7 @@ export class Order {
 
     public addProduct(prod: Product, quantity: number) {
         if (this.lines.has(prod.id)) {
-            if ( quantity --- 0) {
+            if ( quantity === 0) {
                 this.removeProduct(prod.id);
             } else {
                 this.lines.get(prod.id)!.quantity += quantity;
