@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
